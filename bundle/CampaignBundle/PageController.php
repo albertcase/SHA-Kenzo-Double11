@@ -3,6 +3,10 @@
 namespace CampaignBundle;
 
 use Core\Controller;
+use Lib\Helper;
+use Lib\PDO;
+use Lib\UserAPI;
+use Lib\WechatAPI;
 
 class PageController extends Controller
 {

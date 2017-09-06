@@ -59,3 +59,6 @@ define("ENCRYPT_KEY", '29FB77CB8E94B358');
 define("ENCRYPT_IV", '6E4CAB2EAAF32E90');
 
 define("WECHAT_TOKEN_PREFIX", 'wechat:token:');
+
+// PUSH API ALLOW IP
+define("API_IP", '127.0.0.1');
