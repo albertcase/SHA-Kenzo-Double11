@@ -62,3 +62,5 @@ define("WECHAT_TOKEN_PREFIX", 'wechat:token:');
 
 // PUSH API ALLOW IP
 define("API_IP", '127.0.0.1');
+// sign date
+define("SIGN_DATE", date('Y-m-d'));

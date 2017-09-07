@@ -14,3 +14,5 @@ $routers['/clear'] = array('CampaignBundle\Page', 'clearCookie');
 $routers['/ajax/post'] = array('CampaignBundle\Api', 'form');
 $routers['/'] = array('CampaignBundle\Page', 'index');
 $routers['/test'] = array('CampaignBundle\Api', 'test');
+$routers['/api/giftinfo'] = array('CampaignBundle\Api', 'giftinfo');
+$routers['/api/lotteryinfo'] = array('CampaignBundle\Api', 'lotteryinfo');
