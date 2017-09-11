@@ -43,17 +43,18 @@ class PageController extends Controller
         // 用户签到
         $usersign = new \stdClass();
         $usersign->uid = $user->uid;
-        $date = $this->getDid();
+        $date = $this->getDate();
         $usersign->did = $date->id;
 
         //发送图片信息
         $accessToken = $postArr['_tk'];
-        $this->sendCustomMsg($accessToken, $postArr['FromUserName'], 'image', array('media_id' => '1232312'));
+        $this->sendCustomMsg($accessToken, $postArr['FromUserName'], 'image', array('media_id' => $date->media_id));
         if($this->findSign($usersign)) {
             $this->sendCustomMsg($accessToken, $postArr['FromUserName'], 'text', array('content' => '您已经签到过！'));
-        }
-        if($this->UserSign($usersign)) {
-            $this->sendCustomMsg($accessToken, $postArr['FromUserName'], 'text', array('content' => '签到成功！'));
+        } else {
+            if($this->UserSign($usersign)) {
+                $this->sendCustomMsg($accessToken, $postArr['FromUserName'], 'text', array('content' => '签到成功！'));
+            }
         }
         exit;
     }
@@ -99,9 +100,9 @@ class PageController extends Controller
     /**
      * 获取今天的日期ID
      */
-    private function getDid()
+    private function getDate()
     {
-        $sql = "SELECT `id` FROM `date` WHERE `date` = :date";
+        $sql = "SELECT `id`, `media_id` FROM `date` WHERE `date` = :date";
         $query = $this->_pdo->prepare($sql);
         $query->execute(array(':date' => SIGN_DATE));
         $row = $query->fetch(\PDO::FETCH_ASSOC);
