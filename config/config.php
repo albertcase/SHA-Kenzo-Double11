@@ -60,7 +60,7 @@ define("ENCRYPT_IV", '6E4CAB2EAAF32E90');
 
 define("WECHAT_TOKEN_PREFIX", 'wechat:token:');
 
-// PUSH API ALLOW IP
 define("API_IP", '127.0.0.1');
-// sign date
 define("SIGN_DATE", date('Y-m-d'));
+define("OPEN_TIME", '23');
+define("PROBABILITY", '1/10');
