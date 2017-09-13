@@ -38,21 +38,20 @@ class ApiController extends Controller
     {
     	global $user;
         if(!$this->checkQuotaTime()) {
-        $data = array('status' => 5, 'msg'=> '活动未开始，！', 'userStatus' => $user->status);
-        $this->dataPrint($data);
+            $data = array('status' => 5, 'msg'=> '活动未开始，！', 'userStatus' => $user->status);
+            $this->dataPrint($data);
         }
-    	$databaseAPI = new \Lib\DatabaseAPI();
     	$date = date('Y-m-d');
     	//已中奖
-    	$lottery = $databaseAPI->loadLotteryByUid($user->uid);
+    	$lottery = $this->loadLotteryByUid($user->uid);
   	    if($lottery) {
-        $databaseAPI->setLottery($user->uid, 2);
+        $this->setLottery($user->uid, 2);
         $data = array('status' => 3, 'msg'=> '您已获奖', 'userStatus' => $user->status);
   			$this->dataPrint($data);
         }
         //奖发完
-        $sum = $databaseAPI->checkGiftQuota($date, 2);
-  		$count = $databaseAPI->loadLotteryCount($date . '%');
+        $sum = $this->checkGiftQuota($date, 2);
+  		$count = $this->loadLotteryCount($date . '%');
   		if ($count>=$sum) {
             $data = array('status' => 2, 'msg'=> '今天的奖品已经发没，请明天再来！', 'userStatus' => $user->status);
   			$this->dataPrint($data);
@@ -61,12 +60,12 @@ class ApiController extends Controller
         $rands = explode('/', PROBABILITY);
   		$rand = mt_rand(1, $rands['1']);
   		if ($rand <= $rands['0']) {
-  			$databaseAPI->setLottery($user->uid, 1);
+  			$this->setLottery($user->uid, 1);
             $user->status['isluckydraw'] = 1;
             $data = array('status' => 1, 'msg'=> '恭喜中奖', 'userStatus' => $user->status);
   			$this->dataPrint($data);
   		}
-  		$databaseAPI->setLottery($user->uid, 2);
+        $this->setLottery($user->uid, 2);
         $data = array('status' => 0, 'msg'=> '遗憾未中奖', 'userStatus' => $user->status);
   		$this->dataPrint($data);
     }
@@ -171,23 +170,22 @@ class ApiController extends Controller
     public function giftAction()
     {
         global $user;
-        $DatabaseAPI = new \Lib\DatabaseAPI();
-        if(!$this->checkQuotaTime()) {
-            $data = array('status' => 5, 'msg'=> '今日活动还未开启，请稍后！', 'userStatus' => $user->status);
-            $this->dataPrint($data);
-        }
-        $checknew = $DatabaseAPI->checkOpenid($user->openid);
+//        if(!$this->checkQuotaTime()) {
+//            $data = array('status' => 5, 'msg'=> '今日活动还未开启，请稍后！', 'userStatus' => $user->status);
+//            $this->dataPrint($data);
+//        }
+        $checknew = $this->checkOpenid($user->openid);
         if (!$checknew) {
             $date = date('Y-m-d');
             //新用户申领
             //今天的小样领取完毕
             //已经领取过小样
-            if($DatabaseAPI->checkGift($user->uid)) {
+            if($this->checkGift($user->uid)) {
                 $data = array('status' => 4, 'msg'=> '对不起，您已经领取过小样！', 'userStatus' => $user->status);
                 $this->dataPrint($data);
             }
-            $sum = $DatabaseAPI->checkGiftQuota($date, 1);
-            $count = $DatabaseAPI->loadGiftCount($date . '%');
+            $sum = $this->checkGiftQuota($date, 1);
+            $count = $this->loadGiftCount($date . '%');
             if($count>=$sum) {
                 //小样全部领取完毕
                 if($this->checkLastQuota($date)) {
@@ -199,7 +197,7 @@ class ApiController extends Controller
                 }
             }
             //领取小样
-            $DatabaseAPI->setGift($user->uid);
+            $this->setGift($user->uid);
             $user->status['isgift'] = 1;
             $data = array('status' => 1, 'msg'=> '小样领取成功', 'userStatus' => $user->status);
             $this->dataPrint($data);
@@ -207,6 +205,80 @@ class ApiController extends Controller
             $data = array('status' => 0, 'msg'=> '非新关注用户没有领取资格', 'userStatus' => $user->status);
             $this->dataPrint($data);
         }
+    }
+
+    private function loadLotteryByUid($uid)
+    {
+        return true;
+    }
+
+    private function setLottery($uid, $status)
+    {
+        $helper = new Helper();
+        $lottery = new \stdClass();
+        $lottery->uid = $uid;
+        $lottery->status = $status;
+        $lottery->created = date('Y-m-d H:i:s');
+        $lottery = (array) $lottery;
+        $id = $helper->insertTable('lottery', $lottery);
+        if($id) {
+            return true;
+        }
+        return false;
+    }
+
+    private function loadLotteryCount($date, $type)
+    {
+        return true;
+    }
+
+    /**
+     * 判断是否为老用户
+     */
+    private function checkOpenid($openid)
+    {
+        return false;
+    }
+
+    /**
+     * 判断是否可以领取小样
+     */
+    private function checkGift($uid)
+    {
+        return false;
+    }
+
+    /**
+     * 判断小样的库存
+     */
+    private function checkGiftQuota($date, $type)
+    {
+        return 2;
+    }
+
+    /**
+     * 验证小样的总库存
+     */
+    private function loadGiftCount($date, $type)
+    {
+        return 1;
+    }
+
+    /**
+     * 领取小样
+     */
+    private function setGift($uid)
+    {
+        $helper = new Helper();
+        $gift = new \stdClass();
+        $gift->uid = $uid;
+        $gift->created = date('Y-m-d H:i:s');
+        $gift = (array) $gift;
+        $id = $helper->insertTable('gift', $gift);
+        if($id) {
+            return true;
+        }
+        return false;
     }
 
    /**
