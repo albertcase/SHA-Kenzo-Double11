@@ -13,7 +13,7 @@ $routers['/clear'] = array('CampaignBundle\Page', 'clearCookie');
 //Campaign
 $routers['/ajax/post'] = array('CampaignBundle\Api', 'form');
 $routers['/'] = array('CampaignBundle\Page', 'index');
-$routers['/api/sign'] = array('CampaignBundle\Page', 'sign'); //签到
+$routers['/api/checkin'] = array('CampaignBundle\BackApi', 'checkin'); //签到
 $routers['/test'] = array('CampaignBundle\Api', 'test');
 $routers['/api/giftinfo'] = array('CampaignBundle\Api', 'giftinfo');
 $routers['/api/lotteryinfo'] = array('CampaignBundle\Api', 'lotteryinfo');
@@ -24,3 +24,7 @@ $routers['/api/picturecode'] = array('CampaignBundle\Api', 'pictureCode');
 $routers['/api/checkpicture'] = array('CampaignBundle\Api', 'checkPicture');
 $routers['/api/phonecode'] = array('CampaignBundle\Api', 'phoneCode');
 $routers['/api/checkphonecode'] = array('CampaignBundle\Api', 'heckPhoneCode');
+
+//TMP
+$routers['/freetrial'] = array('CampaignBundle\Page', 'freetrial');
+$routers['/luckydraw'] = array('CampaignBundle\Page', 'luckydraw');
