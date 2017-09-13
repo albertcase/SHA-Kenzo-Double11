@@ -19,7 +19,7 @@
             isLuckyDraw: false /*是否抽奖*/
         };
     </script>
-    <script src="../src/dist/js/all_followed.min.js"></script>
+    <script src="../src/dist/js/all_form_freetrial.min.js"></script>
 </head>
 <body class="page-home">
 <div id="orientLayer" class="mod-orient-layer">

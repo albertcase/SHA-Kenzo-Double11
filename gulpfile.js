@@ -32,17 +32,7 @@ var path = {
         //'./src/assets/js/api.js',
         //'./src/assets/js/home.js'
     ],
-    newFollowJs:[
-        './src/assets/js/lib/zepto.min.js',
-        './src/assets/js/lib/pre-loader.js',
-        './src/assets/js/rem.js',
-        './src/assets/js/region.js',
-        './src/assets/js/common.js',
-        './src/assets/js/api.js',
-        './src/assets/js/wxshare.js',
-        './src/assets/js/newfollow.js',
-    ],
-    followedJs:[
+    freeTrialJs:[
         './src/assets/js/lib/zepto.min.js',
         './src/assets/js/lib/pre-loader.js',
         './src/assets/js/lib/cookie.js',
@@ -51,7 +41,18 @@ var path = {
         './src/assets/js/common.js',
         './src/assets/js/api.js',
         './src/assets/js/wxshare.js',
-        './src/assets/js/followed.js',
+        './src/assets/js/form-freetrial.js',
+    ],
+    luckydrawJs:[
+        './src/assets/js/lib/zepto.min.js',
+        './src/assets/js/lib/pre-loader.js',
+        './src/assets/js/lib/cookie.js',
+        './src/assets/js/rem.js',
+        './src/assets/js/region.js',
+        './src/assets/js/common.js',
+        './src/assets/js/api.js',
+        './src/assets/js/wxshare.js',
+        './src/assets/js/form-luckydraw.js',
     ],
     images:[
         './src/assets/*.{png,jpg,jpeg}',
@@ -89,19 +90,19 @@ gulp.task('css',['clean'],function () {
 });
 
 // Concatenate & Minify
-gulp.task('scripts_newfollow',['clean'], function() {
-    return gulp.src(path.newFollowJs)
-        .pipe(concat('all_newfollow.js'))
+gulp.task('scripts_form_freetrial',['clean'], function() {
+    return gulp.src(path.freeTrialJs)
+        .pipe(concat('all_form_freetrial.js'))
         .pipe(gulp.dest('./src/dist'))
-        .pipe(rename('all_newfollow.min.js'))
+        .pipe(rename('all_form_freetrial.min.js'))
         .pipe(uglify())
         .pipe(gulp.dest('./src/dist/js'));
 });
-gulp.task('scripts_followed',['clean'], function() {
-    return gulp.src(path.followedJs)
-        .pipe(concat('all_followed.js'))
+gulp.task('scripts_form_luckydraw',['clean'], function() {
+    return gulp.src(path.luckydrawJs)
+        .pipe(concat('all_form_luckydraw.js'))
         .pipe(gulp.dest('./src/dist'))
-        .pipe(rename('all_followed.min.js'))
+        .pipe(rename('all_form_luckydraw.min.js'))
         .pipe(uglify())
         .pipe(gulp.dest('./src/dist/js'));
 });
@@ -122,10 +123,11 @@ gulp.task("tinypng", function(){
 // Watch Files For Changes
 gulp.task('watch', ['clean'],function() {
     gulp.watch(path.css,['css']);
-    gulp.watch(path.followedJs,['scripts_followed']);
+    gulp.watch(path.freeTrialJs,['scripts_form_freetrial']);
+    gulp.watch(path.luckydrawJs,['scripts_form_luckydraw']);
 });
 
 // Default Task
-gulp.task('default', ['watch', 'css','scripts_followed','browser-sync']);
+gulp.task('default', ['watch', 'css','scripts_form_freetrial','scripts_form_luckydraw','browser-sync']);
 
 

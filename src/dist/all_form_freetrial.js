@@ -1907,7 +1907,7 @@ $(document).ready(function(){
     controller.prototype.bindEvent = function(){
         var self = this;
         //show and hide terms pop
-            //close terms popup
+        //close terms popup
         $('body').on('touchstart','.btn-close',function(){
             $('.terms-pop').removeClass('show');
         });
@@ -1940,10 +1940,10 @@ $(document).ready(function(){
         });
 
         /*
-        * If isTransformedOld is true, show share popup
-        * If isTransformedOld is false and not fill form, you need fill form first
-        * If isTransformedOld is false and filled form, you directly go result page
-        * */
+         * If isTransformedOld is true, show share popup
+         * If isTransformedOld is false and not fill form, you need fill form first
+         * If isTransformedOld is false and filled form, you directly go result page
+         * */
         $('.btn-luckydraw').on('touchstart',function(){
             if(self.isTransformedOld){
                 $('.share-popup').addClass('show');
@@ -1958,10 +1958,10 @@ $(document).ready(function(){
         });
 
         /*
-        * submit the form
-        * if isTransformedOld is true, submit it and then call lottery api
-        * if isTransformedOld is false, submit it and then call gift api
-        * */
+         * submit the form
+         * if isTransformedOld is true, submit it and then call lottery api
+         * if isTransformedOld is false, submit it and then call gift api
+         * */
         $('.btn-submit').on('touchstart',function(){
             if(self.validateForm()){
                 //name mobile province city area address
@@ -1998,7 +1998,7 @@ $(document).ready(function(){
 
         });
 
-    //    switch the province
+        //    switch the province
         var curProvinceIndex = 0;
         $('#select-province').on('change',function(){
             curProvinceIndex = document.getElementById('select-province').selectedIndex;
@@ -2018,7 +2018,7 @@ $(document).ready(function(){
         });
 
 
-    //    share function
+        //    share function
         weixinshare({
             title1: 'KENZO 关注有礼  | 全新果冻霜，夏日清爽礼赠',
             des: 'KENZO白莲果冻霜，让你清爽一夏~',
@@ -2029,10 +2029,10 @@ $(document).ready(function(){
 
         });
 
-    //    imitate share function on pc====test
-    //    $('.share-popup .guide-share').on('touchstart',function(){
-    //        self.shareSuccess();
-    //    });
+        //    imitate share function on pc====test
+        //    $('.share-popup .guide-share').on('touchstart',function(){
+        //        self.shareSuccess();
+        //    });
 
         //switch validate code
         $('.validate-code').on('touchstart', function(){
@@ -2040,10 +2040,10 @@ $(document).ready(function(){
         });
 
         /*
-        * validate phonenumber first
-        * Get message validate code,check image validate code
-        * if image validate code is right
-        * */
+         * validate phonenumber first
+         * Get message validate code,check image validate code
+         * if image validate code is right
+         * */
         $('.btn-get-msg-code').on('touchstart', function(){
             if(self.disableClick) return;
             if(!$('#input-mobile').val()){
@@ -2098,8 +2098,8 @@ $(document).ready(function(){
         });
 
         /*
-        * For share tips overlay,click will disappear
-        * */
+         * For share tips overlay,click will disappear
+         * */
         $('.share-popup').on('touchstart', function(e){
             if(e.target.className.indexOf('.share-popup')){
                 $('.share-popup').removeClass('show');
@@ -2119,9 +2119,9 @@ $(document).ready(function(){
         }
     };
     /*
-    * Countdown
-    * Disabled click the button untill the end the countdown
-    * */
+     * Countdown
+     * Disabled click the button untill the end the countdown
+     * */
     controller.prototype.countDown = function(){
         var self = this;
         self.disableClick = true;
