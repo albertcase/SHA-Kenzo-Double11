@@ -92,7 +92,7 @@
         var self = this;
 
         /*
-         * submit the form
+         * submit the form of freetrial
          * if isTransformedOld is true, submit it and then call lottery api
          * if isTransformedOld is false, submit it and then call gift api
          * */
@@ -106,7 +106,7 @@
                     selectProvinceVal = $('#select-province').val(),
                     selectCityVal = $('#select-city').val(),
                     selectDistrictVal = $('#select-district').val();
-                Api.submitForm({
+                Api.submitForm_freetrial({
                     name:inputNameVal,
                     mobile:inputMobileVal,
                     province:selectProvinceVal,
@@ -116,14 +116,7 @@
                     address:inputAddressVal
                 },function(data){
                     if(data.status==1){
-                        self.user.isSubmit = data.userStatus.issubmit;
-                        if(self.isTransformedOld){
-                            //Call lottery
-                            self.callLotteryApi();
-                        }else{
-                            //Call gift
-                            Common.gotoPin(2);
-                        }
+                        Common.alertBox.add(data.msg);
                     }else{
                         Common.alertBox.add(data.msg);
                     }
@@ -303,6 +296,7 @@
         });
     }
 
+    //Api for img validate code
     controller.prototype.getValidateCode = function(){
         Api.getImgValidateCode(function(data){
             //console.log(data);

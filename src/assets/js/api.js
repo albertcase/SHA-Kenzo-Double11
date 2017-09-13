@@ -9,10 +9,11 @@ Api = {
     //    area: '黄浦区',
     //    address: '湖滨路'
     //}
-    submitForm:function(obj,callback){
+    //Form submit of the freetrial
+    submitForm_freetrial:function(obj,callback){
         Common.msgBox.add('loading...');
         $.ajax({
-            url:'/api/submit',
+            url:'/api/giftinfo',
             type:'POST',
             dataType:'json',
             data:obj,
@@ -31,25 +32,29 @@ Api = {
 
     },
 
-    getGift:function(callback){
+    //Form submit of the luckydraw
+    submitForm_luckydraw:function(obj,callback){
         Common.msgBox.add('loading...');
         $.ajax({
-            url:'/api/gift',
+            url:'/api/lotteryinfo',
             type:'POST',
             dataType:'json',
+            data:obj,
             success:function(data){
                 Common.msgBox.remove();
                 return callback(data);
+                //status=1 有库存
             }
         });
 
         //return callback({
-        //    status:1,
-        //    msg:'zhognjiang'
+        //    status:0,
+        //    msg:'fillform'
         //})
 
 
     },
+
     //抽奖API
     lottery:function(callback){
         Common.msgBox.add('抽奖中...');
