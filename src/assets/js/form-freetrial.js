@@ -3,18 +3,7 @@
  * */
 ;(function(){
     var controller = function(){
-        //get userflow status from backend
 
-        //var userInfo = {
-        //    isOld: false, /*是否是老用户*/
-        //    isSubmit: false, /*是否提交了用户详细信息表单*/
-        //    isGift: false, /*是否领取了小样*/
-        //    isLuckyDraw: false /*是否抽奖*/
-        //};
-
-        this.user = userInfo;
-        this.isTransformedOld = userInfo.isOld; //For new follow user, if operate the gift page, then transform Old user and display old page view
-        this.disableClick = false;
     };
     //init
     controller.prototype.init = function(){
@@ -88,29 +77,8 @@
         var self = this;
         $('.preload').remove();
         $('.wrapper').addClass('fade');
+        Common.gotoPin(0);
 
-        /* if the isOld is true and isLuckyDraw is true, directly go to the luckydraw result page */
-        if(self.user.isOld && self.user.isLuckyDraw && self.user.isSubmit){
-            Common.gotoPin(2); /*directly go to the luckydraw result page*/
-            $('#pin-result .prize-item').html('<h3 class="title">「恭喜您」</h3>KENZO果冻霜正装（50ML）一份<br> Miss K 将火速为您寄送礼品！<span class="tip">（每个微信ID仅限中奖一次）</span>');
-            $('.btn-getbigprize').addClass('hide');
-        }else{
-            Common.gotoPin(0); // landing page
-            if(self.user.isOld){
-                self.showLandingPage(2);
-            }else{
-                self.showLandingPage(1);
-            }
-        }
-        //if(self.user.isOld){
-        //    if(self.user.isLuckyDraw){
-        //        Common.gotoPin(2);
-        //    }else{
-        //        Common.gotoPin(0);
-        //    }
-        //}
-
-        //console.log(self.hasShared);
         self.bindEvent();
         self.showAllProvince();
 
@@ -122,56 +90,6 @@
     //bind Events
     controller.prototype.bindEvent = function(){
         var self = this;
-        //show and hide terms pop
-        //close terms popup
-        $('body').on('touchstart','.btn-close',function(){
-            $('.terms-pop').removeClass('show');
-        });
-        //    show terms pop
-        $('.terms-link').on('touchstart',function(){
-            /**/
-            var termContent = [
-                {
-                    time:'2017年8月15日到2017年8月19日',
-                    condition:'活动期间，首次关注KenzoParfums凯卓官方微信的用户即可参与申领，每个微信ID仅限申领一次，奖品共5000份。活动期间，每日上午10点起限量申领，每日份额详见活动主页（先到先得）',
-                    prize:'奖品为KENZO舒缓白莲清爽保湿霜体验装（2ml）<br>根据用户填写的邮寄地址在中奖后的30个工作日内寄送'
-                },
-                {
-                    time:'2017年8月15日到2017年8月19日',
-                    condition:'活动期间，关注KenzoParfums凯卓官方微信的用户将活动分享给好友，即可参与抽奖（随机抽取）。每个微信ID仅限中奖一次，奖品限量100份。中奖名单将于活动结束后公布。',
-                    prize:'奖品为KENZO舒缓白莲清爽保湿霜正装（50ml）<br>根据用户填写的邮寄地址在中奖后的30个工作日内寄送'
-                }
-            ];
-            if(self.isTransformedOld){
-                $('.activity-time').html(termContent[1].time);
-                $('.activity-requirement').html(termContent[1].condition);
-                $('.activity-prize').html(termContent[1].prize);
-            }else{
-                $('.activity-time').html(termContent[0].time);
-                $('.activity-requirement').html(termContent[0].condition);
-                $('.activity-prize').html(termContent[0].prize);
-            }
-            $('.terms-pop').addClass('show');
-
-        });
-
-        /*
-         * If isTransformedOld is true, show share popup
-         * If isTransformedOld is false and not fill form, you need fill form first
-         * If isTransformedOld is false and filled form, you directly go result page
-         * */
-        $('.btn-luckydraw').on('touchstart',function(){
-            if(self.isTransformedOld){
-                $('.share-popup').addClass('show');
-            }else{
-                //if(self.user.isSubmit){
-                //
-                //}else{
-                //    self.gotoFormPage();
-                //}
-                self.callGiftApi(); //go result page
-            }
-        });
 
         /*
          * submit the form
@@ -241,7 +159,7 @@
             link: window.location.origin,
             img: window.location.origin+'/src/dist/images/share.jpg'
         },function(){
-            self.shareSuccess();
+           // self.shareSuccess();
 
         });
 
@@ -300,18 +218,6 @@
 
         });
 
-        /*If the user get the gift, then go to the lottery page*/
-        $('.btn-getbigprize').on('touchstart', function(){
-            self.isTransformedOld = 1;
-            if(self.user.isLuckyDraw){
-                Common.gotoPin(2); /*directly go to the luckydraw result page*/
-                $('#pin-result .prize-item').html('<h3 class="title">「恭喜您」</h3>KENZO果冻霜正装（50ML）一份<br> Miss K 将火速为您寄送礼品！<span class="tip">（每个微信ID仅限中奖一次）</span>');
-                $('.btn-getbigprize').addClass('hide');
-            }else{
-                self.showLandingPage(2);
-            }
-
-        });
 
         /*
          * For share tips overlay,click will disappear
@@ -324,16 +230,6 @@
 
     };
 
-    controller.prototype.showLandingPage = function(page){
-        Common.gotoPin(0);
-        if(page == 1){
-            $('.btn-luckydraw').text('即刻领取体验装');
-            $('.limit-quantity').removeClass('hide');
-        }else if(page == 2){
-            $('.btn-luckydraw').text('即刻赢取礼赠');
-            $('.limit-quantity').addClass('hide');
-        }
-    };
     /*
      * Countdown
      * Disabled click the button untill the end the countdown
@@ -406,52 +302,6 @@
             }
         });
     }
-    //show the prize result, if prize, show prize msg, if not, show sorry msg
-    controller.prototype.callLotteryApi = function(){
-        var self = this;
-        var resultHtmlObj = [
-            {
-                name:'',
-                rhtml:'<h3 class="title">「恭喜您」</h3>KENZO果冻霜正装（50ML）一份<br> Miss K 将火速为您寄送礼品！<span class="tip">（每个微信ID仅限中奖一次）</span>'
-            },
-            {
-                name:'您没有中奖',
-                rhtml:'<h3 class="title">「很遗憾」</h3>您没有中奖<br>点击右上角，向好友发出幸运邀请<br>即可获得再一次的抽奖机会哦！'
-            },
-            {
-                name:'小样已经全部领空',
-                rhtml:'本次KENZO果冻霜正装（共100份）<br>的抽奖活动已结束<br>请持续关注KENZO官方微信，更多福利等着你！<br>'
-            }
-        ];
-
-        Api.lottery(function(json){
-            Common.gotoPin(2); //go result page
-            $('.btn-getbigprize').addClass('hide');
-            switch (json.status){
-                case 0:
-                    //msg: '遗憾未中奖',
-                    $('#pin-result .prize-item').html(resultHtmlObj[1].rhtml);
-                    break;
-                case 1:
-                    //msg: '恭喜中奖'
-                    $('#pin-result .prize-item').html(resultHtmlObj[0].rhtml);
-
-                    break;
-                case 2:
-                    //msg: '今天的奖品已经发没，请明天再来！',
-                    $('#pin-result .prize-item').html(resultHtmlObj[1].rhtml);
-                    break;
-                case 3:
-                    //msg: '您已获奖',
-                    $('#pin-result .prize-item').html(resultHtmlObj[0].rhtml);
-                    break;
-                default :
-                    Common.alertBox.add(json.msg);
-            }
-        });
-
-
-    };
 
     controller.prototype.getValidateCode = function(){
         Api.getImgValidateCode(function(data){
@@ -467,24 +317,6 @@
         });
     };
 
-    controller.prototype.gotoFormPage = function(){
-        var self = this;
-        Common.gotoPin(1);
-        self.getValidateCode();
-    }
-
-    //share success
-    controller.prototype.shareSuccess = function(){
-        var self = this;
-        if(self.isTransformedOld){
-            $('.share-popup').removeClass('show');
-            if(self.user.isSubmit){
-                self.callLotteryApi();
-            }else{
-                self.gotoFormPage();
-            }
-        }
-    };
 
     //province city and district
     controller.prototype.showAllProvince = function(){
