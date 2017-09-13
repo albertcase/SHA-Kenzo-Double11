@@ -18,10 +18,7 @@ class PageController extends Controller
 
 	public function indexAction()
     {
-		global $user;
-		var_dump($user);exit;
-		$RedisAPI = new \Lib\RedisAPI();
-		$config = $RedisAPI->jssdkConfig($this->request->getUrl(TRUE));
+        $config = array();
 		return $this->render('index', array('config' => $config));
 	}
 
