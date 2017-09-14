@@ -135,7 +135,7 @@ class BackApiController extends Controller
             $data = array(
                 'touser' => $openid,
                 'msgtype' => $msgType,
-                'text2' => $content,
+                'text' => $content,
             );
         }
         $rs = $this->sendCustomMsgTowechat($accessToken, $data);
@@ -236,15 +236,16 @@ class BackApiController extends Controller
     {
         $accessToken = $this->getAccessTokenByWechat();
         $info = $this->getUserInfoByWechat($accessToken, $userInfo->openid);
-
         $helper = new Helper();
         $userInfo->created = date('Y-m-d H:i:s');
-        $userInfo->nickname = $info->nickname;
-        $userInfo->sex = $info->sex;
-        $userInfo->province = $info->province;
-        $userInfo->country = $info->country;
-        $userInfo->city = $info->city;
-        $userInfo->headimgurl = $info->headimgurl;
+        if($info->errcode == 0) {
+            $userInfo->nickname = $info->nickname;
+            $userInfo->sex = $info->sex;
+            $userInfo->province = $info->province;
+            $userInfo->country = $info->country;
+            $userInfo->city = $info->city;
+            $userInfo->headimgurl = $info->headimgurl;
+        }
         $userInfo = (array) $userInfo;
         $id = $helper->insertTable('user', $userInfo);
         if($id) {
