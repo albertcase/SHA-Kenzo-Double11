@@ -62,5 +62,5 @@ define("WECHAT_TOKEN_PREFIX", 'wechat:token:');
 
 define("API_IP", '127.0.0.1');
 define("SIGN_DATE", date('Y-m-d'));
-define("OPEN_TIME", '23');
+define("OPEN_TIME", '1');
 define("PROBABILITY", '1/10');

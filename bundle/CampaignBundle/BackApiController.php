@@ -7,8 +7,7 @@ use Lib\Helper;
 use Lib\PDO;
 use Lib\UserAPI;
 use Lib\WechatAPI;
-use \Lib\Redis;
-use Masterminds\HTML5\Exception;
+use Lib\Redis;
 
 class BackApiController extends Controller
 {
@@ -33,40 +32,39 @@ class BackApiController extends Controller
             $postArr = json_decode($postData, 1);
 
             // 验证API访问者IP
-            $apiIp = $this->get_client_ip();
-            if(!$this->checkIp($apiIp)){
-                throw new Exception('API IP is not allow');
-            }
+            $apiIp = $this->getClientIp();
+            // if(!$this->checkIp($apiIp)){
+            //     throw new \Exception('API IP is not allow');
+            // }
+            $openid = $postArr['FromUserName'];
 
             // 记录API原始数据日志
             $logdata = new \stdClass();
-            $logdata->openid = $postArr['FromUserName'];
+            $logdata->openid = $openid;
             $logdata->data = $postData;
             $lid = $this->insertCheckInLog($logdata);
 
             // 用户注册登陆
-            $user = $this->initUser($postArr['FromUserName']);
+            $user = $this->initUser($openid);
             if(!$user) {
-                throw new Exception('init user is failed');
+               throw new \Exception('init user is failed');
             }
 
             // 用户签到
             $checkin = new \stdClass();
             $checkin->uid = $user->uid;
             $date = $this->getDate();
-            $checkin->did = $date->id;
-            //发送图片信息
-            $accessToken = $postArr['_tk'];
-            $this->sendCustomMsg($accessToken, $postArr['FromUserName'], 'image', array('media_id' => $date->media_id));
+            $checkin->did = (int) $date->id;
+
             if($this->findCheckIn($checkin)) {
                 // 已经签到
-                $this->sendCustomMsg($accessToken, $postArr['FromUserName'], 'text', array('content' => '您已经签到过！'));
+                $this->sendMsg(2, $openid, '');
             } else {
                 if($this->checkIn($checkin)) {
                     // 签到成功
-                    $this->sendCustomMsg($accessToken, $postArr['FromUserName'], 'text', array('content' => '签到成功！'));
+                    $this->sendMsg(1, $openid, $date->media_id);
                 } else {
-                    throw new Exception('checkin is failed');
+                   throw new \Exception('checkin is failed');
                 }
             }
         } catch (Exception $e) {
@@ -78,7 +76,31 @@ class BackApiController extends Controller
             $errlog->msg = $msg;
             $this->chenkinFaileLog($errlog);
             // 签到失败
-            $this->sendCustomMsg($accessToken, $postArr['FromUserName'], 'text', array('content' => '当前签到人过多！请稍后再来！'));
+            $this->sendMsg(3, $openid, '');
+        }
+        $data = array('status' => 1, 'msg' => 'checkin ok');
+        $this->dataPrint($data);
+    }
+
+    /**
+     * 消息组
+     */
+    private function sendMsg($status, $openid, $media_id)
+    {
+        $accessToken = $this->getAccessTokenByWechat();
+        switch ($status) {
+            case 1:
+//                $this->sendCustomMsg($accessToken, $openid, 'image', array('media_id' => $media_id));
+                $this->sendCustomMsg($accessToken, $openid, 'text', array('content' => '签到成功！'));
+                break;
+
+            case 2:
+                $this->sendCustomMsg($accessToken, $openid, 'text', array('content' => '您已经签到过！'));
+                break;
+
+            case 3:
+                $this->sendCustomMsg($accessToken, $openid, 'text', array('content' => '当前签到人过多！请稍后再来！'));
+                break;
         }
     }
 
@@ -102,7 +124,6 @@ class BackApiController extends Controller
      */
     private function sendCustomMsg($accessToken, $openid, $msgType, $content)
     {
-        $wechat = new WechatAPI();
         if($msgType == 'image') {
             $data = array(
                 'touser' => $openid,
@@ -114,16 +135,55 @@ class BackApiController extends Controller
             $data = array(
                 'touser' => $openid,
                 'msgtype' => $msgType,
-                'text' => $content,
+                'text2' => $content,
             );
         }
-        $wechat->sendTmpMsg($accessToken, $data);
+        $rs = $this->sendCustomMsgTowechat($accessToken, $data);
         // 记录消息日志
         $msglog = new \stdClass();
-        $msglog->access_token = $accessToken;
         $msglog->openid = $openid;
-        $msglog->data = $data;
+        $msglog->data = json_encode($data, JSON_UNESCAPED_UNICODE);
+        $msglog->errcode = $rs->errcode;
+        $msglog->errmsg = $rs->errmsg;
         $this->insertMsgLog($msglog);
+    }
+
+    private function insertMsgLog($log)
+    {
+        $helper = new Helper();
+        $log->created = date('Y-m-d H:i:s');
+        $log = (array) $log;
+        $id = $helper->insertTable('msg_log', $log);
+        if($id) {
+            return $id;
+        }
+        return false;
+    }
+
+    /**
+     * 发送微信客服消息
+     */
+    public function sendCustomMsgTowechat($accessToken, $data) {
+        $applink = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=%s";
+        $url = sprintf($applink, $accessToken);
+        $rs = $this->postData($url, json_encode($data, JSON_UNESCAPED_UNICODE));
+        return $rs;
+    }
+
+    /**
+     * post data
+     */
+    private function postData($url, $post_json) {
+        // post data to wechat
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-Type: application/json; charset=utf-8"));
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $post_json);
+        $data = curl_exec($ch);
+        curl_close($ch);
+        return json_decode($data);
     }
 
     /**
@@ -161,7 +221,7 @@ class BackApiController extends Controller
     private function initUser($openid)
     {
         $user = $this->userLoad($openid);
-        if(!$user->uid) {
+        if(!$user) {
             $user_info = new \stdClass();
             $user_info->openid = $openid;
             $user = $this->userRegister($user_info);
@@ -180,10 +240,17 @@ class BackApiController extends Controller
         $helper = new Helper();
         $userInfo->created = date('Y-m-d H:i:s');
         $userInfo->nickname = $info->nickname;
+        $userInfo->sex = $info->sex;
+        $userInfo->province = $info->province;
+        $userInfo->country = $info->country;
+        $userInfo->city = $info->city;
+        $userInfo->headimgurl = $info->headimgurl;
         $userInfo = (array) $userInfo;
         $id = $helper->insertTable('user', $userInfo);
         if($id) {
-            return true;
+            $user = new \stdClass();
+            $user->uid = $id;
+            return $user;
         }
         return false;
     }
@@ -193,7 +260,7 @@ class BackApiController extends Controller
      */
     private function userLoad($openid)
     {
-        $sql = "SELECT `id`, `openid`, `nickname` FROM `user` WHERE `openid` = :openid";
+        $sql = "SELECT `uid`, `openid`, `nickname` FROM `user` WHERE `openid` = :openid";
         $query = $this->_pdo->prepare($sql);
         $query->execute(array(':openid' => $openid));
         $row = $query->fetch(\PDO::FETCH_ASSOC);
@@ -221,7 +288,7 @@ class BackApiController extends Controller
      */
     private function getAccessTokenByWechat()
     {
-        $apiUrl = API_IP . '/weixin/Getaccesstoken';
+        $apiUrl = 'http://kenzowechat.samesamechina.com/Weixin/Getaccesstoken';
         return file_get_contents($apiUrl);
     }
 
@@ -246,7 +313,7 @@ class BackApiController extends Controller
         $checkin = (array) $checkin;
         $id = $helper->insertTable('checkin', $checkin);
         if($id) {
-            return true;
+            return $id;
         }
         return false;
     }
@@ -269,7 +336,7 @@ class BackApiController extends Controller
     /**
      * 获取API来源IP
      */
-    private function get_client_ip()
+    private function getClientIp()
     {
         $ipaddress = '';
         if (isset($_SERVER['HTTP_CLIENT_IP']))
