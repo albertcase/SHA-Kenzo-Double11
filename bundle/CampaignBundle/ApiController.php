@@ -14,13 +14,13 @@ class ApiController extends Controller
 {
     public function __construct() {
 
-    	global $user;
+//    	global $user;
 
         parent::__construct();
 
-        if(!$user->uid) {
+//        if(!$user->uid) {
 //	        $this->statusPrint('100', 'access deny!');
-        }
+//        }
         $this->_pdo = PDO::getInstance();
     }
 
@@ -356,12 +356,19 @@ class ApiController extends Controller
         $request = $this->request;
         $fields = array(
             'name' => array('notnull', '120'),
-            'tel' => array('cellphone', '121'),
             'province' => array('notnull', '121'),
             'city' => array('notnull', '121'),
             'address' => array('notnull', '122'),
+            'mobile' => array('cellphone', '121'),
+            'msgCode' => array('notnull', '120'),
         );
         $request->validation($fields);
+
+        if(!$this->checkMsgCode($request->request->get('mobile'), $request->request->get('msgCode'))) {
+            $data = array('status' => 2, 'msg'=> '手机验证码错误', 'userStatus' => $user->status);
+            $this->dataPrint($data);
+        }
+
         if($this->findLotteryInfoByUid($user->uid)) {
             $this->statusPrint('2', '您已经填写过信息！');
         }
@@ -388,19 +395,26 @@ class ApiController extends Controller
         $request = $this->request;
         $fields = array(
             'name' => array('notnull', '120'),
-            'tel' => array('cellphone', '121'),
             'province' => array('notnull', '121'),
             'city' => array('notnull', '121'),
             'address' => array('notnull', '122'),
+            'mobile' => array('cellphone', '121'),
+            'msgCode' => array('notnull', '120'),
         );
         $request->validation($fields);
+
+        if(!$this->checkMsgCode($request->request->get('mobile'), $request->request->get('msgCode'))) {
+            $data = array('status' => 2, 'msg'=> '手机验证码错误', 'userStatus' => $user->status);
+            $this->dataPrint($data);
+        }
+
         if($this->findGiftInfoByUid($user->uid)) {
             $this->statusPrint('2', '您已经填写过信息！');
         }
         $data = new \stdClass();
         $data->uid = $user->uid;
         $data->name = $request->request->get('name');
-        $data->tel = $request->request->get('tel');
+        $data->tel = $request->request->get('mobile');
         $data->province = $request->request->get('province');
         $data->city = $request->request->get('city');
         $data->address = $request->request->get('address');

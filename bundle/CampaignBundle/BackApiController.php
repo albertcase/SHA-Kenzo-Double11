@@ -31,44 +31,70 @@ class BackApiController extends Controller
         try {
             $postData = file_get_contents('php://input', 'r');
             $postArr = json_decode($postData, 1);
+
+            // 验证API访问者IP
             $apiIp = $this->get_client_ip();
-//            if(!$this->checkIp($apiIp)){
-//                throw new Exception('API IP is not allow');
-//            }
+            if(!$this->checkIp($apiIp)){
+                throw new Exception('API IP is not allow');
+            }
 
             // 记录API原始数据日志
             $logdata = new \stdClass();
             $logdata->openid = $postArr['FromUserName'];
             $logdata->data = $postData;
-            $this->insertCheckInLog($logdata);
+            $lid = $this->insertCheckInLog($logdata);
 
             // 用户注册登陆
             $user = $this->initUser($postArr['FromUserName']);
+            if(!$user) {
+                throw new Exception('init user is failed');
+            }
 
             // 用户签到
             $checkin = new \stdClass();
             $checkin->uid = $user->uid;
             $date = $this->getDate();
             $checkin->did = $date->id;
-
             //发送图片信息
             $accessToken = $postArr['_tk'];
             $this->sendCustomMsg($accessToken, $postArr['FromUserName'], 'image', array('media_id' => $date->media_id));
             if($this->findCheckIn($checkin)) {
+                // 已经签到
                 $this->sendCustomMsg($accessToken, $postArr['FromUserName'], 'text', array('content' => '您已经签到过！'));
             } else {
                 if($this->checkIn($checkin)) {
+                    // 签到成功
                     $this->sendCustomMsg($accessToken, $postArr['FromUserName'], 'text', array('content' => '签到成功！'));
+                } else {
+                    throw new Exception('checkin is failed');
                 }
             }
         } catch (Exception $e) {
             //记录错误日志
             //返回错误的签到客服消息
             $msg = $e->getMessage();
-            $this->chenkinlog();
-//            var_dump($msg);exit;
+            $errlog = new \stdClass();
+            $errlog->lid = $lid;
+            $errlog->msg = $msg;
+            $this->chenkinFaileLog($errlog);
+            // 签到失败
             $this->sendCustomMsg($accessToken, $postArr['FromUserName'], 'text', array('content' => '当前签到人过多！请稍后再来！'));
         }
+    }
+
+    /**
+     * 签到错误日志
+     */
+    private function chenkinFaileLog($log)
+    {
+        $helper = new Helper();
+        $log->created = date('Y-m-d H:i:s');
+        $log = (array) $log;
+        $id = $helper->insertTable('checkerr_log', $log);
+        if($id) {
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -92,6 +118,12 @@ class BackApiController extends Controller
             );
         }
         $wechat->sendTmpMsg($accessToken, $data);
+        // 记录消息日志
+        $msglog = new \stdClass();
+        $msglog->access_token = $accessToken;
+        $msglog->openid = $openid;
+        $msglog->data = $data;
+        $this->insertMsgLog($msglog);
     }
 
     /**
@@ -142,8 +174,12 @@ class BackApiController extends Controller
      */
     private function userRegister($userInfo)
     {
+        $accessToken = $this->getAccessTokenByWechat();
+        $info = $this->getUserInfoByWechat($accessToken, $userInfo->openid);
+
         $helper = new Helper();
         $userInfo->created = date('Y-m-d H:i:s');
+        $userInfo->nickname = $info->nickname;
         $userInfo = (array) $userInfo;
         $id = $helper->insertTable('user', $userInfo);
         if($id) {
@@ -185,15 +221,19 @@ class BackApiController extends Controller
      */
     private function getAccessTokenByWechat()
     {
-
+        $apiUrl = API_IP . '/weixin/Getaccesstoken';
+        return file_get_contents($apiUrl);
     }
 
     /**
      * 获取用户的详细信息
      */
-    private function getUserInfoByWechat()
+    private function getUserInfoByWechat($accessToken, $openid)
     {
-
+        $applink = "https://api.weixin.qq.com/cgi-bin/user/info?access_token=%s&openid=%s&lang=zh_CN";
+        $url = sprintf($applink, $accessToken, $openid);
+        $return = file_get_contents($url);
+        return json_decode($return);
     }
 
     /**
@@ -221,7 +261,7 @@ class BackApiController extends Controller
         $checkinlog = (array) $checkinlog;
         $id = $helper->insertTable('checkin_log', $checkinlog);
         if($id) {
-            return true;
+            return $id;
         }
         return false;
     }
