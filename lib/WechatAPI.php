@@ -101,20 +101,4 @@ class WechatAPI extends Base {
   		}
 	}
 
-	public function sendTmpMsg($accessToken, $data) {
-		$applink = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=%s";
-		$url = sprintf($applink, $accessToken);
-		$rs = $this->postData($url, json_encode($data, 1));
-		$rs = json_decode($rs);
-		return $rs;
-	}
-
-	public function sendMsg($accessToken, $data) {
-		$applink = "https://api.weixin.qq.com/cgi-bin/message/mass/sendall?access_token=%s";
-		$url = sprintf($applink, $accessToken);
-		$rs = $this->postData($url, json_encode($data, 1));
-		$rs = json_decode($rs);
-		return $rs;
-	}
-
 }
