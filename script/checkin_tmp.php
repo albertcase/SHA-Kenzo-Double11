@@ -208,7 +208,7 @@ class PushTmp
 
         $days5 = new \stdClass();
         $end5 = date("Y-m-d", strtotime($this->pushDate) - (6 * 24 * 3600));
-        $days5->where = "d.date < '$this->pushDate' and d.date >= '" . $end5 . "' and c.uid is null";
+        $days5->where = "d.date < '$this->pushDate' and d.date > '" . $end5 . "' and c.uid is null";
         $days5->num = 5;
         if($this->getUserStatusQuery ($uid, $days5)) {
             return '5days';
@@ -216,7 +216,7 @@ class PushTmp
 
         $days3 = new \stdClass();
         $end3 = date("Y-m-d", strtotime($this->pushDate) - (4 * 24 * 3600));
-        $days3->where = "d.date < '$this->pushDate' and d.date >= '" . $end3 . "' and c.uid is null";
+        $days3->where = "d.date < '$this->pushDate' and d.date > '" . $end3 . "' and c.uid is null";
         $days3->num = 3;
         if($this->getUserStatusQuery ($uid, $days3)) {
             return '3days';
