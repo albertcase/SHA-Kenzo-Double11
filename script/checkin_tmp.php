@@ -233,7 +233,7 @@ class PushTmp
         $query = $this->_pdo->prepare($sql);
         $query->execute();
         $row = $query->fetch(\PDO::FETCH_ASSOC);
-        if((int) $row['sum'] == $where->num) {
+        if((int) $row['sum'] >= $where->num) {
             return true;
         } else {
             return false;
