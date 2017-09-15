@@ -19,7 +19,7 @@
             isLuckyDraw: false /*是否抽奖*/
         };
     </script>
-    <script src="../src/dist/js/all_form_freetrial.min.js"></script>
+    <script src="../src/dist/js/all_form_luckydraw.min.js"></script>
 </head>
 <body class="page-home">
 <div id="orientLayer" class="mod-orient-layer">
@@ -178,5 +178,22 @@
         <div class="btn-close">X</div>
     </div>
 </div>
+<!--<div class="popup pop-lottery-result show" id="popup-result-yes">-->
+    <!--<div class="inner">-->
+        <!--<div class="f-2"></div>-->
+        <!--<div class="msg">-->
+            <!--<div class="f-1"></div>-->
+            <!--<div class="f-3"></div>-->
+            <!--<div class="result-content">-->
+                <!--<h3 class="subtitle">-->
+                    <!--<span>很遗憾，您没有中奖</span>-->
+                <!--</h3>-->
+                <!--<div class="des">请持续关注KENZO官方微信，<br>-->
+                    <!--更多福利等着你哦！</div>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="btn-close">关闭</div>-->
+    <!--</div>-->
+<!--</div>-->
 </body>
 </html>

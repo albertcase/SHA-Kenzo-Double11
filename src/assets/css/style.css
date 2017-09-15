@@ -1632,3 +1632,75 @@ body {
   bottom: 0;
   width: 5.52rem;
 }
+
+.pop-lottery-result .btn-close {
+  left: 50%;
+  bottom: 2rem;
+  background: #453a3a;
+  top: auto;
+  width: 0.8rem;
+  height: 0.8rem;
+  margin-left: -0.4rem;
+  border-radius: 100%;
+}
+.pop-lottery-result .inner {
+  width: 5.6rem;
+  border-radius: 10px;
+  box-shadow: 0px 0px 6px #e689c3;
+}
+.pop-lottery-result .msg {
+  position: relative;
+  padding-bottom: 3rem;
+  padding-top: 1.1rem;
+  overflow: hidden;
+}
+.pop-lottery-result .f-1 {
+  position: absolute;
+  left: -0.2rem;
+  bottom: 0;
+  width: 3rem;
+  height: 2.5rem;
+  background: url("../images/f-2.png") no-repeat;
+  background-size: 100%;
+}
+.pop-lottery-result .f-2 {
+  position: absolute;
+  right: 0rem;
+  top: -0.5rem;
+  width: 1.8rem;
+  height: 0.9rem;
+  background: url("../images/pipe-flower.png") no-repeat;
+  background-size: 100%;
+}
+.pop-lottery-result .f-3 {
+  position: absolute;
+  right: 0.3rem;
+  bottom: -0.2rem;
+  width: 0.8rem;
+  height: 2rem;
+  background: url("../images/f-3.png") no-repeat;
+  background-size: 100%;
+}
+.pop-lottery-result .result-content {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  padding: 0 0.3rem;
+}
+.pop-lottery-result .result-content .subtitle {
+  font-size: 0.34rem;
+  color: #453a3a;
+  font-weight: bold;
+}
+.pop-lottery-result .result-content .subtitle span {
+  display: inline-block;
+  padding: 0.1rem 0;
+  border-top: #000 1px solid;
+  border-bottom: #000 1px solid;
+}
+.pop-lottery-result .result-content .des {
+  color: #453a3a;
+  font-size: 0.26rem;
+  line-height: 1.8;
+  margin-top: 0.4rem;
+}

@@ -1372,6 +1372,7 @@ var region = [
 				$('.alertpop').remove();
 			}
 		},
+        popup
 		overscroll: function(el){
 			el.addEventListener('touchstart', function() {
 				var top = el.scrollTop

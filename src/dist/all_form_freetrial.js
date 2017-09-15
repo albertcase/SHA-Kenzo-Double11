@@ -1372,6 +1372,30 @@ var region = [
 				$('.alertpop').remove();
 			}
 		},
+        //lotteryResultPop:{
+        //    add:function(id,title,des){
+        //        var lotteryHtml = '<div class="popup pop-lottery-result show" id="'+id+'">'+
+        //            '<div class="inner">'+
+        //            '<div class="f-2"></div>'+
+        //            '<div class="msg">'+
+        //            '<div class="f-1"></div>'+
+        //            '<div class="f-3"></div>'+
+        //            '<div class="result-content">'+
+        //            '<h3 class="subtitle">'+
+        //            '<span>'+title+'</span>'+
+        //            '</h3>'+
+        //            '<div class="des">'+des+'</div>'+
+        //            '</div>'+
+        //            '</div>'+
+        //            '<div class="btn-close">关闭</div>'+
+        //            '</div>'+
+        //            '</div>';
+        //        $('body').append(lotteryHtml);
+        //    },
+        //    remove:function(){
+        //        $('.pop-lottery-result').remove();
+        //    }
+        //},
 		overscroll: function(el){
 			el.addEventListener('touchstart', function() {
 				var top = el.scrollTop

@@ -92,6 +92,34 @@
         var self = this;
 
         /*
+        * Start lottery
+        * */
+        $('.btn-start-luckydraw').on('touchstart', function(){
+            console.log(83838)
+            self.lotteryPop('popup-result-yes','ddld','kdlld');
+            return;
+            Api.lottery(function(data){
+                switch (data.status){
+                    case 0:
+                        //msg: '遗憾未中奖',
+                        break;
+                    case 1:
+                        //msg: '恭喜中奖'
+
+                        break;
+                    case 2:
+                        //msg: '今天的奖品已经发没，请明天再来！',
+                        break;
+                    case 3:
+                        //msg: '您已获奖',
+                        break;
+                    default :
+                        Common.alertBox.add(json.msg);
+                }
+            });
+        });
+
+        /*
          * submit the form of luckydraw
          * if isTransformedOld is true, submit it and then call lottery api
          * if isTransformedOld is false, submit it and then call gift api
@@ -221,6 +249,39 @@
             }
         });
 
+    };
+
+    /*
+    * lottery
+    * */
+    controller.prototype.getBigPrize = function(){
+
+    };
+    controller.prototype.noPrize = function(){
+
+    };
+
+    /*
+    * Lottery result popup
+    * */
+    controller.prototype.lotteryPop = function(id,title,des){
+        var lotteryHtml = '<div class="popup pop-lottery-result show" id="'+id+'">'+
+            '<div class="inner">'+
+            '<div class="f-2"></div>'+
+            '<div class="msg">'+
+            '<div class="f-1"></div>'+
+            '<div class="f-3"></div>'+
+            '<div class="result-content">'+
+            '<h3 class="subtitle">'+
+            '<span>'+title+'</span>'+
+            '</h3>'+
+            '<div class="des">'+des+'</div>'+
+            '</div>'+
+            '</div>'+
+            '<div class="btn-close">关闭</div>'+
+            '</div>'+
+            '</div>';
+        $('body').append(lotteryHtml);
     };
 
     /*
