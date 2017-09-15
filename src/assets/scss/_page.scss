@@ -128,17 +128,45 @@ body{
 
 
 .btn{
+  position: relative;
   text-align: center;
   display: block;
-  width: 4.12rem;
-  height: 1.22rem;
+  width: 3.24rem;
+  height: 0.76rem;
   margin: 0 auto;
-  padding-top: 0.15rem;
-  background: url("../images/btn.png") center center no-repeat;
-  background-size: cover;
   color: #fff;
   font-size: 0.32rem;
   box-sizing: border-box;
+  .tt{
+    position: absolute;
+    z-index: 2;
+    left: 0;
+    top: 0;
+    @include size(100%,100%);
+    line-height: .76rem;
+    background: #000;
+    .times{
+      font-size: 0.24rem;
+    }
+  }
+  &:after,&:before{
+    content: '';
+    display: block;
+    position: absolute;
+    bottom: -.06rem;
+    z-index: 0;
+    background: #6a6d8e;
+    filter: blur(6px);
+    @include size(100%,60%);
+  }
+  &:before{
+    left: 0;
+    @include transform(skew(0deg,8deg));
+  }
+  &:after{
+    right: 0;
+    @include transform(skew(0deg,-8deg));
+  }
 }
 
 //for loading
@@ -184,11 +212,28 @@ $ani-delay-2: 2000ms;
 $ani-delay-3: 3000ms;
 $ani-delay-4: 4000ms;
 $ani-delay-5: 5000ms;
-.pin-landing{
-  .title{
+#pin-landing{
+  .t1{
     position: relative;
-    @include size(3.49rem,1.31rem);
+    @include size(4.47rem,0.34rem);
     margin: 0.5rem auto 0;
+  }
+  .lucky-info{
+    text-align: center;
+    font-size: 0.2rem;
+    margin: 0 auto 0.4rem;
+    color: #6b6b6b;
+    //width: 60vw;
+  }
+  .product-show{
+    @include size(3.29rem,4.19rem);
+    margin: 0 auto;
+  }
+  .des{
+    text-align: center;
+  }
+  .link-terms{
+    text-align: center;
   }
   .tag-new{
     position: absolute;

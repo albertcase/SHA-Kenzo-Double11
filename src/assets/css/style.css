@@ -786,17 +786,55 @@ body {
 }
 
 .btn {
+  position: relative;
   text-align: center;
   display: block;
-  width: 4.12rem;
-  height: 1.22rem;
+  width: 3.24rem;
+  height: 0.76rem;
   margin: 0 auto;
-  padding-top: 0.15rem;
-  background: url("../images/btn.png") center center no-repeat;
-  background-size: cover;
   color: #fff;
   font-size: 0.32rem;
   box-sizing: border-box;
+}
+.btn .tt {
+  position: absolute;
+  z-index: 2;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  line-height: .76rem;
+  background: #000;
+}
+.btn .tt .times {
+  font-size: 0.24rem;
+}
+.btn:after, .btn:before {
+  content: '';
+  display: block;
+  position: absolute;
+  bottom: -.06rem;
+  z-index: 0;
+  background: #6a6d8e;
+  filter: blur(6px);
+  width: 100%;
+  height: 60%;
+}
+.btn:before {
+  left: 0;
+  -webkit-transform: skew(0deg, 8deg);
+  -moz-transform: skew(0deg, 8deg);
+  -ms-transform: skew(0deg, 8deg);
+  -o-transform: skew(0deg, 8deg);
+  transform: skew(0deg, 8deg);
+}
+.btn:after {
+  right: 0;
+  -webkit-transform: skew(0deg, -8deg);
+  -moz-transform: skew(0deg, -8deg);
+  -ms-transform: skew(0deg, -8deg);
+  -o-transform: skew(0deg, -8deg);
+  transform: skew(0deg, -8deg);
 }
 
 .loading-wrap {
@@ -861,41 +899,58 @@ body {
   height: calc(100vh - 16px);
 }
 
-.pin-landing .title {
+#pin-landing .t1 {
   position: relative;
-  width: 3.49rem;
-  height: 1.31rem;
+  width: 4.47rem;
+  height: 0.34rem;
   margin: 0.5rem auto 0;
 }
-.pin-landing .tag-new {
+#pin-landing .lucky-info {
+  text-align: center;
+  font-size: 0.2rem;
+  margin: 0 auto 0.4rem;
+  color: #6b6b6b;
+}
+#pin-landing .product-show {
+  width: 3.29rem;
+  height: 4.19rem;
+  margin: 0 auto;
+}
+#pin-landing .des {
+  text-align: center;
+}
+#pin-landing .link-terms {
+  text-align: center;
+}
+#pin-landing .tag-new {
   position: absolute;
   left: -1rem;
   top: -0.8rem;
   width: 1.67rem;
   height: 1.26rem;
 }
-.pin-landing .limit-quantity {
+#pin-landing .limit-quantity {
   text-align: center;
   color: #6b6b6b;
   font-size: 0.26rem;
 }
-.pin-landing .des-wrap {
+#pin-landing .des-wrap {
   position: relative;
   z-index: 2;
   margin: 0.4rem auto;
 }
-.pin-landing .des-wrap .des {
+#pin-landing .des-wrap .des {
   width: 100%;
   text-align: center;
   color: #676763;
   font-size: 0.28rem;
   line-height: 2;
 }
-.pin-landing .btn {
+#pin-landing .btn {
   position: relative;
   z-index: 2;
 }
-.pin-landing .terms-link {
+#pin-landing .terms-link {
   position: relative;
   z-index: 3;
   width: 3rem;
@@ -905,7 +960,7 @@ body {
   font-size: 0.22rem;
   text-decoration: underline;
 }
-.pin-landing .foreground .box-top {
+#pin-landing .foreground .box-top {
   opacity: 0;
   position: absolute;
   z-index: 1;
@@ -918,7 +973,7 @@ body {
   -webkit-transition: all 4s;
   transition: all 4s;
 }
-.pin-landing .foreground .box-bottom {
+#pin-landing .foreground .box-bottom {
   opacity: 0;
   position: absolute;
   z-index: 2;
@@ -931,7 +986,7 @@ body {
   -webkit-transition: all 4s;
   transition: all 4s;
 }
-.pin-landing .foreground .product-demo {
+#pin-landing .foreground .product-demo {
   position: absolute;
   z-index: 1;
   bottom: 1.8rem;
@@ -939,13 +994,13 @@ body {
   width: 1.54rem;
   height: 2.01rem;
 }
-.pin-landing .foreground .product-name {
+#pin-landing .foreground .product-name {
   position: absolute;
   left: 0;
   bottom: -0.2rem;
   width: 100%;
 }
-.pin-landing .flower {
+#pin-landing .flower {
   position: absolute;
   left: 0.4rem;
   bottom: -5rem;
@@ -957,7 +1012,7 @@ body {
   -webkit-transition-delay: 1000ms;
   transition: bottom 2s 1000ms;
 }
-.pin-landing .fleurs {
+#pin-landing .fleurs {
   position: absolute;
   right: 0.2rem;
   bottom: -2rem;
@@ -969,7 +1024,7 @@ body {
   -webkit-transition-delay: 1000ms;
   transition: bottom 2s 1000ms;
 }
-.pin-landing .fleurs .top-flower {
+#pin-landing .fleurs .top-flower {
   position: absolute;
   left: 0;
   top: 0;
@@ -978,7 +1033,7 @@ body {
   transform-origin: 61% 40%;
   z-index: 2;
 }
-.pin-landing .fleurs .bottom-flower {
+#pin-landing .fleurs .bottom-flower {
   position: absolute;
   right: 0;
   top: 0;
@@ -987,7 +1042,7 @@ body {
   transform-origin: 61% 40%;
   z-index: 1;
 }
-.pin-landing .ani-petal {
+#pin-landing .ani-petal {
   position: absolute;
   top: 0.6rem;
   left: 100%;
@@ -996,7 +1051,7 @@ body {
   width: 1.09rem;
   height: 1.26rem;
 }
-.pin-landing.current .ani-petal {
+#pin-landing.current .ani-petal {
   -webkit-animation: petal 6s 1;
   -moz-animation: petal 6s 1;
   animation: petal 6s 1;
@@ -1108,13 +1163,13 @@ body {
     opacity: 0;
   }
 }
-.pin-landing.current .flower {
+#pin-landing.current .flower {
   bottom: 0rem;
 }
-.pin-landing.current .fleurs {
+#pin-landing.current .fleurs {
   bottom: 0rem;
 }
-.pin-landing.current .fleurs .top-flower {
+#pin-landing.current .fleurs .top-flower {
   -webkit-animation: fleursaction1 5s 1 forwards;
   -moz-animation: fleursaction1 5s 1 forwards;
   animation: fleursaction1 5s 1 forwards;
@@ -1179,7 +1234,7 @@ body {
     transform: rotate(0deg);
   }
 }
-.pin-landing.current .fleurs .bottom-flower {
+#pin-landing.current .fleurs .bottom-flower {
   -webkit-animation: fleursaction2 5s 1 forwards;
   -moz-animation: fleursaction2 5s 1 forwards;
   animation: fleursaction2 5s 1 forwards;
@@ -1228,15 +1283,15 @@ body {
     transform: skewY(30deg);
   }
 }
-.pin-landing.current .foreground .box-top {
+#pin-landing.current .foreground .box-top {
   opacity: 1;
   left: 3.2rem;
 }
-.pin-landing.current .foreground .box-bottom {
+#pin-landing.current .foreground .box-bottom {
   opacity: 1;
   right: 2.2rem;
 }
-.pin-landing.current .foreground .product-demo {
+#pin-landing.current .foreground .product-demo {
   -webkit-animation: fadefromright 2000ms 1000ms 1 forwards;
   -moz-animation: fadefromright 2000ms 1000ms 1 forwards;
   animation: fadefromright 2000ms 1000ms 1 forwards;

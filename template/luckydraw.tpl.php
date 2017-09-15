@@ -2,7 +2,7 @@
 <html>
 <head lang="en">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>KENZO睡美人悦肤礼赠 </title>
+    <title>KENZO </title>
     <meta name="msapplication-tap-highlight" content="no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="x5-fullscreen" content="true">
@@ -54,7 +54,28 @@
     <div class="container">
         <!-- 提示抽奖页面 -->
         <div class="pin pin-1" id="pin-landing">
-            
+            <div class="t1">
+                <img src="../src/dist/images/tips-1.png" alt="kenzo"/>
+            </div>
+            <div class="lucky-info">
+                您共计签到 X 天，共有 X 次抽奖机会<br>
+                快点击“抽奖”按钮<br>
+                即有机会获得睡美人面膜（75ML）哦！
+                <!--很遗憾，您没有中奖！-->
+                <!--再次点击“抽奖”试试看吧！-->
+            </div>
+            <div class="product-show">
+                <img src="../src/dist/images/main-flower.png" alt="kenzo"/>
+            </div>
+            <div class="btn btn-start-luckydraw">
+               <div class="tt"> 抽  奖 <span class="times">(剩5次)</span></div>
+            </div>
+            <div class="des">
+                花颜悦人 美由情生<br>
+                源自植物的舒柔呵护<br>
+                令肌肤绽放青春光彩
+            </div>
+            <div class="link-terms">*规则与条款</div>
         </div>
         <!-- 填写表单选项-->
         <div class="pin pin-2" id="pin-fillform">
@@ -139,16 +160,19 @@
             </p>
             <h4 class="subtitle">参与条件</h4>
             <p class="des activity-requirement">
-                活动期间，首次关注KenzoParfums凯卓官方微信的<br>
-                用户即可参与申领，每个微信ID仅限申领一次，<br>
-                奖品限量5000份。每天份额限量，详情请见活动主页<br>
-                （先到先得）
+                参与此次KENZO签到活动的用户<br>
+                即可参与抽奖活动<br>
+                签到次数即为抽奖次数
             </p>
             <h4 class="subtitle">奖品内容</h4>
             <p class="des activity-prize">
-                奖品为KENZO舒缓白莲清爽保湿霜体验装（2ml）<br>
-                根据用户填写的邮寄地址在中奖后的30个工作日内寄送
+                奖品内容<br>
+                奖品为KENZO花颜舒柔夜间修护面膜(75ml)<br>
+                根据中奖用户填写的<br>
+                邮寄地址在中奖后的30个工作日内寄送<br>
+                奖品总计XXXX份
             </p>
+            <p class="tips-2">* 每个微信ID仅限中奖1次</p>
             <p class="product-name">* KENZO花颜舒柔夜间修护面膜</p>
         </div>
         <div class="btn-close">X</div>
