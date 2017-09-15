@@ -52,6 +52,10 @@
     </div>
     <!-- z-index is low-->
     <div class="container">
+        <!-- 提示抽奖页面 -->
+        <div class="pin pin-1" id="pin-landing">
+            
+        </div>
         <!-- 填写表单选项-->
         <div class="pin pin-2" id="pin-fillform">
             <h3 class="title">

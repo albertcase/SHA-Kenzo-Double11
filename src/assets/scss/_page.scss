@@ -161,9 +161,9 @@ body{
   .bf{
     @include fullabsolute(0,0,100vw,100vh,1);
     box-sizing: border-box;
-    border-image: -webkit-linear-gradient(-45deg,#9ea4df, #9ea3de,#c4c7eb) 30 30;
-    border-image: -moz-linear-gradient(-45deg,#9ea4df, #9ea3de,#c4c7eb) 30 30;
-    border-image: linear-gradient(-45deg,#9ea4df, #9ea3de,#c4c7eb) 30 30;
+    border-image: -webkit-linear-gradient(-45deg, #cea8dd,#d1a9dd,#babff0) 30 30;
+    border-image: -moz-linear-gradient(-45deg,#cea8dd,#d1a9dd,#babff0) 30 30;
+    border-image: linear-gradient(-45deg,#cea8dd,#d1a9dd,#babff0) 30 30;
     border-style: solid;
     border-width: 2px;
     &.bf-2{

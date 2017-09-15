@@ -1873,6 +1873,7 @@ $(document).ready(function(){
 
         //test
         //Common.hashRoute();
+
         //self.gotoFormPage();
     };
 

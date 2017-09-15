@@ -84,6 +84,7 @@
 
         //test
         //Common.hashRoute();
+
         //self.gotoFormPage();
     };
 
