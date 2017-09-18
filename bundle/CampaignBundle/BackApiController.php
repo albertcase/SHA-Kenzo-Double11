@@ -58,11 +58,11 @@ class BackApiController extends Controller
 
             if($this->findCheckIn($checkin)) {
                 // 已经签到
-                $this->sendMsg(2, $openid, '');
+                $this->sendMsg(2, $user, '');
             } else {
                 if($this->checkIn($checkin)) {
                     // 签到成功
-                    $this->sendMsg(1, $openid, $date->media_id);
+                    $this->sendMsg(1, $user, $date->media_id);
                 } else {
                    throw new \Exception('checkin is failed');
                 }
@@ -76,7 +76,7 @@ class BackApiController extends Controller
             $errlog->msg = $msg;
             $this->chenkinFaileLog($errlog);
             // 签到失败
-            $this->sendMsg(3, $openid, '');
+            $this->sendMsg(3, $user, '');
         }
         $data = array('status' => 1, 'msg' => 'checkin ok');
         $this->dataPrint($data);
@@ -85,22 +85,38 @@ class BackApiController extends Controller
     /**
      * 消息组
      */
-    private function sendMsg($status, $openid, $media_id)
+    private function sendMsg($status, $user, $media_id)
     {
         $accessToken = $this->getAccessTokenByWechat();
+        $chekinSum = $this->getCheckinSum($user->uid);
         switch ($status) {
             case 1:
-                $this->sendCustomMsg($accessToken, $openid, 'image', array('media_id' => $media_id));
-                $this->sendCustomMsg($accessToken, $openid, 'text', array('content' => '签到成功！'));
+                $this->sendCustomMsg($accessToken, $user->openid, 'image', array('media_id' => $media_id));
+
+                $content = '签到成功！' . $user->nickname . '您已经签到' . $chekinSum . '天！';
+                $this->sendCustomMsg($accessToken, $user->openid, 'text', array('content' => $content));
                 break;
 
             case 2:
-                $this->sendCustomMsg($accessToken, $openid, 'text', array('content' => '您已经签到过！'));
+                $content = '您已经签到！' . $user->nickname . '您已经签到' . $chekinSum . '天！';
+                $this->sendCustomMsg($accessToken, $user->openid, 'text', array('content' => $content));
                 break;
 
             case 3:
-                $this->sendCustomMsg($accessToken, $openid, 'text', array('content' => '当前签到人过多！请稍后再来！'));
+                $content = '当前签到人过多！请稍后再来！' . $user->nickname . '您已经签到' . $chekinSum . '天！';
+                $this->sendCustomMsg($accessToken, $user->openid, 'text', array('content' => $content));
                 break;
+        }
+    }
+
+    private function getCheckinSum($uid)
+    {
+        $sql = "select count(d.date) AS sum from date d left join checkin c on d.id = c.did and uid =" . $uid ." where d.date < '" . SIGN_DATE . "' and c.uid is not null";
+        $query = $this->_pdo->prepare($sql);
+        $query->execute();
+        $row = $query->fetch(\PDO::FETCH_ASSOC);
+        if($row['sum']) {
+            return $row['sum'];
         }
     }
 
@@ -249,8 +265,7 @@ class BackApiController extends Controller
         $userInfo = (array) $userInfo;
         $id = $helper->insertTable('user', $userInfo);
         if($id) {
-            $user = new \stdClass();
-            $user->uid = $id;
+            $user = $this->findUserById($id);
             return $user;
         }
         return false;
@@ -264,6 +279,19 @@ class BackApiController extends Controller
         $sql = "SELECT `uid`, `openid`, `nickname` FROM `user` WHERE `openid` = :openid";
         $query = $this->_pdo->prepare($sql);
         $query->execute(array(':openid' => $openid));
+        $row = $query->fetch(\PDO::FETCH_ASSOC);
+        if($row) {
+            return  (Object) $row;
+        } else {
+            return false;
+        }
+    }
+
+    private function findUserById($uid)
+    {
+        $sql = "SELECT `uid`, `openid`, `nickname` FROM `user` WHERE `uid` = :uid";
+        $query = $this->_pdo->prepare($sql);
+        $query->execute(array(':uid' => $uid));
         $row = $query->fetch(\PDO::FETCH_ASSOC);
         if($row) {
             return  (Object) $row;
