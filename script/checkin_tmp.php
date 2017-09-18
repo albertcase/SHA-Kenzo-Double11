@@ -188,10 +188,16 @@ class PushTmp
             return '9days';
         }
 
+        // 如果累计8天之后连续签到的话只发一次消息
         $days8 = new \stdClass();
         $days8->where = "d.date < '$this->pushDate' and c.uid is null";
         $days8->num = 8;
-        if($this->getUserStatusQuery ($uid, $days8)) {
+        $end = date("Y-m-d", strtotime($this->pushDate) - (24 * 3600));
+        $days88->where = "d.date < '" . $end . "' and c.uid is null";
+        $days88->num = 8;
+        if($this->getUserStatusQuery ($uid, $days8) && $this->getUserStatusQuery ($uid, $days88)) {
+            return '';
+        } else {
             return '8days';
         }
 
