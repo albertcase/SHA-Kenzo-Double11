@@ -192,6 +192,7 @@ class PushTmp
         $days8 = new \stdClass();
         $days8->where = "d.date < '$this->pushDate' and c.uid is null";
         $days8->num = 8;
+        $days8 = new \stdClass();
         $end = date("Y-m-d", strtotime($this->pushDate) - (24 * 3600));
         $days88->where = "d.date < '" . $end . "' and c.uid is null";
         $days88->num = 8;
