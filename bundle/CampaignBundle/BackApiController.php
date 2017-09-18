@@ -90,7 +90,7 @@ class BackApiController extends Controller
         $accessToken = $this->getAccessTokenByWechat();
         switch ($status) {
             case 1:
-//                $this->sendCustomMsg($accessToken, $openid, 'image', array('media_id' => $media_id));
+                $this->sendCustomMsg($accessToken, $openid, 'image', array('media_id' => $media_id));
                 $this->sendCustomMsg($accessToken, $openid, 'text', array('content' => '签到成功！'));
                 break;
 
