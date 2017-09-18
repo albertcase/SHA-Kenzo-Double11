@@ -23,7 +23,7 @@ $routers['/api/lottery'] = array('CampaignBundle\Api', 'lottery');
 $routers['/api/picturecode'] = array('CampaignBundle\Api', 'pictureCode');
 $routers['/api/checkpicture'] = array('CampaignBundle\Api', 'checkPicture');
 $routers['/api/phonecode'] = array('CampaignBundle\Api', 'phoneCode');
-$routers['/api/checkphonecode'] = array('CampaignBundle\Api', 'heckPhoneCode');
+$routers['/api/checkphonecode'] = array('CampaignBundle\Api', 'checkPhoneCode');
 
 //TMP
 $routers['/freetrial'] = array('CampaignBundle\Page', 'freetrial');

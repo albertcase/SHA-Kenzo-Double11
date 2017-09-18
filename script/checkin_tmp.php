@@ -6,10 +6,12 @@ require_once SITE_URL . "/config/config.php";
 use Lib\Helper;
 use Lib\PDO;
 
+//推送的日期
+$date = date('Y-m-d', strtotime($argv[1])) ? date('Y-m-d', strtotime($argv[1])) : false;
 
 $helper = new Helper();
 
-$pmsg = new PushTmp($helper);
+$pmsg = new PushTmp($helper, $date);
 $pmsg->pushTmp(); //推送消息
 
 
@@ -20,12 +22,12 @@ class PushTmp
     private $accessToken;
     private $pushDate;
 
-    public function __construct($helper)
+    public function __construct($helper, $date)
     {
         $this->helper = $helper;
         $this->_pdo = PDO::getInstance();
         $this->aceessToken = $this->getAccessToken();
-        $this->pushDate = $this->getPushDate();
+        $this->pushDate = $date;
     }
 
     /**
@@ -63,18 +65,6 @@ class PushTmp
             return $id;
         }
         return false;
-    }
-
-    /**
-     * 获取计算状态时间
-     */
-    private function getPushDate()
-    {
-        if(SIGN_DATE) {
-            return SIGN_DATE;
-        }
-        return NULL;
-        // return date("Y-m-d", strtotime(SIGN_DATE) - (24 * 3600));
     }
 
     /**
@@ -182,7 +172,6 @@ class PushTmp
         $applink = "https://api.weixin.qq.com/cgi-bin/message/mass/sendall?access_token=%s";
         $url = sprintf($applink, $this->aceessToken);
         $rs = $this->postData($url, json_encode($data, JSON_UNESCAPED_UNICODE));
-        $rs = json_decode($rs);
         return $rs;
     }
 

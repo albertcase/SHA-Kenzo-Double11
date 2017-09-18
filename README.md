@@ -1,6 +1,6 @@
 # SHA-Kenzo-Recruitment`s API
 
-### 1. 提交信息API
+### 1. 小样提交信息API
 
 Method: POST
 
@@ -32,12 +32,6 @@ address: '湖滨路'
 {
 status: '1',
 msg: '信息提交成功',
-userStatus: {
-    "isold": 0,
-    "isgift": 1,
-    "issubmit": 1,
-    "isluckydraw": 0
-  }
 }
 ```
 
