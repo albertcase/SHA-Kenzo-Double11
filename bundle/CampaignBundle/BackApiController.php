@@ -92,7 +92,6 @@ class BackApiController extends Controller
         switch ($status) {
             case 1:
                 $this->sendCustomMsg($accessToken, $user->openid, 'image', array('media_id' => $media_id));
-
                 $content = '签到成功！' . $user->nickname . '您已经签到' . $chekinSum . '天！';
                 $this->sendCustomMsg($accessToken, $user->openid, 'text', array('content' => $content));
                 break;
@@ -115,9 +114,7 @@ class BackApiController extends Controller
         $query = $this->_pdo->prepare($sql);
         $query->execute();
         $row = $query->fetch(\PDO::FETCH_ASSOC);
-        if($row['sum']) {
-            return $row['sum'];
-        }
+        return $row['sum'];
     }
 
     /**
