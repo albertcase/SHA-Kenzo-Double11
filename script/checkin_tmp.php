@@ -145,7 +145,7 @@ class PushTmp
                     'color' => '#173177',
                 ),
                 'keyword2' => array(
-                    'value' => SIGN_DATE,
+                    'value' => $this->pushDate,
                     'color' => '#173177',
                 ),
             ),
