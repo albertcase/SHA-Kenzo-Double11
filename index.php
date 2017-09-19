@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 use Core\Kernel;
 use Core\Request;
 

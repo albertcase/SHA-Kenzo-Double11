@@ -329,10 +329,10 @@ class ApiController extends Controller
         );
         $request->validation($fields);
 
-        if(!$this->checkMsgCode($request->request->get('mobile'), $request->request->get('msgCode'))) {
-            $data = array('status' => 2, 'msg'=> '手机验证码错误');
-            $this->dataPrint($data);
-        }
+        // if(!$this->checkMsgCode($request->request->get('mobile'), $request->request->get('msgCode'))) {
+        //     $data = array('status' => 2, 'msg'=> '手机验证码错误');
+        //     $this->dataPrint($data);
+        // }
 
         if($this->findGiftInfoByUid($user->uid)) {
             $this->statusPrint('2', '您已经填写过信息！');
@@ -353,6 +353,21 @@ class ApiController extends Controller
     }
 
     /**
+     * 查看是否领取小样的个人数据填写过
+     */
+    private function findGiftInfoByUid($uid)
+    {
+        $sql = "SELECT `uid`, `name`, `tel`, `province`, `city`, `address` FROM `gift_info` WHERE `uid` = :uid";
+        $query = $this->_pdo->prepare($sql);
+        $query->execute(array(':uid' => $uid));
+        $row = $query->fetch(\PDO::FETCH_ASSOC);
+        if($row) {
+            return  (Object) $row;
+        }
+        return NULL;
+    }
+
+    /**
      * 抽奖填写个人数据
      */
     public function insertLotteryInfo($lotteryinfo)
@@ -361,6 +376,22 @@ class ApiController extends Controller
         $lotteryinfo->created = date('Y-m-d H:i:s');
         $lotteryinfo = (array)$lotteryinfo;
         $id = $helper->insertTable('lottery_info', $lotteryinfo);
+        if($id) {
+            return true;
+        }
+        return false;
+    }
+
+
+    /**
+     * 领取奖品填写个人数据
+     */
+    public function insertGiftInfo($giftinfo)
+    {
+        $helper = new Helper();
+        $giftinfo->created = date('Y-m-d H:i:s');
+        $giftinfo = (array) $giftinfo;
+        $id = $helper->insertTable('gift_info', $giftinfo);
         if($id) {
             return true;
         }

@@ -62,7 +62,7 @@ define("ENCRYPT_IV", '6E4CAB2EAAF32E90');
 define("WECHAT_TOKEN_PREFIX", 'wechat:token:');
 
 define("API_IP", '127.0.0.1');
-define("SIGN_DATE", '2017-10-09');
+define("SIGN_DATE", '2017-11-09');
 define("OPEN_TIME", '1');
 define("PROBABILITY", '1/10');
 define("GIFT_NUM", 10);
