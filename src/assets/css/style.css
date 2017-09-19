@@ -1675,6 +1675,7 @@ body {
 }
 .pop-lottery-result .result-content .subtitle span {
   display: inline-block;
+  min-width: 3rem;
   padding: 0.1rem 0;
   border-top: #000 1px solid;
   border-bottom: #000 1px solid;
@@ -1683,7 +1684,10 @@ body {
   color: #453a3a;
   font-size: 0.26rem;
   line-height: 1.8;
-  margin-top: 0.4rem;
+  margin-top: 0.35rem;
+}
+.pop-lottery-result .result-content .des .btn {
+  margin-top: 0.45rem;
 }
 
 #popup-result-yes .btn-close {

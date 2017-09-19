@@ -768,6 +768,7 @@ $ani-delay-5: 5000ms;
       font-weight: bold;
       span{
         display: inline-block;
+        min-width: 3rem;
         padding: 0.1rem 0;
         border-top: #000 1px solid;
         border-bottom: #000 1px solid;
@@ -777,7 +778,10 @@ $ani-delay-5: 5000ms;
       color: #453a3a;
       font-size: 0.26rem;
       line-height: 1.8;
-      margin-top: 0.4rem;
+      margin-top: 0.35rem;
+      .btn{
+        margin-top: 0.45rem;
+      }
     }
   }
 }
