@@ -13,10 +13,8 @@
     <!-- userflow-->
     <script type="text/javascript">
         var userInfo = {
-            isOld: false, /*是否是老用户*/
-            isSubmit: false, /*是否提交了用户详细信息表单*/
-            isGift: false, /*是否领取了小样*/
-            isLuckyDraw: false /*是否抽奖*/
+            isSubmit: <?php echo $conf['isSubmit']; ?>, /*是否提交了用户详细信息表单*/
+            isLuckyDraw: <?php echo $conf['isLuckyDraw']; ?> /*是否抽奖*/
         };
     </script>
     <script src="../src/dist/js/all_form_luckydraw.min.js"></script>

@@ -36,9 +36,56 @@ class PageController extends Controller
     }
 
     public function luckydrawAction()
+    { 
+        global $user;
+        $isSubmit = $this->findLotteryInfoByUid($user->uid);
+        $isLottery = $this->findLottery($user->uid);
+
+        $config = array(
+            'isSubmit' => $isSubmit,
+            'isLuckyDraw' => $isLottery,
+        );
+        return $this->render('luckydraw', array('conf' => $config));
+    }
+
+    public function loginAction() {
+        $openid = $_GET['openid'];
+        $userAPI = new \Lib\UserAPI();
+        $user = $userAPI->userLogin($openid);
+        if(!$user) {
+            $user = new \stdClass();
+            $user->openid = $openid;
+            $userAPI->userRegister($user);
+        }
+        echo 'user:login:'.$openid;
+        exit;
+    }
+
+    /**
+     * 查找抽奖的个人数据是否填写过
+     */
+    private function findLotteryInfoByUid($uid)
     {
-        $config = array();
-        return $this->render('luckydraw', array('config' => $config));
+        $sql = "SELECT `uid`, `name`, `tel`, `province`, `city`, `address` FROM `lottery_info` WHERE `uid` = :uid";
+        $query = $this->_pdo->prepare($sql);
+        $query->execute(array(':uid' => $uid));
+        $row = $query->fetch(\PDO::FETCH_ASSOC);
+        if($row) {
+            return 1;
+        }
+        return 0;
+    }
+
+    private function findLottery($uid)
+    {
+        $sql = "SELECT `id` FROM `lottery` WHERE `uid` = :uid AND status=1";
+        $query = $this->_pdo->prepare($sql);
+        $query->execute(array(':uid' => $uid));
+        $row = $query->fetch(\PDO::FETCH_ASSOC);
+        if($row) {
+            return 1;
+        }
+        return 0;
     }
 
 }

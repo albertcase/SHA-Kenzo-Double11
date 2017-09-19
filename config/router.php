@@ -17,14 +17,16 @@ $routers['/api/checkin'] = array('CampaignBundle\BackApi', 'checkin'); //签到
 $routers['/test'] = array('CampaignBundle\Api', 'test');
 $routers['/api/giftinfo'] = array('CampaignBundle\Api', 'giftinfo');
 $routers['/api/lotteryinfo'] = array('CampaignBundle\Api', 'lotteryinfo');
-$routers['/api/gift'] = array('CampaignBundle\Api', 'gift');
+// $routers['/api/gift'] = array('CampaignBundle\Api', 'gift');
 $routers['/api/islogin'] = array('CampaignBundle\Api', 'islogin');
 $routers['/api/lottery'] = array('CampaignBundle\Api', 'lottery');
 $routers['/api/picturecode'] = array('CampaignBundle\Api', 'pictureCode');
 $routers['/api/checkpicture'] = array('CampaignBundle\Api', 'checkPicture');
 $routers['/api/phonecode'] = array('CampaignBundle\Api', 'phoneCode');
 $routers['/api/checkphonecode'] = array('CampaignBundle\Api', 'checkPhoneCode');
+// $routers['/api/']
 
 //TMP
 $routers['/freetrial'] = array('CampaignBundle\Page', 'freetrial');
 $routers['/luckydraw'] = array('CampaignBundle\Page', 'luckydraw');
+$routers['/login'] = array('CampaignBundle\Page', 'login');

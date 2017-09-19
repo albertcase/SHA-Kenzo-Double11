@@ -5,9 +5,9 @@ use Core\Response;
 
 class CoachWechatAPI {
 	
-	public function wechatAuthorize() {
+	public function wechatAuthorize($callback) {
     	$response = new Response();
-    	$response->redirect(COACH_AUTH_URL);  
+    	$response->redirect(COACH_AUTH_URL.'?callback='.$callback);  
   	}
 
   	public function getUserInfo($openid) {

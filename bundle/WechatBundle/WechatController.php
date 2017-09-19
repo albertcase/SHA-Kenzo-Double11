@@ -58,8 +58,8 @@ class WechatController extends Controller
 					$user = $userAPI->userRegister($openid);
 				}			
 			}
-			var_dump($user);exit;
-			//$this->statusPrint('success');	
+			// var_dump($user);exit;
+			$this->statusPrint('success');	
 		}
 	}
 

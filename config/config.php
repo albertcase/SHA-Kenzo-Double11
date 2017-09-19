@@ -1,6 +1,6 @@
 <?php
 
-define("BASE_URL", '');
+define("BASE_URL", 'http://kenzodouble11.samesamechina.com/');
 define("TEMPLATE_ROOT", dirname(__FILE__) . '/../template');
 define("VENDOR_ROOT", dirname(__FILE__) . '/../vendor');
 
@@ -11,10 +11,10 @@ define("ENV", 'dev');
 define("USER_STORAGE", 'COOKIE');
 
 //
-define("WECHAT_CAMPAIGN", false);
+define("WECHAT_CAMPAIGN", true);
 
 //Wechat Vendor
-define("WECHAT_VENDOR", 'default'); // default | coach
+define("WECHAT_VENDOR", 'coach'); // default | curio
 
 //Wechat config info
 define("TOKEN", '');
@@ -24,7 +24,7 @@ define("NOWTIME", date('Y-m-d H:i:s'));
 define("AHEADTIME", '1000');
 
 define("NONCESTR", '?????');
-define("COACH_AUTH_URL", '?????');
+define("COACH_AUTH_URL", 'http://kenzowechat.samesamechina.com/weixin/oauth2'); 
 
 //Redis config info
 define("REDIS_HOST", '127.0.0.1');
@@ -43,7 +43,8 @@ define("SCOPE", 'snsapi_base');
 
 //Wechat Authorize Page
 define("AUTHORIZE_URL", '[
-    "/"
+    "/freetrial",
+    "/luckydraw"
 ]');
 
 //Account Access
@@ -64,3 +65,4 @@ define("API_IP", '127.0.0.1');
 define("SIGN_DATE", '2017-10-09');
 define("OPEN_TIME", '1');
 define("PROBABILITY", '1/10');
+define("GIFT_NUM", 10);

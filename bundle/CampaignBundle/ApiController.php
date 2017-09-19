@@ -14,22 +14,14 @@ class ApiController extends Controller
 {
     public function __construct() {
 
-//    	global $user;
+   	global $user;
 
         parent::__construct();
 
-//        if(!$user->uid) {
-//	        $this->statusPrint('100', 'access deny!');
-//        }
+        if(!$user->uid) {
+            $this->statusPrint('100', 'access deny!');
+        }
         $this->_pdo = PDO::getInstance();
-    }
-
-    /**
-     * 领礼品
-     */
-    public function giftAction()
-    {
-        
     }
 
     /**
@@ -38,6 +30,24 @@ class ApiController extends Controller
     public function lotteryAction()
     {
     
+    }
+
+    private function getLotterys($uid)
+    {
+        $sql = "select count(id) AS sum from lottery where uid = {$uid}";
+        $query = $this->_pdo->prepare($sql);
+        $query->execute();
+        $row = $query->fetch(\PDO::FETCH_ASSOC);
+        return (int) $row['sum'];
+    }
+
+    private function getCheckinSum($uid)
+    {
+        $sql = "select count(d.date) AS sum from date d left join checkin c on d.id = c.did and uid =" . $uid ." where d.date <='" . SIGN_DATE . "' and c.uid is not null";
+        $query = $this->_pdo->prepare($sql);
+        $query->execute();
+        $row = $query->fetch(\PDO::FETCH_ASSOC);
+        return (int) $row['sum'];
     }
 
     /**
@@ -153,24 +163,7 @@ class ApiController extends Controller
     }
 
     /**
-     * 领取小样
-     */
-    private function setGift($uid)
-    {
-        $helper = new Helper();
-        $gift = new \stdClass();
-        $gift->uid = $uid;
-        $gift->created = date('Y-m-d H:i:s');
-        $gift = (array) $gift;
-        $id = $helper->insertTable('gift', $gift);
-        if($id) {
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * 填写的信息
+     * 填写抽奖的信息
      */
     public function lotteryinfoAction()
     {

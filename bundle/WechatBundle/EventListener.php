@@ -45,7 +45,7 @@ class EventListener
 	{
 		$request->setSourceUrl($current_url);
 		$WechatAPI = new CoachWechatAPI();
-		$WechatAPI->wechatAuthorize();
+		$WechatAPI->wechatAuthorize(BASE_URL.'wechat/curio/callback');
 	}
 
 }

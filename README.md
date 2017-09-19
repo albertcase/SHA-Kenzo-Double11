@@ -7,7 +7,7 @@ Method: POST
 ##### API URL:
 
 ```html
-domian/api/submit
+domian/api/giftinfo
 ```
 ##### Get Parameter
 
