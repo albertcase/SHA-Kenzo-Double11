@@ -44,7 +44,7 @@ class PageController extends Controller
         $totaldays = $this->getCheckinSum($user->uid);
         $lotteryNum = $this->getLotterys($user->uid);
 
-        if($lotteryNum > $totaltimes) {
+        if($lotteryNum > $totaldays) {
             $remaintimes = 0;
         } else {
             $remaintimes = $totaldays - $lotteryNum;
