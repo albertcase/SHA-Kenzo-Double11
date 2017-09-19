@@ -41,9 +41,19 @@ class PageController extends Controller
         $isSubmit = $this->findLotteryInfoByUid($user->uid);
         $isLottery = $this->findLottery($user->uid);
 
+        $totaldays = $this->getCheckinSum($user->uid);
+        $lotteryNum = $this->getLotterys($user->uid);
+
+        if($lotteryNum > $totaltimes) {
+            $remaintimes = 0;
+        } else {
+            $remaintimes = $totaldays - $lotteryNum;
+        }
+
         $config = array(
             'isSubmit' => $isSubmit,
             'isLuckyDraw' => $isLottery,
+            'remaintimes' => $remaintimes,
         );
         return $this->render('luckydraw', array('conf' => $config));
     }
@@ -59,6 +69,24 @@ class PageController extends Controller
         }
         echo 'user:login:'.$openid;
         exit;
+    }
+
+    private function getLotterys($uid)
+    {
+        $sql = "select count(id) AS sum from lottery where uid = {$uid}";
+        $query = $this->_pdo->prepare($sql);
+        $query->execute();
+        $row = $query->fetch(\PDO::FETCH_ASSOC);
+        return (int) $row['sum'];
+    }
+
+    private function getCheckinSum($uid)
+    {
+        $sql = "select count(d.date) AS sum from date d left join checkin c on d.id = c.did and uid =" . $uid ." where d.date <='" . SIGN_DATE . "' and c.uid is not null";
+        $query = $this->_pdo->prepare($sql);
+        $query->execute();
+        $row = $query->fetch(\PDO::FETCH_ASSOC);
+        return (int) $row['sum'];
     }
 
     /**
