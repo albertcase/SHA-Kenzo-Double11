@@ -89,6 +89,30 @@ class BackApiController extends Controller
     {
         $accessToken = $this->getAccessTokenByWechat();
         $chekinSum = $this->getCheckinSum($user->uid);
+
+        // 累计签到25天推送另外的信息
+        // 优先级 1>2>3>4
+        // 1.已经领取，已经填写信息 status=4
+        // 2.已经领取，未填写信息 status=5
+        // 3.有库存,未领取 status=6
+        // 4.无库存 status=7
+        if((int) $chekinSum >= 25) {
+
+            if($this->findGiftByUid($user->uid)) {
+                if($this->findGiftInfoByUid($user->uid)){ //1.已经领取，已经填写信息
+                    $status = 4;
+                } else { //2.已经领取，未填写信息
+                    $status = 5;
+                }
+            } else {
+                if($this->checkGiftSum()) { //3.有库存,未领取
+                    $status = 6;
+                } else { //4.无库存
+                    $status = 7;
+                }
+            }
+        }
+
         switch ($status) {
             case 1:
                 $this->sendCustomMsg($accessToken, $user->openid, 'image', array('media_id' => $media_id));
@@ -105,7 +129,84 @@ class BackApiController extends Controller
                 $content = '当前签到人过多！请稍后再来！' . $user->nickname . '您已经签到' . $chekinSum . '天！';
                 $this->sendCustomMsg($accessToken, $user->openid, 'text', array('content' => $content));
                 break;
+
+            case 4:
+                $this->sendCustomMsg($accessToken, $user->openid, 'image', array('media_id' => $media_id));
+                $content = '已经领取小样，已经填写信息！' . $user->nickname . '您已经签到' . $chekinSum . '天！';
+                $this->sendCustomMsg($accessToken, $user->openid, 'text', array('content' => $content));
+                break;
+
+            case 5:
+                $this->sendCustomMsg($accessToken, $user->openid, 'image', array('media_id' => $media_id));
+                $content = '已经领取小样，未填写信息！' . $user->nickname . '您已经签到' . $chekinSum . '天！';
+                $this->sendCustomMsg($accessToken, $user->openid, 'text', array('content' => $content));
+                break;
+
+            case 6:
+                $this->sendCustomMsg($accessToken, $user->openid, 'image', array('media_id' => $media_id));
+                $content = "<a href='www.baidu.com'>点击</a>填写信息信息领取礼品！" . $user->nickname . '您已经签到' . $chekinSum . '天！';
+                $this->sendCustomMsg($accessToken, $user->openid, 'text', array('content' => $content));
+                break;
+
+            case 7:
+                $this->sendCustomMsg($accessToken, $user->openid, 'image', array('media_id' => $media_id));
+                $content = '小样库存已没！您可以继续签到！签到次数越多抽奖机会越多！' . $user->nickname . '您已经签到' . $chekinSum . '天！';
+                $this->sendCustomMsg($accessToken, $user->openid, 'text', array('content' => $content));
+                break;
         }
+    }
+
+    /**
+     * 查看是否领取小样的个人数据填写过
+     */
+    private function findGiftInfoByUid($uid)
+    {
+        $sql = "SELECT `uid`, `name`, `tel`, `province`, `city`, `address` FROM `gift_info` WHERE `uid` = :uid";
+        $query = $this->_pdo->prepare($sql);
+        $query->execute(array(':uid' => $uid));
+        $row = $query->fetch(\PDO::FETCH_ASSOC);
+        if($row) {
+            return  (Object) $row;
+        }
+        return NULL;
+    }
+
+    private function checkGiftSum()
+    {
+        $sql = "select count(id) AS sum from gift";
+        $query = $this->_pdo->prepare($sql);
+        $query->execute();
+        $row = $query->fetch(\PDO::FETCH_ASSOC);
+        if((int) $row['sum'] <= GIFT_NUM) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private function findGiftByUid($uid)
+    {
+        $sql = "SELECT `id`, `uid` FROM `gift` WHERE `uid` = :uid";
+        $query = $this->_pdo->prepare($sql);
+        $query->execute(array(':uid' => $uid));
+        $row = $query->fetch(\PDO::FETCH_ASSOC);
+        if($row) {
+            return  (Object) $row;
+        }
+        return NULL;
+    }
+
+    private function setGift($uid)
+    {
+        $helper = new Helper();
+        $gift = new \stdClass();
+        $gift->uid = $uid;
+        $gift->created = date('Y-m-d H:i:s');
+        $id = $helper->insertTable('gift', $gift);
+        if($id) {
+            return true;
+        }
+        return false;
     }
 
     private function getCheckinSum($uid)
