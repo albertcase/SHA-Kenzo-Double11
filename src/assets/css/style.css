@@ -1460,15 +1460,22 @@ body {
   height: 4.57rem;
 }
 
+#pin-result .v-content {
+  top: 40%;
+  width: 100%;
+}
 #pin-result .title {
-  color: #6b6b6b;
+  margin-bottom: 0.2rem;
+  text-align: center;
+  color: #343434;
   font-size: 0.4rem;
+  font-weight: bold;
 }
 #pin-result .des {
-  top: 35%;
   width: 100%;
   text-align: center;
   font-size: 0.26rem;
+  color: #6b6b6b;
 }
 #pin-result .des2 {
   top: 40%;

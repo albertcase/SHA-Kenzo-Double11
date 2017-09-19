@@ -577,15 +577,22 @@ $ani-delay-5: 5000ms;
 
 //for pin-gift
 #pin-result{
+  .v-content{
+    top: 40%;
+    width: 100%;
+  }
   .title{
-    color: #6b6b6b;
+    margin-bottom: 0.2rem;
+    text-align: center;
+    color: #343434;
     font-size: 0.4rem;
+    font-weight: bold;
   }
   .des{
-    top: 35%;
     width: 100%;
     text-align: center;
     font-size: 0.26rem;
+    color: #6b6b6b;
   }
   .des2{
     top: 40%;

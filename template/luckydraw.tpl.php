@@ -135,6 +135,17 @@
                 <img src="../src/dist/images/foreground-1.png" alt="kenzo"/>
             </div>
         </div>
+        <!-- 抽奖结果显示 -->
+        <div class="pin pin-3" id="pin-result">
+            <div class="v-content">
+                <h3 class="title">「提交成功」</h3>
+                <div class="des">
+                    Miss K将会在30个工作日内将产品寄出<br>
+                    请耐心等待哦~
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>
 <!--share pop-->
