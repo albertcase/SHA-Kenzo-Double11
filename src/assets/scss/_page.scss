@@ -807,3 +807,9 @@ $ani-delay-5: 5000ms;
     }
   }
 }
+
+#popup-result-yes{
+  .btn-close{
+    display: none;
+  }
+}

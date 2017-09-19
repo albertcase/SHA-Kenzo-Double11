@@ -1704,3 +1704,7 @@ body {
   line-height: 1.8;
   margin-top: 0.4rem;
 }
+
+#popup-result-yes .btn-close {
+  display: none;
+}

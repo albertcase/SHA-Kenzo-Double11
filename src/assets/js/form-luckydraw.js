@@ -95,28 +95,37 @@
         * Start lottery
         * */
         $('.btn-start-luckydraw').on('touchstart', function(){
-            console.log(83838)
-            self.lotteryPop('popup-result-yes','ddld','kdlld');
-            return;
             Api.lottery(function(data){
+                console.log(data);
+
                 switch (data.status){
                     case 0:
                         //msg: '遗憾未中奖',
+                        self.lotteryPop('popup-result-no','很遗憾，您没有中奖','请持续关注KENZO官方微信，'+'<br>'+'更多福利等着你哦！');
                         break;
                     case 1:
                         //msg: '恭喜中奖'
-
+                        self.lotteryPop('popup-result-yes','恭喜您','获得XXX一份！'+'<div class="btn btn-goinfo">'+'<span class="tt">填写寄送信息</span>'+'</div>');
                         break;
                     case 2:
                         //msg: '今天的奖品已经发没，请明天再来！',
                         break;
                     case 3:
                         //msg: '您已获奖',
+                        self.lotteryPop('popup-result-yes','恭喜您','获得XXX一份！'+'<div class="btn btn-goinfo">'+'<span class="tt">填写寄送信息</span>'+'</div>');
                         break;
                     default :
                         Common.alertBox.add(json.msg);
                 }
             });
+        });
+
+        /*
+        * Go form info page
+        * */
+        $('body').on('touchstart', '.btn-goinfo', function(){
+            self.loadFormPage();
+            $('.pop-lottery-result').remove();
         });
 
         /*
@@ -483,6 +492,12 @@
         }
         return false;
     };
+    controller.prototype.loadFormPage = function(){
+        var self = this;
+        self.getValidateCode();
+        Common.gotoPin(1);
+
+    }
 
 
     $(document).ready(function(){

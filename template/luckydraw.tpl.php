@@ -101,7 +101,7 @@
                     <div class="input-box input-box-validate-message-code">
                         <input type="text" id="input-validate-message-code" placeholder="输入短信验证码"/>
                         <div class="btn btn-get-msg-code">
-                            获取验证码（<span class="second"></span>）
+                            <div class="tt">获取验证码（<span class="second"></span>）</div>
                         </div>
                     </div>
                     <div class="input-box input-box-province select-box">
@@ -128,7 +128,9 @@
                         <input type="text" id="input-address" placeholder="详细地址"/>
                     </div>
                 </div>
-                <div class="btn btn-submit">提 交</div>
+                <div class="btn btn-submit">
+                    <div class="tt">提 交</div>
+                </div>
             </form>
             <div class="foreground">
                 <img src="../src/dist/images/foreground-1.png" alt="kenzo"/>
