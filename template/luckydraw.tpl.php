@@ -152,7 +152,7 @@
 <!-- z-index is high-->
 <div class="popup terms-pop">
     <div class="inner">
-        <h3 class="title">活动条款</h3>
+        <h3 class="title">·活动条款·</h3>
         <div class="pcontent">
             <h4 class="subtitle">活动时间</h4>
             <p class="des activity-time">
@@ -166,14 +166,12 @@
             </p>
             <h4 class="subtitle">奖品内容</h4>
             <p class="des activity-prize">
-                奖品内容<br>
                 奖品为KENZO花颜舒柔夜间修护面膜(75ml)<br>
                 根据中奖用户填写的<br>
                 邮寄地址在中奖后的30个工作日内寄送<br>
-                奖品总计XXXX份
             </p>
             <p class="tips-2">* 每个微信ID仅限中奖1次</p>
-            <p class="product-name">* KENZO花颜舒柔夜间修护面膜</p>
+            <!--<p class="product-name">* KENZO花颜舒柔夜间修护面膜</p>-->
         </div>
         <div class="btn-close">X</div>
     </div>

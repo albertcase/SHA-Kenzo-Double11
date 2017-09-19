@@ -109,7 +109,7 @@ p {
 
 .logo {
   position: absolute;
-  top: 0.4rem;
+  top: 0.6rem;
   z-index: 10;
   left: 50%;
   -webkit-transform: translate(-50%);
@@ -706,16 +706,13 @@ body {
 }
 
 .logo {
-  width: 2.18rem;
-  height: 0.73rem;
+  width: 2.46rem;
+  height: 0.53rem;
 }
 
-.terms-pop {
-  background: transparent;
-}
 .terms-pop .inner {
-  width: 7.5rem;
-  height: 10.79rem;
+  width: 7.42rem;
+  height: 10.83rem;
   background: url("../images/pop-bg.png") no-repeat;
   background-size: 100%;
   box-sizing: border-box;
@@ -723,10 +720,12 @@ body {
   background-position: -0.05rem 0;
 }
 .terms-pop .title {
+  margin-bottom: 0.4rem;
   background: transparent;
-  color: #9eaee5;
+  color: #343434;
   font-size: 0.52rem;
   padding: 0;
+  font-weight: bold;
 }
 .terms-pop .pcontent {
   width: 6rem;
@@ -736,12 +735,11 @@ body {
 }
 .terms-pop .pcontent .subtitle {
   display: inline-block;
-  background: #a5a8e0;
+  background: #090909;
   color: #fff;
   font-size: 0.3rem;
   font-weight: normal;
   padding: 0.04rem 0.2rem;
-  border-radius: 5px;
   margin-bottom: 0.1rem;
 }
 .terms-pop .pcontent .des {
@@ -757,7 +755,7 @@ body {
   top: auto;
   bottom: 1rem;
   left: 50%;
-  background: #9eaee5;
+  background: #343434;
   border-radius: 100%;
   width: 0.6rem;
   height: 0.6rem;
@@ -771,7 +769,7 @@ body {
   bottom: 0;
   width: 100%;
   height: 100%;
-  padding-top: 1.3rem;
+  padding-top: 1.6rem;
   box-sizing: border-box;
   overflow: hidden;
   -moz-transition: opacity 1s;
@@ -903,7 +901,7 @@ body {
   position: relative;
   width: 4.47rem;
   height: 0.34rem;
-  margin: 0.5rem auto 0;
+  margin: 0 auto 0.25rem;
 }
 #pin-landing .lucky-info {
   text-align: center;
@@ -919,43 +917,17 @@ body {
 #pin-landing .des {
   text-align: center;
 }
-#pin-landing .link-terms {
-  text-align: center;
-}
-#pin-landing .tag-new {
-  position: absolute;
-  left: -1rem;
-  top: -0.8rem;
-  width: 1.67rem;
-  height: 1.26rem;
-}
-#pin-landing .limit-quantity {
-  text-align: center;
-  color: #6b6b6b;
-  font-size: 0.26rem;
-}
-#pin-landing .des-wrap {
-  position: relative;
-  z-index: 2;
-  margin: 0.4rem auto;
-}
-#pin-landing .des-wrap .des {
-  width: 100%;
-  text-align: center;
-  color: #676763;
-  font-size: 0.28rem;
-  line-height: 2;
-}
 #pin-landing .btn {
   position: relative;
   z-index: 2;
+  margin: 0.3rem auto;
 }
-#pin-landing .terms-link {
+#pin-landing .link-terms {
   position: relative;
   z-index: 3;
   width: 3rem;
   text-align: center;
-  margin: -0.2rem auto 0;
+  margin: 0.4rem auto 0;
   color: #6b6b6b;
   font-size: 0.22rem;
   text-decoration: underline;

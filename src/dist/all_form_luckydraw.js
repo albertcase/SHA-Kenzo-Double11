@@ -1904,6 +1904,18 @@ $(document).ready(function(){
     controller.prototype.bindEvent = function(){
         var self = this;
 
+        /*Show link-terms popup*/
+        $('.link-terms').on('touchstart', function(){
+            $('.terms-pop').addClass('show');
+        });
+
+        /*
+        * Hide link terms pop
+        * */
+        $('.terms-pop .btn-close').on('touchstart', function(){
+            $('.terms-pop').removeClass('show');
+        });
+
         /*
         * Start lottery
         * */
