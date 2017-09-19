@@ -196,7 +196,7 @@ class PushTmp
         $end = date("Y-m-d", strtotime($this->pushDate) - (24 * 3600));
         $days88->where = "d.date < '" . $end . "' and c.uid is null";
         $days88->num = 8;
-        if($this->getUserStatusQuery ($uid, $days8) && $this->getUserStatusQuery ($uid, $days88)) {
+        if($this->getUserStatusQuery ($uid, $days8) && $this->getUserStatusQuery ($uid, $days88) && $this->pushDate != '2017-10-18') {
             return '';
         } else {
             return '8days';
