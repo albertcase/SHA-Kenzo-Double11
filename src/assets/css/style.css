@@ -897,6 +897,32 @@ body {
   height: calc(100vh - 16px);
 }
 
+.foreground {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  overflow: hidden;
+}
+.foreground .fb-flower {
+  position: absolute;
+  bottom: 0;
+}
+.foreground .fb-1 {
+  width: 4.61rem;
+  height: 4.48rem;
+  left: -1.6rem;
+  bottom: -1.4rem;
+}
+.foreground .fb-2 {
+  width: 0.98rem;
+  height: 5.16rem;
+  right: 0.4rem;
+  bottom: -2rem;
+}
+
 #pin-landing .t1 {
   position: relative;
   width: 4.47rem;
