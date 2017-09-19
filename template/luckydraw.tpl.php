@@ -100,7 +100,7 @@
                     <div class="input-box input-box-validate-message-code">
                         <input type="text" id="input-validate-message-code" placeholder="输入短信验证码"/>
                         <div class="btn btn-get-msg-code">
-                            <div class="tt">获取验证码（<span class="second"></span>）</div>
+                            <div class="tt">获取验证码<span class="second">(60s)</span></div>
                         </div>
                     </div>
                     <div class="input-box input-box-province select-box">

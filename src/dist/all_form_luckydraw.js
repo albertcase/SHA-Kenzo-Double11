@@ -1836,6 +1836,7 @@ $(document).ready(function(){
         //isLuckyDraw /*是否抽奖*/
         //remaintimes /*剩余抽奖次数*/
         this.user = userInfo;
+        this.disableClick = false;
     };
     //init
     controller.prototype.init = function(){
@@ -1922,6 +1923,10 @@ $(document).ready(function(){
         if(self.user.isLuckyDraw && !self.user.isSubmit){
             Common.gotoPin(0);
             self.lotteryPop('popup-result-yes','恭喜您','获得XXX一份！'+'<div class="btn btn-goinfo">'+'<span class="tt">填写寄送信息</span>'+'</div>');
+
+            // test
+            //Common.gotoPin(1);
+            //self.lotteryPop('popup-result-yes','恭喜您','获得XXX一份！'+'<div class="btn btn-goinfo">'+'<span class="tt">填写寄送信息</span>'+'</div>');
         }else if(self.user.isLuckyDraw && self.user.isSubmit){
             Common.gotoPin(2);
         }else if(!self.user.isLuckyDraw && self.user.remaintimes){
@@ -1935,7 +1940,7 @@ $(document).ready(function(){
 
 
         //test
-        //Common.hashRoute();
+        Common.hashRoute();
         //self.gotoFormPage();
     };
 
@@ -2022,7 +2027,7 @@ $(document).ready(function(){
                     address:inputAddressVal
                 },function(data){
                     if(data.status==1){
-                        Common.alertBox.add(data.msg);
+                        Common.gotoPin(2);
                     }else{
                         Common.alertBox.add(data.msg);
                     }
@@ -2372,10 +2377,6 @@ $(document).ready(function(){
         Api.luckydrawstatus(function(data){
             console.log(data);
             if(data.status==1){
-                console.log(self.user.isLuckyDraw || !data.msg.remaintimes);
-                console.log(self.user.isLuckyDraw);
-                console.log(!data.msg.remaintimes);
-                console.log(data.msg.remaintimes);
                 if(self.user.isLuckyDraw || !data.msg.remaintimes){
                     $('.btn-start-luckydraw').addClass('disabled');
                 };
