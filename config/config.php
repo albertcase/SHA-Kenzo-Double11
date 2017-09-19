@@ -66,3 +66,4 @@ define("SIGN_DATE", '2017-10-09');
 define("OPEN_TIME", '1');
 define("PROBABILITY", '1/10');
 define("GIFT_NUM", 10);
+define("LOTTERY_NUM", 10);

@@ -29,9 +29,114 @@ class ApiController extends Controller
      */
     public function lotteryAction()
     {
-    
+        global $user;
+
+        //已中奖
+        if ($this->findLotteryByUid($user->uid)) {
+            $this->setLottery($user->uid, 2);
+            $data = array('status' => 3, 'msg'=> '您已获奖');
+            $this->dataPrint($data);
+        }
+
+        //奖发完
+        if(!$this->checkLotteryQuota()) {
+            $data = array('status' => 2, 'msg'=> '奖品已经发完！');
+            $this->dataPrint($data);
+        }
+
+        //抽奖次数用完
+        $sum = $this->getCheckinSum($user->uid);
+        $num = $this->getLotterys($user->uid);
+
+        if($num >= $sum) {
+            $data = array('status' => 4, 'msg'=> '您的抽奖次数已经用完！');
+            $this->dataPrint($data);
+        }
+
+        //中奖率
+        $rands = explode('/', PROBABILITY);
+        $rand = mt_rand(1, $rands['1']);
+
+        //中奖
+        if ($rand <= $rands['0']) {
+            $this->setLottery($user->uid, 1);
+            $user->status['isluckydraw'] = 1;
+            $data = array('status' => 1, 'msg'=> '恭喜中奖');
+            $this->dataPrint($data);
+        }
+
+        //未中奖
+        $this->setLottery($user->uid, 2);
+        $data = array('status' => 0, 'msg'=> '遗憾未中奖');
+        $this->dataPrint($data);
     }
 
+    /**
+     * 判断是否还有奖品可以抽
+     */
+    private function checkLotteryQuota()
+    {
+        $sum = $this->getLotterySum();
+        if($sum <= LOTTERY_NUM) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * 查看当前一共抽中多少奖
+     */
+    private function getLotterySum()
+    {
+        $sql = "select count(id) AS sum from lottery where status = 1";
+        $query = $this->_pdo->prepare($sql);
+        $query->execute();
+        $row = $query->fetch(\PDO::FETCH_ASSOC);
+        return (int) $row['sum'];
+    }
+
+    /**
+     * 返回当前的抽奖人的状态
+     */
+    public function luckydrawstatusAction()
+    {
+        global $user;
+        $totaldays = $this->getCheckinSum($user->uid);
+        $lotteryNum = $this->getLotterys($user->uid);
+        $totaltimes = $totaldays;
+        if($lotteryNum > $totaltimes) {
+            $remaintimes = 0;
+        } else {
+            $remaintimes = $totaldays - $lotteryNum;
+        }
+        $msg = array(
+            'totaldays' => $totaldays,
+            'totaltimes' => $totaldays,
+            'remaintimes' => $remaintimes,
+        );
+        $data = array('status' => 1, 'msg' => $msg);
+        $this->dataPrint($data);
+    }
+    
+    /**
+     * 查找当前用户是否中奖
+     */
+    private function findLotteryByUid($uid)
+    {
+        $sql = "SELECT `id` FROM `lottery` WHERE `uid` = :uid AND status=1";
+        $query = $this->_pdo->prepare($sql);
+        $query->execute(array(':uid' => $uid));
+        $row = $query->fetch(\PDO::FETCH_ASSOC);
+        if($row) {
+            return 1;
+        }
+        return 0;
+    }
+
+    /**
+     * 查找当前用户一共抽了多少次
+     */
     private function getLotterys($uid)
     {
         $sql = "select count(id) AS sum from lottery where uid = {$uid}";
@@ -41,6 +146,27 @@ class ApiController extends Controller
         return (int) $row['sum'];
     }
 
+    /**
+     * 抽奖
+     */
+    private function setLottery($uid, $status)
+    {
+        $helper = new Helper();
+        $lottery = new \stdClass();
+        $lottery->uid = $uid;
+        $lottery->status = $status;
+        $lottery->created = date('Y-m-d H:i:s');
+        $lottery = (array) $lottery;
+        $id = $helper->insertTable('lottery', $lottery);
+        if($id) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * 获得一共签到了多少天
+     */
     private function getCheckinSum($uid)
     {
         $sql = "select count(d.date) AS sum from date d left join checkin c on d.id = c.did and uid =" . $uid ." where d.date <='" . SIGN_DATE . "' and c.uid is not null";
@@ -146,22 +272,6 @@ class ApiController extends Controller
         $this->dataPrint($data);
     }
 
-
-    private function setLottery($uid, $status)
-    {
-        $helper = new Helper();
-        $lottery = new \stdClass();
-        $lottery->uid = $uid;
-        $lottery->status = $status;
-        $lottery->created = date('Y-m-d H:i:s');
-        $lottery = (array) $lottery;
-        $id = $helper->insertTable('lottery', $lottery);
-        if($id) {
-            return true;
-        }
-        return false;
-    }
-
     /**
      * 填写抽奖的信息
      */
@@ -201,6 +311,7 @@ class ApiController extends Controller
             $this->statusPrint('0', '信息填写失败！');
         }
     }
+
     /**
      * 领取礼品填写的信息
      */
@@ -242,21 +353,6 @@ class ApiController extends Controller
     }
 
     /**
-     * 领取奖品填写个人数据
-     */
-    public function insertGiftInfo($giftinfo)
-    {
-        $helper = new Helper();
-        $giftinfo->created = date('Y-m-d H:i:s');
-        $giftinfo = (array) $giftinfo;
-        $id = $helper->insertTable('gift_info', $giftinfo);
-        if($id) {
-            return true;
-        }
-        return false;
-    }
-
-    /**
      * 抽奖填写个人数据
      */
     public function insertLotteryInfo($lotteryinfo)
@@ -269,21 +365,6 @@ class ApiController extends Controller
             return true;
         }
         return false;
-    }
-
-    /**
-     * 查看是否领取小样的个人数据填写过
-     */
-    public function findGiftInfoByUid($uid)
-    {
-        $sql = "SELECT `uid`, `name`, `tel`, `province`, `city`, `address` FROM `gift_info` WHERE `uid` = :uid";
-        $query = $this->_pdo->prepare($sql);
-        $query->execute(array(':uid' => $uid));
-        $row = $query->fetch(\PDO::FETCH_ASSOC);
-        if($row) {
-            return  (Object) $row;
-        }
-        return NULL;
     }
 
     /**

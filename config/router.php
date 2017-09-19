@@ -24,7 +24,7 @@ $routers['/api/picturecode'] = array('CampaignBundle\Api', 'pictureCode');
 $routers['/api/checkpicture'] = array('CampaignBundle\Api', 'checkPicture');
 $routers['/api/phonecode'] = array('CampaignBundle\Api', 'phoneCode');
 $routers['/api/checkphonecode'] = array('CampaignBundle\Api', 'checkPhoneCode');
-// $routers['/api/']
+$routers['/api/luckydrawstatus'] = array('CampaignBundle\Api', 'luckydrawstatus');
 
 //TMP
 $routers['/freetrial'] = array('CampaignBundle\Page', 'freetrial');
