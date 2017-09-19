@@ -1686,6 +1686,22 @@ Api = {
 
     },
 
+    //luckydraw status api===luckydrawstatus
+    luckydrawstatus:function(callback){
+        Common.msgBox.add('loading...');
+        $.ajax({
+            url:'/api/luckydrawstatus',
+            type:'POST',
+            dataType:'json',
+            success:function(data){
+                Common.msgBox.remove();
+                return callback(data);
+            }
+        });
+
+
+    },
+
     getImgValidateCode:function(callback){
         Common.msgBox.add('loading...');
         $.ajax({
@@ -1894,10 +1910,9 @@ $(document).ready(function(){
         $('.preload').remove();
         $('.wrapper').addClass('fade');
         Common.gotoPin(0);
-
         self.bindEvent();
         self.showAllProvince();
-
+        self.updateLuckyDrawStatus();
         /*
         * status1: If the user wins the lottery, but not filled the details form, we need guide them to fill form;
         * status2: If the user wins the lottery, and filled form, show result page;
@@ -1914,6 +1929,8 @@ $(document).ready(function(){
         }else if(!self.user.isLuckyDraw && !self.user.remaintimes){
             //很遗憾，您没有中奖！
             Common.gotoPin(0);
+            $('.lucky-info').html('很遗憾，您没有中奖！');
+            self.lotteryPop('popup-result-no','很遗憾，您没有中奖','请持续关注KENZO官方微信，'+'<br>'+'更多福利等着你哦！');
         }
 
 
@@ -1925,6 +1942,11 @@ $(document).ready(function(){
     //bind Events
     controller.prototype.bindEvent = function(){
         var self = this;
+
+        /*remove the pop lottery result*/
+        $('body').on('touchstart', '.pop-lottery-result .btn-close',function(){
+            $('.pop-lottery-result').remove();
+        });
 
         /*Show link-terms popup*/
         $('.link-terms').on('touchstart', function(){
@@ -1942,9 +1964,9 @@ $(document).ready(function(){
         * Start lottery
         * */
         $('.btn-start-luckydraw').on('touchstart', function(){
+            if($('.btn-start-luckydraw').hasClass('disabled')) return;
             Api.lottery(function(data){
-                console.log(data);
-
+                self.updateLuckyDrawStatus();
                 switch (data.status){
                     case 0:
                         //msg: '遗憾未中奖',
@@ -1962,7 +1984,7 @@ $(document).ready(function(){
                         self.lotteryPop('popup-result-yes','恭喜您','获得XXX一份！'+'<div class="btn btn-goinfo">'+'<span class="tt">填写寄送信息</span>'+'</div>');
                         break;
                     default :
-                        Common.alertBox.add(json.msg);
+                        Common.alertBox.add(data.msg);
                 }
             });
         });
@@ -2344,7 +2366,25 @@ $(document).ready(function(){
         self.getValidateCode();
         Common.gotoPin(1);
 
-    }
+    };
+    controller.prototype.updateLuckyDrawStatus = function(){
+        var self = this;
+        Api.luckydrawstatus(function(data){
+            console.log(data);
+            if(data.status==1){
+                console.log(self.user.isLuckyDraw || !data.msg.remaintimes);
+                console.log(self.user.isLuckyDraw);
+                console.log(!data.msg.remaintimes);
+                console.log(data.msg.remaintimes);
+                if(self.user.isLuckyDraw || !data.msg.remaintimes){
+                    $('.btn-start-luckydraw').addClass('disabled');
+                };
+                $('.totaldays').html(data.msg.totaldays);
+                $('.totaltimes').html(data.msg.totaltimes);
+                $('.remaintimes').html(data.msg.remaintimes);
+            }
+        });
+    };
 
 
     $(document).ready(function(){

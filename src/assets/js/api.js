@@ -76,6 +76,22 @@ Api = {
 
     },
 
+    //luckydraw status api===luckydrawstatus
+    luckydrawstatus:function(callback){
+        Common.msgBox.add('loading...');
+        $.ajax({
+            url:'/api/luckydrawstatus',
+            type:'POST',
+            dataType:'json',
+            success:function(data){
+                Common.msgBox.remove();
+                return callback(data);
+            }
+        });
+
+
+    },
+
     getImgValidateCode:function(callback){
         Common.msgBox.add('loading...');
         $.ajax({

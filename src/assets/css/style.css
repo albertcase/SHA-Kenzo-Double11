@@ -922,6 +922,9 @@ body {
   z-index: 2;
   margin: 0.3rem auto;
 }
+#pin-landing .btn-start-luckydraw.disabled .tt {
+  background: #999;
+}
 #pin-landing .link-terms {
   position: relative;
   z-index: 3;

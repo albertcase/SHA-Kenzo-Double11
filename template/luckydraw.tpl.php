@@ -57,7 +57,7 @@
                 <img src="../src/dist/images/tips-1.png" alt="kenzo"/>
             </div>
             <div class="lucky-info">
-                您共计签到 X 天，共有 X 次抽奖机会<br>
+                您共计签到 <span class="totaldays">X</span> 天，共有 <span class="totaltimes">X</span> 次抽奖机会<br>
                 快点击“抽奖”按钮<br>
                 即有机会获得睡美人面膜（75ML）哦！
                 <!--很遗憾，您没有中奖！-->
@@ -67,7 +67,7 @@
                 <img src="../src/dist/images/main-flower.png" alt="kenzo"/>
             </div>
             <div class="btn btn-start-luckydraw">
-               <div class="tt"> 抽  奖 <span class="times">(剩5次)</span></div>
+               <div class="tt"> 抽  奖 <span class="times">(剩<span class="remaintimes">0</span>次)</span></div>
             </div>
             <div class="des">
                 花颜悦人 美由情生<br>
