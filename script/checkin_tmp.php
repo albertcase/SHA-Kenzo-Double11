@@ -176,10 +176,10 @@ class PushTmp
     }
 
     /**
-     * 获取用户的状态
+     * 超过8天
      */
-    private function getUserStatus($uid) {
-
+    private function getDays9Status($uid)
+    {
         $days9 = new \stdClass();
         $days9->where = "d.date < '$this->pushDate' and c.uid is null";
         $days9->num = 9;
@@ -187,7 +187,13 @@ class PushTmp
             $this->updateUserStatus($uid);
             return '9days';
         }
+    }
 
+    /**
+     * 累计8天
+     */
+    private function getDays8Status($uid)
+    {
         // 如果累计8天之后连续签到的话只发一次消息
         $days8 = new \stdClass();
         $days8->where = "d.date < '$this->pushDate' and c.uid is null";
@@ -201,7 +207,13 @@ class PushTmp
         } else {
             return '8days';
         }
+    }
 
+    /**
+     * 连续5天
+     */
+    private function getDays5Status($uid)
+    {
         $days5 = new \stdClass();
         $end5 = date("Y-m-d", strtotime($this->pushDate) - (6 * 24 * 3600));
         $days5->where = "d.date < '$this->pushDate' and d.date > '" . $end5 . "' and c.uid is null";
@@ -209,7 +221,13 @@ class PushTmp
         if($this->getUserStatusQuery ($uid, $days5)) {
             return '5days';
         }
+    }
 
+    /**
+     * 连续3天
+     */
+    private function getDays3Status($uid)
+    {
         $days3 = new \stdClass();
         $end3 = date("Y-m-d", strtotime($this->pushDate) - (4 * 24 * 3600));
         $days3->where = "d.date < '$this->pushDate' and d.date > '" . $end3 . "' and c.uid is null";
@@ -217,6 +235,16 @@ class PushTmp
         if($this->getUserStatusQuery ($uid, $days3)) {
             return '3days';
         }
+    }
+
+    /**
+     * 获取用户的状态
+     */
+    private function getUserStatus($uid) {
+        $this->getDays9Status($uid);
+        $this->getDays8Status($uid);
+        $this->getDays5Status($uid);
+        $this->getDays3Status($uid);
     }
 
     /**
