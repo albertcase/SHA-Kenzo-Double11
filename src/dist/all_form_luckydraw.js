@@ -1667,21 +1667,21 @@ Api = {
 
     //抽奖API
     lottery:function(callback){
-        //Common.msgBox.add('抽奖中...');
-        //$.ajax({
-        //    url:'/api/lottery',
-        //    type:'POST',
-        //    dataType:'json',
-        //    success:function(data){
-        //        Common.msgBox.remove();
-        //        return callback(data);
-        //    }
-        //});
-
-        return callback({
-            status:1,
-            msg:'提交成功'
+        Common.msgBox.add('抽奖中...');
+        $.ajax({
+            url:'/api/lottery',
+            type:'POST',
+            dataType:'json',
+            success:function(data){
+                Common.msgBox.remove();
+                return callback(data);
+            }
         });
+
+        //return callback({
+        //    status:1,
+        //    msg:'提交成功'
+        //});
 
 
     },
@@ -1816,7 +1816,10 @@ $(document).ready(function(){
  * */
 ;(function(){
     var controller = function(){
-
+        //isSubmit  /*是否提交了用户详细信息表单*/
+        //isLuckyDraw /*是否抽奖*/
+        //remaintimes /*剩余抽奖次数*/
+        this.user = userInfo;
     };
     //init
     controller.prototype.init = function(){
@@ -1894,6 +1897,25 @@ $(document).ready(function(){
 
         self.bindEvent();
         self.showAllProvince();
+
+        /*
+        * status1: If the user wins the lottery, but not filled the details form, we need guide them to fill form;
+        * status2: If the user wins the lottery, and filled form, show result page;
+        * status3: If the user fails the win, but still has remain times, continue;
+        * status4: If the user fails the win, and also no chance, we will show the sorry message
+        * */
+        if(self.user.isLuckyDraw && !self.user.isSubmit){
+            Common.gotoPin(0);
+            self.lotteryPop('popup-result-yes','恭喜您','获得XXX一份！'+'<div class="btn btn-goinfo">'+'<span class="tt">填写寄送信息</span>'+'</div>');
+        }else if(self.user.isLuckyDraw && self.user.isSubmit){
+            Common.gotoPin(2);
+        }else if(!self.user.isLuckyDraw && self.user.remaintimes){
+            Common.gotoPin(0);
+        }else if(!self.user.isLuckyDraw && !self.user.remaintimes){
+            //很遗憾，您没有中奖！
+            Common.gotoPin(0);
+        }
+
 
         //test
         //Common.hashRoute();

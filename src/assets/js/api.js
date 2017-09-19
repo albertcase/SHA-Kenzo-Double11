@@ -57,21 +57,21 @@ Api = {
 
     //抽奖API
     lottery:function(callback){
-        //Common.msgBox.add('抽奖中...');
-        //$.ajax({
-        //    url:'/api/lottery',
-        //    type:'POST',
-        //    dataType:'json',
-        //    success:function(data){
-        //        Common.msgBox.remove();
-        //        return callback(data);
-        //    }
-        //});
-
-        return callback({
-            status:1,
-            msg:'提交成功'
+        Common.msgBox.add('抽奖中...');
+        $.ajax({
+            url:'/api/lottery',
+            type:'POST',
+            dataType:'json',
+            success:function(data){
+                Common.msgBox.remove();
+                return callback(data);
+            }
         });
+
+        //return callback({
+        //    status:1,
+        //    msg:'提交成功'
+        //});
 
 
     },

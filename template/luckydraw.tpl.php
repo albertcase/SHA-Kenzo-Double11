@@ -14,7 +14,7 @@
     <script type="text/javascript">
         var userInfo = {
             isSubmit: <?php echo $conf['isSubmit']; ?>, /*是否提交了用户详细信息表单*/
-            isLuckyDraw: <?php echo $conf['isLuckyDraw']; ?> /*是否抽奖*/
+            isLuckyDraw: <?php echo $conf['isLuckyDraw']; ?>, /*是否抽奖*/
             remaintimes: <?php echo $conf['remaintimes']; ?> /*剩余抽奖次数*/
         };
     </script>
