@@ -360,57 +360,6 @@
         },1000);
     };
 
-    //call gift api and show different view
-    controller.prototype.callGiftApi = function(){
-        var self = this;
-        var resultHtmlObj = [
-            {
-                name:'小样领取成功',
-                rhtml:'<h3 class="title">「恭喜您」</h3>获得KENZO果冻霜* 体验装（2ml）一份<br> Miss K 将火速为您寄送礼品！<span class="tip">（每个微信ID仅限申领一次）</span>'
-            },
-            {
-                name:'今天小样已经领取完毕，请明天再来',
-                rhtml:'<h3 class="title">「很遗憾」</h3>小伙伴们手速太快，就像龙卷风<br>今日体验装份额已全部申领完毕！<br>没申领到的小伙伴别心急~<br>体验装免费申领将于明天10点准时重启<br>不见不散哦！'
-            },
-            {
-                name:'小样已经全部领空',
-                rhtml:'本次体验装申领活动（共5000份）已全部发放完毕！<br>没申领到的小伙伴们别心急~<br>请持续关注KENZO官方微信，更多福利等着你！<br>'
-            }
-        ];
-        Api.getGift(function(json){
-            //console.log(json);
-            Common.gotoPin(2); //go result page
-            self.user.isSubmit = json.userStatus.issubmit;
-            switch (json.status){
-                case 1:
-                    //msg: '小样领取成功'
-                    $('#pin-result .prize-item').html(resultHtmlObj[0].rhtml);
-                    if(!self.user.isSubmit){
-                        self.gotoFormPage();
-                    }
-                    break;
-                case 2:
-                    //msg: '今天小样已经领取完毕，请明天再来。',
-                    $('#pin-result .prize-item').html(resultHtmlObj[1].rhtml);
-                    break;
-                case 3:
-                    //msg: '小样已经全部领空。',
-                    $('#pin-result .prize-item').html(resultHtmlObj[2].rhtml);
-                    break;
-                case 4:
-                    //msg: '对不起，您已经领取过小样！',
-                    $('#pin-result .prize-item').html(resultHtmlObj[0].rhtml);
-                    if(!self.user.isSubmit){
-                        self.gotoFormPage();
-                    }
-                    break;
-                default :
-                    Common.gotoPin(0);
-                    Common.alertBox.add(json.msg);
-            }
-        });
-    }
-
     controller.prototype.getValidateCode = function(){
         Api.getImgValidateCode(function(data){
             //console.log(data);

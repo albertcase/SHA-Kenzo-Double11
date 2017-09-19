@@ -76,7 +76,7 @@
                     <div class="input-box input-box-validate-message-code">
                         <input type="text" id="input-validate-message-code" placeholder="输入短信验证码"/>
                         <div class="btn btn-get-msg-code">
-                            获取验证码（<span class="second"></span>）
+                            <div class="tt">获取验证码<span class="second">(60s)</span></div>
                         </div>
                     </div>
                     <div class="input-box input-box-province select-box">
@@ -103,10 +103,22 @@
                         <input type="text" id="input-address" placeholder="详细地址"/>
                     </div>
                 </div>
-                <div class="btn btn-submit">提 交</div>
+                <div class="btn btn-submit">
+                    <span class="tt">提 交</span>
+                </div>
             </form>
             <div class="foreground">
                 <img src="../src/dist/images/foreground-1.png" alt="kenzo"/>
+            </div>
+        </div>
+        <!-- 抽奖结果显示 -->
+        <div class="pin pin-3" id="pin-result">
+            <div class="v-content">
+                <h3 class="title">「提交成功」</h3>
+                <div class="des">
+                    Miss K将会在30个工作日内将产品寄出<br>
+                    请耐心等待哦~
+                </div>
             </div>
         </div>
     </div>
