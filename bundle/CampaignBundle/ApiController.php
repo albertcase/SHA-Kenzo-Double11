@@ -300,7 +300,7 @@ class ApiController extends Controller
         $data = new \stdClass();
         $data->uid = $user->uid;
         $data->name = $request->request->get('name');
-        $data->tel = $request->request->get('tel');
+        $data->tel = $request->request->get('mobile');
         $data->province = $request->request->get('province');
         $data->city = $request->request->get('city');
         $data->address = $request->request->get('address');
@@ -329,10 +329,10 @@ class ApiController extends Controller
         );
         $request->validation($fields);
 
-        // if(!$this->checkMsgCode($request->request->get('mobile'), $request->request->get('msgCode'))) {
-        //     $data = array('status' => 2, 'msg'=> '手机验证码错误');
-        //     $this->dataPrint($data);
-        // }
+        if(!$this->checkMsgCode($request->request->get('mobile'), $request->request->get('msgCode'))) {
+            $data = array('status' => 2, 'msg'=> '手机验证码错误');
+            $this->dataPrint($data);
+        }
 
         if($this->findGiftInfoByUid($user->uid)) {
             $this->statusPrint('2', '您已经填写过信息！');
