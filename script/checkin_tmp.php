@@ -209,7 +209,8 @@ class PushTmp
         $privous9day = $this->getTargetDate($this->pushDate, 9);
         $privous8dayCount = $this->getUserStatusQuery($uid, array($privous8day, $this->pushDate));
         $privous9dayCount = $this->getUserStatusQuery($uid, array($privous9day, $this->pushDate));
-        if($privous8dayCount == 8 && $privous9dayCount == 8){
+        $sum8dayCount = $this->getUserStatusQuery($uid, array('2017-10-09', $this->pushDate));
+        if($sum8dayCount == 8 && $privous8dayCount == 8 && $privous9dayCount == 8){
             return '8days';
         } else {
             return '';
