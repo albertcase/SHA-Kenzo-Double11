@@ -224,6 +224,8 @@ class PushTmp
         $days55->where = "d.date < '" . $end . "' and d.date > '" . $end5 . "' and c.uid is null";
         $days55->num = 5;
         if($this->getUserStatusQuery ($uid, $days5) && $this->getUserStatusQuery ($uid, $days55)) {
+            return '';
+        } else {
             return '5days';
         }
     }
@@ -242,6 +244,8 @@ class PushTmp
         $days33->where = "d.date < '" . $end . "' and d.date > '" . $end3 . "' and c.uid is null";
         $days33->num = 3;
         if($this->getUserStatusQuery ($uid, $days3) && $this->getUserStatusQuery ($uid, $days33)) {
+            return '';
+        } else {
             return '3days';
         }
     }
