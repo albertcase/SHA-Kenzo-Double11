@@ -125,8 +125,9 @@ class PushTmp
             $log->errmsg = $rs->errmsg;
             // $log->wechat_msgid = $rs->msgid;
             $this->insertTmpLog($log);
+            return true;
         }
-        return true;
+        return false;
     }
 
     /**
