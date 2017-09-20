@@ -316,7 +316,7 @@ class PushTmp
      */
     private function getUserStatusQuery($uid, $where)
     {
-        $sql = 'SELECT count(d.date) AS sum FROM date d LEFT JOIN checkin c on d.id = c.did AND uid ='.$uid.' WHERE d.date >= '.$where[0].' AND d.date < '.$where[1].'AND c.uid is null';
+        $sql = 'SELECT count(d.date) AS sum FROM date d LEFT JOIN checkin c on d.id = c.did AND uid ='.$uid.' WHERE d.date >= '.$where[0].' AND d.date < '.$where[1].' AND c.uid is null';
         $query = $this->_pdo->prepare($sql);
         $query->execute();
         $row = $query->fetch(\PDO::FETCH_ASSOC);
