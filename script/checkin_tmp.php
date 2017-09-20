@@ -219,7 +219,11 @@ class PushTmp
         $end5 = date("Y-m-d", strtotime($this->pushDate) - (6 * 24 * 3600));
         $days5->where = "d.date < '$this->pushDate' and d.date > '" . $end5 . "' and c.uid is null";
         $days5->num = 5;
-        if($this->getUserStatusQuery ($uid, $days5)) {
+        $days55 = new \stdClass();
+        $end = date("Y-m-d", strtotime($this->pushDate) - (24 * 3600));
+        $days55->where = "d.date < '" . $end . "' and d.date > '" . $end5 . "' and c.uid is null";
+        $days55->num = 5;
+        if($this->getUserStatusQuery ($uid, $days5) && $this->getUserStatusQuery ($uid, $days55)) {
             return '5days';
         }
     }
@@ -233,7 +237,11 @@ class PushTmp
         $end3 = date("Y-m-d", strtotime($this->pushDate) - (4 * 24 * 3600));
         $days3->where = "d.date < '$this->pushDate' and d.date > '" . $end3 . "' and c.uid is null";
         $days3->num = 3;
-        if($this->getUserStatusQuery ($uid, $days3)) {
+        $days33 = new \stdClass();
+        $end = date("Y-m-d", strtotime($this->pushDate) - (24 * 3600));
+        $days33->where = "d.date < '" . $end . "' and d.date > '" . $end3 . "' and c.uid is null";
+        $days33->num = 3;
+        if($this->getUserStatusQuery ($uid, $days3) && $this->getUserStatusQuery ($uid, $days33)) {
             return '3days';
         }
     }
