@@ -181,13 +181,20 @@ class PushTmp
      */
     private function getDays9Status($uid)
     {
-        $days9 = new \stdClass();
-        $days9->where = "d.date < '$this->pushDate' and c.uid is null";
-        $days9->num = 9;
-        if($this->getUserStatusQuery($uid, $days9)) {
-            $this->updateUserStatus($uid);
+        $privous9day = $this->getTargetDate($this->pushDate, 9);
+        $privous9dayCount = $this->getUserStatusQuery($uid, array($privous9day, $this->pushDate));
+        if($privous9dayCount >= 9){
             return '9days';
+        } else {
+            return '';
         }
+        // $days9 = new \stdClass();
+        // $days9->where = "d.date < '$this->pushDate' and c.uid is null";
+        // $days9->num = 9;
+        // if($this->getUserStatusQuery($uid, $days9)) {
+        //     $this->updateUserStatus($uid);
+        //     return '9days';
+        // }
     }
 
     /**
@@ -195,19 +202,28 @@ class PushTmp
      */
     private function getDays8Status($uid)
     {
-        // 如果累计8天之后连续签到的话只发一次消息
-        $days8 = new \stdClass();
-        $days8->where = "d.date < '$this->pushDate' and c.uid is null";
-        $days8->num = 8;
-        $days88 = new \stdClass();
-        $end = date("Y-m-d", strtotime($this->pushDate) - (24 * 3600));
-        $days88->where = "d.date < '" . $end . "' and c.uid is null";
-        $days88->num = 8;
-        if($this->getUserStatusQuery ($uid, $days8) && $this->getUserStatusQuery ($uid, $days88) && $this->pushDate != '2017-10-18') {
+        $privous8day = $this->getTargetDate($this->pushDate, 8);
+        $privous9day = $this->getTargetDate($this->pushDate, 9);
+        $privous8dayCount = $this->getUserStatusQuery($uid, array($privous8day, $this->pushDate));
+        $privous9dayCount = $this->getUserStatusQuery($uid, array($privous9day, $this->pushDate));
+        if($privous8dayCount == 8 && $privous9dayCount == 8){
             return '8days';
         } else {
             return '';
         }
+        // 如果累计8天之后连续签到的话只发一次消息
+        // $days8 = new \stdClass();
+        // $days8->where = "d.date < '$this->pushDate' and c.uid is null";
+        // $days8->num = 8;
+        // $days88 = new \stdClass();
+        // $end = date("Y-m-d", strtotime("$this->pushDate + $");
+        // $days88->where = "d.date < '" . $end . "' and c.uid is null";
+        // $days88->num = 8;
+        // if($this->getUserStatusQuery ($uid, $days8) && $this->getUserStatusQuery ($uid, $days88) && $this->pushDate != '2017-10-18') {
+        //     return '8days';
+        // } else {
+        //     return '';
+        // }
     }
 
     /**
@@ -215,20 +231,29 @@ class PushTmp
      */
     private function getDays5Status($uid)
     {
-        $days5 = new \stdClass();
-        $end5 = date("Y-m-d", strtotime($this->pushDate) - (6 * 24 * 3600));
-        $days5->where = "d.date < '$this->pushDate' and d.date > '" . $end5 . "' and c.uid is null";
-        $days5->num = 5;
-        $days55 = new \stdClass();
-        $end = date("Y-m-d", strtotime($this->pushDate) - (24 * 3600));
-        $end5 = date("Y-m-d", strtotime($end) - (6 * 24 * 3600));
-        $days55->where = "d.date < '" . $end . "' and d.date > '" . $end5 . "' and c.uid is null";
-        $days55->num = 5;
-        if($this->getUserStatusQuery ($uid, $days5) && $this->getUserStatusQuery ($uid, $days55)) {
+        $privous5day = $this->getTargetDate($this->pushDate, 5);
+        $privous6day = $this->getTargetDate($this->pushDate, 6);
+        $privous5dayCount = $this->getUserStatusQuery($uid, array($privous5day, $this->pushDate));
+        $privous6dayCount = $this->getUserStatusQuery($uid, array($privous6day, $this->pushDate));
+        if($privous5dayCount == 5 && $privous6dayCount == 5){
             return '5days';
         } else {
             return '';
         }
+        // $days5 = new \stdClass();
+        // $end5 = date("Y-m-d", strtotime($this->pushDate) - (6 * 24 * 3600));
+        // $days5->where = "d.date < '$this->pushDate' and d.date > '" . $end5 . "' and c.uid is null";
+        // $days5->num = 5;
+        // $days55 = new \stdClass();
+        // $end = date("Y-m-d", strtotime($this->pushDate) - (24 * 3600));
+        // $end5 = date("Y-m-d", strtotime($end) - (6 * 24 * 3600));
+        // $days55->where = "d.date < '" . $end . "' and d.date > '" . $end5 . "' and c.uid is null";
+        // $days55->num = 5;
+        // if($this->getUserStatusQuery ($uid, $days5) && $this->getUserStatusQuery ($uid, $days55)) {
+        //     return '5days';
+        // } else {
+        //     return '';
+        // }
     }
 
     /**
@@ -236,20 +261,35 @@ class PushTmp
      */
     private function getDays3Status($uid)
     {
-        $days3 = new \stdClass();
-        $end3 = date("Y-m-d", strtotime($this->pushDate) - (4 * 24 * 3600));
-        $days3->where = "d.date < '$this->pushDate' and d.date > '" . $end3 . "' and c.uid is null";
-        $days3->num = 3;
-        $days33 = new \stdClass();
-        $end = date("Y-m-d", strtotime($this->pushDate) - (24 * 3600));
-        $end3 = date("Y-m-d", strtotime($end) - (4 * 24 * 3600));
-        $days33->where = "d.date < '" . $end . "' and d.date > '" . $end3 . "' and c.uid is null";
-        $days33->num = 3;
-        if($this->getUserStatusQuery ($uid, $days3) && $this->getUserStatusQuery ($uid, $days33)) {
+        $privous3day = $this->getTargetDate($this->pushDate, 3);
+        $privous4day = $this->getTargetDate($this->pushDate, 4);
+        $privous3dayCount = $this->getUserStatusQuery($uid, array($privous3day, $this->pushDate));
+        $privous4dayCount = $this->getUserStatusQuery($uid, array($privous4day, $this->pushDate));
+        if($privous3dayCount == 3 && $privous4dayCount == 3){
             return '3days';
         } else {
             return '';
         }
+        // $days3 = new \stdClass();
+        // $end3 = date("Y-m-d", strtotime($this->pushDate) - (4 * 24 * 3600));
+        // $days3->where = "d.date < '$this->pushDate' and d.date > '" . $end3 . "' and c.uid is null";
+        // $days3->num = 3;
+        // $days33 = new \stdClass();
+        // $end = date("Y-m-d", strtotime($this->pushDate) - (24 * 3600));
+        // $end3 = date("Y-m-d", strtotime($end) - (4 * 24 * 3600));
+        // $days33->where = "d.date < '" . $end . "' and d.date > '" . $end3 . "' and c.uid is null";
+        // $days33->num = 3;
+        // if($this->getUserStatusQuery ($uid, $days3) && $this->getUserStatusQuery ($uid, $days33)) {
+        //     return '3days';
+        // } else {
+        //     return '';
+        // }
+    }
+
+    private function getTargetDate($currentDate = null, $offset)
+    {
+        if($currentDate)
+           return date("Y-m-d", strtotime("$currentDate -$offset days"));
     }
 
     /**
@@ -276,15 +316,13 @@ class PushTmp
      */
     private function getUserStatusQuery($uid, $where)
     {
-        $sql = "select count(d.date) AS sum from date d left join checkin c on d.id = c.did and uid =" . $uid ." where " . $where->where;
+        $sql = 'SELECT count(d.date) AS sum FROM date d LEFT JOIN checkin c on d.id = c.did AND uid ='.$uid.' WHERE d.date >= '.$where[0].' AND d.date < '.$where[1].'AND c.uid is null';
         $query = $this->_pdo->prepare($sql);
         $query->execute();
         $row = $query->fetch(\PDO::FETCH_ASSOC);
-        if((int) $row['sum'] >= $where->num) {
-            return true;
-        } else {
-            return false;
-        }
+        if($row)
+            return $row['sum'];
+        return null;
     }
 
     private function postData($url, $post_json) {
