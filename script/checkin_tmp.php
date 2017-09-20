@@ -205,16 +205,15 @@ class PushTmp
      */
     private function getDays8Status($uid)
     {
-        $privous8day = $this->getTargetDate($this->pushDate, 8);
-        $privous9day = $this->getTargetDate($this->pushDate, 9);
-        $privous8dayCount = $this->getUserStatusQuery($uid, array($privous8day, $this->pushDate));
-        $privous9dayCount = $this->getUserStatusQuery($uid, array($privous9day, $this->pushDate));
-        $sum8dayCount = $this->getUserStatusQuery($uid, array('2017-10-09', $this->pushDate));
-        if($sum8dayCount == 8 && $privous8dayCount == 8 && $privous9dayCount == 8){
-            return '8days';
-        } else {
+        $dayCount = $this->getUserStatusQuery($uid, array('2017-10-09', $this->pushDate));
+        $dayCountPrivous1 = $this->getUserStatusQuery($uid, array('2017-10-09', $this->getTargetDate($this->pushDate, 1)));
+
+        if($dayCountPrivous1 == 8 && $this->pushDate != '2017-10-18')
             return '';
-        }
+
+        if($dayCount == 8)
+            return '8days'; 
+
         // 如果累计8天之后连续签到的话只发一次消息
         // $days8 = new \stdClass();
         // $days8->where = "d.date < '$this->pushDate' and c.uid is null";
