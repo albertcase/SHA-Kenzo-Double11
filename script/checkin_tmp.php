@@ -122,6 +122,7 @@ class PushTmp
         $log->data = json_encode($data, JSON_UNESCAPED_UNICODE);
         $log->errcode = $rs->errcode;
         $log->errmsg = $rs->errmsg;
+        // $log->wechat_msgid = $rs->msgid;
         $this->insertTmpLog($log);
         return true;
     }
@@ -241,10 +242,18 @@ class PushTmp
      * 获取用户的状态
      */
     private function getUserStatus($uid) {
-        $this->getDays9Status($uid);
-        $this->getDays8Status($uid);
-        $this->getDays5Status($uid);
-        $this->getDays3Status($uid);
+        if($status = $this->getDays9Status($uid)) {
+            return $status;
+        }
+        if($status = $this->getDays8Status($uid)) {
+            return $status;
+        }
+        if($status = $this->getDays5Status($uid)) {
+            return $status;
+        }
+        if($status = $this->getDays3Status($uid)) {
+            return $status;
+        }
     }
 
     /**
