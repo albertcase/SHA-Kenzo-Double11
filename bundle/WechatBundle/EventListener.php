@@ -52,8 +52,8 @@ class EventListener
 	// kenzo same oauth
 	private function sameWechatAuthoize($request, $current_url)
 	{
-		$request->setSourceUrl($current_url);
+		// $request->setSourceUrl($current_url);
 		$WechatAPI = new SameWechatAPI();
-		$WechatAPI->wechatAuthorize(SCOPE, BASE_URL.'wechat/curio/callback');
+		$WechatAPI->wechatAuthorize(SCOPE, BASE_URL.'wechat/same/callback?rediret='.$current_url);
 	}
 }
