@@ -16,7 +16,7 @@ class SameController extends Controller
 		);
 		$request->validation($fields);
 		$openid = $request->query->get('openid');
-		$url = urldecode($request->query->get('rd'));
+		$url = urldecode($request->query->get('redirect_uri'));
 		$userAPI = new UserAPI();
 		$user = $userAPI->userLogin($openid);
 		if(!$user) {

@@ -54,6 +54,6 @@ class EventListener
 	{
 		// $request->setSourceUrl($current_url);
 		$WechatAPI = new SameWechatAPI();
-		$WechatAPI->wechatAuthorize(SCOPE, BASE_URL.'wechat/same/callback?rd='.$current_url);
+		$WechatAPI->wechatAuthorize(SCOPE, BASE_URL.'wechat/same/callback?redirect_uri='.$current_url);
 	}
 }
