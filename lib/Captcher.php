@@ -228,7 +228,7 @@ class Captcher {
       
       $letter = $this->characters[rand(0, mb_strlen($this->characters) - 1)];
       $this->captchaText .= $letter;
-      $font = $_SERVER['DOCUMENT_ROOT'] . '/Lib/fonts/'. rand(0, 7) . '.ttf';
+      $font = $_SERVER['DOCUMENT_ROOT'] . '/lib/fonts/'. rand(0, 7) . '.ttf';
       imagettftext(
         $background,
         rand(20, 30),

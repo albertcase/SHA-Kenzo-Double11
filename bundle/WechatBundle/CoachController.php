@@ -20,7 +20,7 @@ class CoachController extends Controller
 			$user = $userAPI->userLogin($openid);
 			if(!$user) {
 				$this->statusPrint('error');
-				//$userAPI->userRegister($openid);
+				$userAPI->userRegister($openid);
 			}
 			$this->redirect($url);
 		} else {

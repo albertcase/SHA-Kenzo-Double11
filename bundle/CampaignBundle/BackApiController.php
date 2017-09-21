@@ -17,6 +17,21 @@ class BackApiController extends Controller
     }
 
     /**
+     * 模版消息推送结果通知
+     */
+    // public function tmpendAction()
+    // {
+    //     $postData = file_get_contents('php://input', 'r');
+    //     $postArr = json_decode($postData, 1);
+
+    // }
+
+    // private function updateTmpWechatStatus()
+    // {
+        
+    // }
+
+    /**
      * 签到
      *
      * 1.记录日志
@@ -98,6 +113,8 @@ class BackApiController extends Controller
         // 4.无库存 status=7
         if((int) $chekinSum >= 25) {
 
+            $this->setGift($user->uid); //领取小样
+
             if($this->findGiftByUid($user->uid)) {
                 if($this->findGiftInfoByUid($user->uid)){ //1.已经领取，已经填写信息
                     $status = 4;
@@ -138,13 +155,13 @@ class BackApiController extends Controller
 
             case 5:
                 $this->sendCustomMsg($accessToken, $user->openid, 'image', array('media_id' => $media_id));
-                $content = '已经领取小样，未填写信息！' . $user->nickname . '您已经签到' . $chekinSum . '天！';
+                $content = "<a href='http://kenzodouble11.samesamechina.com/freetrial'>点击</a>填写信息信息领取礼品！" . $user->nickname . '您已经签到' . $chekinSum . '天！';
                 $this->sendCustomMsg($accessToken, $user->openid, 'text', array('content' => $content));
                 break;
 
             case 6:
                 $this->sendCustomMsg($accessToken, $user->openid, 'image', array('media_id' => $media_id));
-                $content = "<a href='www.baidu.com'>点击</a>填写信息信息领取礼品！" . $user->nickname . '您已经签到' . $chekinSum . '天！';
+                $content = "<a href='http://kenzodouble11.samesamechina.com/freetrial'>点击</a>填写信息信息领取礼品！" . $user->nickname . '您已经签到' . $chekinSum . '天！';
                 $this->sendCustomMsg($accessToken, $user->openid, 'text', array('content' => $content));
                 break;
 
