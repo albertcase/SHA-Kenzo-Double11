@@ -148,7 +148,7 @@
                         //msg: '遗憾未中奖',
                         Api.luckydrawstatus(function(json){
                             self.user.remaintimes = json.msg.remaintimes;
-                            if(data.status==1){
+                            if(json.status==1){
                                 if(self.user.isLuckyDraw || !json.msg.remaintimes){
                                     $('.btn-start-luckydraw').addClass('disabled');
                                 };
@@ -172,7 +172,7 @@
                         //msg: '今天的奖品已经发没！',
                         Api.luckydrawstatus(function(json){
                             self.user.remaintimes = json.msg.remaintimes;
-                            if(data.status==1){
+                            if(json.status==1){
                                 if(self.user.isLuckyDraw || !json.msg.remaintimes){
                                     $('.btn-start-luckydraw').addClass('disabled');
                                 };
