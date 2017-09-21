@@ -16,27 +16,52 @@ class PageController extends Controller
         $this->_pdo = PDO::getInstance();
     }
 
-	public function indexAction()
+    public function indexAction()
     {
         $config = array();
-		return $this->render('index', array('config' => $config));
-	}
+        return $this->render('index', array('config' => $config));
+    }
 
-	public function clearCookieAction()
+	  public function clearCookieAction()
     {
       	$request = $this->Request();
-		setcookie('_user', '', time(), '/', $request->getDomain());
-		$this->statusPrint('success');
-	}
+		    setcookie('_user', '', time(), '/', $request->getDomain());
+		    $this->statusPrint('success');
+	  }
 
     public function freetrialAction()
     {
-        $config = array();
-        return $this->render('freetrial', array('config' => $config));
+        global $user;
+        $gift = $this->findGiftInfoByUid($user->uid);
+        if($gift) {
+            $isSubmit = 1;
+        } else{
+            $isSubmit = 0;
+        }
+
+        $config = array(
+            'isSubmit' => $isSubmit,
+        );
+        return $this->render('freetrial', array('conf' => $config));
+    }
+
+    /**
+     * 查看是否领取小样的个人数据填写过
+     */
+    private function findGiftInfoByUid($uid)
+    {
+        $sql = "SELECT `uid`, `name`, `tel`, `province`, `city`, `address` FROM `gift_info` WHERE `uid` = :uid";
+        $query = $this->_pdo->prepare($sql);
+        $query->execute(array(':uid' => $uid));
+        $row = $query->fetch(\PDO::FETCH_ASSOC);
+        if($row) {
+            return  (Object) $row;
+        }
+        return NULL;
     }
 
     public function luckydrawAction()
-    { 
+    {
         global $user;
         $isSubmit = $this->findLotteryInfoByUid($user->uid);
         $isLottery = $this->findLottery($user->uid);

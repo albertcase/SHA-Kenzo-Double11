@@ -113,7 +113,11 @@ class BackApiController extends Controller
         // 4.无库存 status=7
         if((int) $chekinSum >= 25) {
 
-            $this->setGift($user->uid); //领取小样
+            if($this->checkGiftSum()) {
+                $this->setGift($user->uid); //领取小样
+            } else {
+                $status = 7;
+            }
 
             if($this->findGiftByUid($user->uid)) {
                 if($this->findGiftInfoByUid($user->uid)){ //1.已经领取，已经填写信息
