@@ -17,6 +17,21 @@ class BackApiController extends Controller
     }
 
     /**
+     * 模版消息推送结果通知
+     */
+    // public function tmpendAction()
+    // {
+    //     $postData = file_get_contents('php://input', 'r');
+    //     $postArr = json_decode($postData, 1);
+
+    // }
+
+    // private function updateTmpWechatStatus()
+    // {
+        
+    // }
+
+    /**
      * 签到
      *
      * 1.记录日志
@@ -97,6 +112,8 @@ class BackApiController extends Controller
         // 3.有库存,未领取 status=6
         // 4.无库存 status=7
         if((int) $chekinSum >= 25) {
+
+            $this->setGift($user->uid); //领取小样
 
             if($this->findGiftByUid($user->uid)) {
                 if($this->findGiftInfoByUid($user->uid)){ //1.已经领取，已经填写信息
