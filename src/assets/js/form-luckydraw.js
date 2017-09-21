@@ -142,11 +142,27 @@
         $('.btn-start-luckydraw').on('touchstart', function(){
             if($('.btn-start-luckydraw').hasClass('disabled')) return;
             Api.lottery(function(data){
-                self.updateLuckyDrawStatus();
+                //self.updateLuckyDrawStatus();
                 switch (data.status){
                     case 0:
                         //msg: '遗憾未中奖',
-                        self.lotteryPop('popup-result-no','很遗憾，您没有中奖','请持续关注KENZO官方微信，'+'<br>'+'更多福利等着你哦！');
+                        Api.luckydrawstatus(function(data){
+                            self.user.remaintimes = data.msg.remaintimes;
+                            if(data.status==1){
+                                if(self.user.isLuckyDraw || !data.msg.remaintimes){
+                                    $('.btn-start-luckydraw').addClass('disabled');
+                                };
+                                if(!self.user.remaintimes){
+                                    $('.lucky-info').html('很遗憾，您没有中奖！');
+                                    self.lotteryPop('popup-result-no','很遗憾，您没有中奖','请持续关注KENZO官方微信，'+'<br>'+'更多福利等着你哦！');
+                                }else{
+                                    $('.lucky-info').html('很遗憾，您没有中奖！<br>再次点击“抽奖”试试看吧！');
+                                }
+                                $('.remaintimes').html(data.msg.remaintimes);
+                            }else{
+                                Common.alertBox.add(data.msg);
+                            }
+                        });
                         break;
                     case 1:
                         //msg: '恭喜中奖'
@@ -154,6 +170,7 @@
                         break;
                     case 2:
                         //msg: '今天的奖品已经发没，请明天再来！',
+                        self.lotteryPop('popup-result-no','很遗憾，您没有中奖','请持续关注KENZO官方微信，'+'<br>'+'更多福利等着你哦！');
                         break;
                     case 3:
                         //msg: '您已获奖',
@@ -227,17 +244,6 @@
         });
 
 
-        //    share function
-        weixinshare({
-            title1: 'KENZO 关注有礼  | 全新果冻霜，夏日清爽礼赠',
-            des: 'KENZO白莲果冻霜，让你清爽一夏~',
-            link: window.location.origin,
-            img: window.location.origin+'/src/dist/images/share.jpg'
-        },function(){
-            // self.shareSuccess();
-
-        });
-
         //    imitate share function on pc====test
         //    $('.share-popup .guide-share').on('touchstart',function(){
         //        self.shareSuccess();
@@ -305,15 +311,6 @@
 
     };
 
-    /*
-    * lottery
-    * */
-    controller.prototype.getBigPrize = function(){
-
-    };
-    controller.prototype.noPrize = function(){
-
-    };
 
     /*
     * Lottery result popup
@@ -495,7 +492,7 @@
     controller.prototype.updateLuckyDrawStatus = function(){
         var self = this;
         Api.luckydrawstatus(function(data){
-            console.log(data);
+            self.user.remaintimes = data.msg.remaintimes;
             if(data.status==1){
                 if(self.user.isLuckyDraw || !data.msg.remaintimes){
                     $('.btn-start-luckydraw').addClass('disabled');

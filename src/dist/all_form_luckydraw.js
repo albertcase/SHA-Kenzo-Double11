@@ -1785,9 +1785,8 @@ function weixinshare(){
     wx.ready(function(){
 
         // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
-        wx.hideMenuItems({
-            //menuList: [] // 要隐藏的菜单项，只能隐藏“传播类”和“保护类”按钮，所有menu项见附录3
-        });
+        // “基本类”按钮详见附录3
+        wx.hideAllNonBaseMenuItem();
     });
 };
 
@@ -1939,11 +1938,27 @@ $(document).ready(function(){
         $('.btn-start-luckydraw').on('touchstart', function(){
             if($('.btn-start-luckydraw').hasClass('disabled')) return;
             Api.lottery(function(data){
-                self.updateLuckyDrawStatus();
+                //self.updateLuckyDrawStatus();
                 switch (data.status){
                     case 0:
                         //msg: '遗憾未中奖',
-                        self.lotteryPop('popup-result-no','很遗憾，您没有中奖','请持续关注KENZO官方微信，'+'<br>'+'更多福利等着你哦！');
+                        Api.luckydrawstatus(function(data){
+                            self.user.remaintimes = data.msg.remaintimes;
+                            if(data.status==1){
+                                if(self.user.isLuckyDraw || !data.msg.remaintimes){
+                                    $('.btn-start-luckydraw').addClass('disabled');
+                                };
+                                if(!self.user.remaintimes){
+                                    $('.lucky-info').html('很遗憾，您没有中奖！');
+                                    self.lotteryPop('popup-result-no','很遗憾，您没有中奖','请持续关注KENZO官方微信，'+'<br>'+'更多福利等着你哦！');
+                                }else{
+                                    $('.lucky-info').html('很遗憾，您没有中奖！<br>再次点击“抽奖”试试看吧！');
+                                }
+                                $('.remaintimes').html(data.msg.remaintimes);
+                            }else{
+                                Common.alertBox.add(data.msg);
+                            }
+                        });
                         break;
                     case 1:
                         //msg: '恭喜中奖'
@@ -1951,6 +1966,7 @@ $(document).ready(function(){
                         break;
                     case 2:
                         //msg: '今天的奖品已经发没，请明天再来！',
+                        self.lotteryPop('popup-result-no','很遗憾，您没有中奖','请持续关注KENZO官方微信，'+'<br>'+'更多福利等着你哦！');
                         break;
                     case 3:
                         //msg: '您已获奖',
@@ -2024,17 +2040,6 @@ $(document).ready(function(){
         });
 
 
-        //    share function
-        weixinshare({
-            title1: 'KENZO 关注有礼  | 全新果冻霜，夏日清爽礼赠',
-            des: 'KENZO白莲果冻霜，让你清爽一夏~',
-            link: window.location.origin,
-            img: window.location.origin+'/src/dist/images/share.jpg'
-        },function(){
-            // self.shareSuccess();
-
-        });
-
         //    imitate share function on pc====test
         //    $('.share-popup .guide-share').on('touchstart',function(){
         //        self.shareSuccess();
@@ -2102,15 +2107,6 @@ $(document).ready(function(){
 
     };
 
-    /*
-    * lottery
-    * */
-    controller.prototype.getBigPrize = function(){
-
-    };
-    controller.prototype.noPrize = function(){
-
-    };
 
     /*
     * Lottery result popup
@@ -2292,7 +2288,7 @@ $(document).ready(function(){
     controller.prototype.updateLuckyDrawStatus = function(){
         var self = this;
         Api.luckydrawstatus(function(data){
-            console.log(data);
+            self.user.remaintimes = data.msg.remaintimes;
             if(data.status==1){
                 if(self.user.isLuckyDraw || !data.msg.remaintimes){
                     $('.btn-start-luckydraw').addClass('disabled');
