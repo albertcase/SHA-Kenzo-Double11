@@ -14,7 +14,7 @@ define("USER_STORAGE", 'COOKIE');
 define("WECHAT_CAMPAIGN", true);
 
 //Wechat Vendor
-define("WECHAT_VENDOR", 'coach'); // default | curio
+define("WECHAT_VENDOR", 'same'); // default | curio | same
 
 //Wechat config info
 define("TOKEN", '');
@@ -24,7 +24,8 @@ define("NOWTIME", date('Y-m-d H:i:s'));
 define("AHEADTIME", '1000');
 
 define("NONCESTR", '?????');
-define("COACH_AUTH_URL", 'http://kenzowechat.samesamechina.com/weixin/oauth2'); 
+define("COACH_AUTH_URL", '???');
+define("SAME_OAUTH_URL", 'http://kenzodouble11.samesamechina.com/weixin/authorize');
 
 //Redis config info
 define("REDIS_HOST", '127.0.0.1');

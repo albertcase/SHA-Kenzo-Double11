@@ -6,8 +6,9 @@ use Core\Request;
 use Core\Event;
 use Lib\UserAPI;
 use Lib\CoachWechatAPI;
+use Lib\SameWechatAPI;
 
-class EventListener 
+class EventListener
 {
 	private $request;
 
@@ -30,7 +31,7 @@ class EventListener
         	if(in_array($current_router, $authorize_url)) {
         		$current_url = $request->getUrl(TRUE);
         		$function_name = WECHAT_VENDOR . 'WechatAuthoize';
-				call_user_func_array(array($this, $function_name), array($request, $current_url));		
+						call_user_func_array(array($this, $function_name), array($request, $current_url));
         	}
         }
 	}
@@ -38,7 +39,7 @@ class EventListener
 	private function defaultWechatAuthoize($request, $current_url)
 	{
 	    $UserAPI = new UserAPI();
-	    $UserAPI->oauthAction($current_url);   
+	    $UserAPI->oauthAction($current_url);
 	}
 
 	private function coachWechatAuthoize($request, $current_url)
@@ -48,4 +49,11 @@ class EventListener
 		$WechatAPI->wechatAuthorize(BASE_URL.'wechat/curio/callback');
 	}
 
+	// kenzo same oauth
+	private function sameWechatAuthoize($request, $current_url)
+	{
+		$request->setSourceUrl($current_url);
+		$WechatAPI = new SameWechatAPI();
+		$WechatAPI->wechatAuthorize(SCOPE, BASE_URL.'wechat/curio/callback');
+	}
 }
