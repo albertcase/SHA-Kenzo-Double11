@@ -164,9 +164,9 @@ class BackApiController extends Controller
                 break;
 
             case 6:
-                $this->sendCustomMsg($accessToken, $user->openid, 'image', array('media_id' => $media_id));
-                $content = "<a href='http://kenzodouble11.samesamechina.com/freetrial'>点击</a>填写信息信息领取礼品！" . $user->nickname . '您已经签到' . $chekinSum . '天！';
-                $this->sendCustomMsg($accessToken, $user->openid, 'text', array('content' => $content));
+                // $this->sendCustomMsg($accessToken, $user->openid, 'image', array('media_id' => $media_id));
+                // $content = "<a href='http://kenzodouble11.samesamechina.com/freetrial'>点击</a>填写信息信息领取礼品！" . $user->nickname . '您已经签到' . $chekinSum . '天！';
+                // $this->sendCustomMsg($accessToken, $user->openid, 'text', array('content' => $content));
                 break;
 
             case 7:
