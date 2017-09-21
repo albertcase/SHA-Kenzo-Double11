@@ -77,7 +77,7 @@ class ApiController extends Controller
     private function checkLotteryQuota()
     {
         $sum = $this->getLotterySum();
-        if($sum <= LOTTERY_NUM) {
+        if($sum < LOTTERY_NUM) {
             return true;
         } else {
             return false;
