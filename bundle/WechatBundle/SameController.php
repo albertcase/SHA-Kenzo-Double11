@@ -21,7 +21,7 @@ class SameController extends Controller
 		$user = $userAPI->userLogin($openid);
 		if(!$user) {
 			// $this->statusPrint('error');
-			$user = new new \stdClass();
+			$user = new \stdClass();
 			$user->openid = $openid;
 			$userAPI->userRegister($user);
 		}
