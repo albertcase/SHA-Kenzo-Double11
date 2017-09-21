@@ -53,7 +53,6 @@
         <div class="fb-flower fb-2">
             <img src="../src/dist/images/flower-bottom-1.png" alt="kenzo"/>
         </div>
-
     </div>
     <div class="logo">
         <img src="../src/dist/images/logo.png" alt="kenzo"/>
