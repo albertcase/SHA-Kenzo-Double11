@@ -1966,7 +1966,8 @@ $(document).ready(function(){
                         break;
                     case 2:
                         //msg: '今天的奖品已经发没，请明天再来！',
-                        self.lotteryPop('popup-result-no','很遗憾，您没有中奖','请持续关注KENZO官方微信，'+'<br>'+'更多福利等着你哦！');
+                        $('.lucky-info').html('很遗憾，您没有中奖！<br>再次点击“抽奖”试试看吧！');
+                        //self.lotteryPop('popup-result-no','很遗憾，您没有中奖','请持续关注KENZO官方微信，'+'<br>'+'更多福利等着你哦！');
                         break;
                     case 3:
                         //msg: '您已获奖',
