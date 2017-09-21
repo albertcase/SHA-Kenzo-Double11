@@ -17,10 +17,12 @@ class SameController extends Controller
 		$request->validation($fields);
 		$openid = $request->query->get('openid');
 		$url = urldecode($request->query->get('rd'));
-
+		$userAPI = new UserAPI();
 		$user = $userAPI->userLogin($openid);
 		if(!$user) {
 			// $this->statusPrint('error');
+			$user = new new \stdClass();
+			$user->openid = $openid;
 			$userAPI->userRegister($openid);
 		}
 		$this->redirect($url);
