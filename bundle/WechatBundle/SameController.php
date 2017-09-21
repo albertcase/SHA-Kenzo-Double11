@@ -16,7 +16,7 @@ class SameController extends Controller
 		);
 		$request->validation($fields);
 		$openid = $request->query->get('openid');
-		$url = $request->query->get('rd');
+		$url = urldecode($request->query->get('rd'));
 
 		$user = $userAPI->userLogin($openid);
 		if(!$user) {
