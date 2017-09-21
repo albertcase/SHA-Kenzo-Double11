@@ -170,7 +170,23 @@
                         break;
                     case 2:
                         //msg: '今天的奖品已经发没，请明天再来！',
-                        $('.lucky-info').html('很遗憾，您没有中奖！<br>再次点击“抽奖”试试看吧！');
+                        Api.luckydrawstatus(function(data){
+                            self.user.remaintimes = data.msg.remaintimes;
+                            if(data.status==1){
+                                if(self.user.isLuckyDraw || !data.msg.remaintimes){
+                                    $('.btn-start-luckydraw').addClass('disabled');
+                                };
+                                if(!self.user.remaintimes){
+                                    $('.lucky-info').html('很遗憾，您没有中奖！');
+                                    self.lotteryPop('popup-result-no','很遗憾，您没有中奖','请持续关注KENZO官方微信，'+'<br>'+'更多福利等着你哦！');
+                                }else{
+                                    $('.lucky-info').html('很遗憾，您没有中奖！<br>再次点击“抽奖”试试看吧！');
+                                }
+                                $('.remaintimes').html(data.msg.remaintimes);
+                            }else{
+                                Common.alertBox.add(data.msg);
+                            }
+                        });
                         //self.lotteryPop('popup-result-no','很遗憾，您没有中奖','请持续关注KENZO官方微信，'+'<br>'+'更多福利等着你哦！');
                         break;
                     case 3:
