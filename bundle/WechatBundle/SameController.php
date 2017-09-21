@@ -20,13 +20,11 @@ class SameController extends Controller
 		$userAPI = new UserAPI();
 		$user = $userAPI->userLogin($openid);
 		if(!$user) {
-			// $this->statusPrint('error');
 			$user = new \stdClass();
 			$user->openid = $openid;
 			$userAPI->userRegister($user);
 		}
 		$this->redirect($url);
-		$this->statusPrint('error');
 	}
 
 }
