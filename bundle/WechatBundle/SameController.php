@@ -12,7 +12,7 @@ class SameController extends Controller
 		$request = $this->request;
 		$fields = array(
 			'openid' => array('notnull', '120'),
-			'rd' => array('notnull', '120')
+			'redirect_uri' => array('notnull', '120')
 		);
 		$request->validation($fields);
 		$openid = $request->query->get('openid');
