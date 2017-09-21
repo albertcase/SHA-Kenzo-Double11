@@ -40,6 +40,7 @@ class ApiController extends Controller
 
         //奖发完
         if(!$this->checkLotteryQuota()) {
+            $this->setLottery($user->uid, 2);
             $data = array('status' => 2, 'msg'=> '奖品已经发完！');
             $this->dataPrint($data);
         }
