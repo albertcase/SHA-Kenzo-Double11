@@ -23,7 +23,7 @@ class SameController extends Controller
 			// $this->statusPrint('error');
 			$user = new new \stdClass();
 			$user->openid = $openid;
-			$userAPI->userRegister($openid);
+			$userAPI->userRegister($user);
 		}
 		$this->redirect($url);
 		$this->statusPrint('error');
