@@ -156,18 +156,6 @@
 
     </div>
 </div>
-<!--share pop-->
-<div class="popup share-popup">
-    <div class="guide-share right-star">
-        <img src="../src/dist/images/guide-share.png" alt=""/>
-    </div>
-    <div class="des">
-        <span class="bigfont">·向好友传递清爽礼赠·</span>
-        即刻获得一次<br>
-        KENZO白莲果冻霜正装（50ML）<br>
-        抽奖机会
-    </div>
-</div>
 
 <!-- z-index is high-->
 <div class="popup terms-pop">

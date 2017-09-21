@@ -1863,7 +1863,6 @@ $(document).ready(function(){
                 if(isFalseNext){
                     self.startUp();
                 }
-
             }
         });
 
@@ -1874,7 +1873,11 @@ $(document).ready(function(){
         var self = this;
         $('.preload').remove();
         $('.wrapper').addClass('fade');
-        self.loadFormPage();
+        if(isSubmit){
+            Common.gotoPin(1);
+        }else{
+            self.loadFormPage();
+        }
 
         self.bindEvent();
         self.showAllProvince();

@@ -10,15 +10,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
     <link rel="stylesheet" type="text/css" href="../src/dist/css/style.css"/>
     <script src="http://kenzowechat.samesamechina.com/weixin/jssdkforsite"></script>
-    <!-- userflow-->
-    <script type="text/javascript">
-        var userInfo = {
-            isOld: false, /*是否是老用户*/
-            isSubmit: false, /*是否提交了用户详细信息表单*/
-            isGift: false, /*是否领取了小样*/
-            isLuckyDraw: false /*是否抽奖*/
-        };
+    <script>
+        isSubmit= <?php echo $conf['isSubmit']; ?>;
     </script>
+    <!-- userflow-->
     <script src="../src/dist/js/all_form_freetrial.min.js"></script>
 </head>
 <body class="page-home">
@@ -126,18 +121,6 @@
                 </div>
             </div>
         </div>
-    </div>
-</div>
-<!--share pop-->
-<div class="popup share-popup">
-    <div class="guide-share right-star">
-        <img src="../src/dist/images/guide-share.png" alt=""/>
-    </div>
-    <div class="des">
-        <span class="bigfont">·向好友传递清爽礼赠·</span>
-        即刻获得一次<br>
-        KENZO白莲果冻霜正装（50ML）<br>
-        抽奖机会
     </div>
 </div>
 

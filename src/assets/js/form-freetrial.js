@@ -66,7 +66,6 @@
                 if(isFalseNext){
                     self.startUp();
                 }
-
             }
         });
 
@@ -77,7 +76,11 @@
         var self = this;
         $('.preload').remove();
         $('.wrapper').addClass('fade');
-        self.loadFormPage();
+        if(isSubmit){
+            Common.gotoPin(1);
+        }else{
+            self.loadFormPage();
+        }
 
         self.bindEvent();
         self.showAllProvince();
