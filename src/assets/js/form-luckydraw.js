@@ -146,10 +146,10 @@
                 switch (data.status){
                     case 0:
                         //msg: '遗憾未中奖',
-                        Api.luckydrawstatus(function(data){
-                            self.user.remaintimes = data.msg.remaintimes;
+                        Api.luckydrawstatus(function(json){
+                            self.user.remaintimes = json.msg.remaintimes;
                             if(data.status==1){
-                                if(self.user.isLuckyDraw || !data.msg.remaintimes){
+                                if(self.user.isLuckyDraw || !json.msg.remaintimes){
                                     $('.btn-start-luckydraw').addClass('disabled');
                                 };
                                 if(!self.user.remaintimes){
@@ -158,9 +158,9 @@
                                 }else{
                                     $('.lucky-info').html('很遗憾，您没有中奖！<br>再次点击“抽奖”试试看吧！');
                                 }
-                                $('.remaintimes').html(data.msg.remaintimes);
+                                $('.remaintimes').html(json.msg.remaintimes);
                             }else{
-                                Common.alertBox.add(data.msg);
+                                Common.alertBox.add(json.msg);
                             }
                         });
                         break;
@@ -169,11 +169,11 @@
                         self.lotteryPop('popup-result-yes','恭喜您','获得XXX一份！'+'<div class="btn btn-goinfo">'+'<span class="tt">填写寄送信息</span>'+'</div>');
                         break;
                     case 2:
-                        //msg: '今天的奖品已经发没，请明天再来！',
-                        Api.luckydrawstatus(function(data){
-                            self.user.remaintimes = data.msg.remaintimes;
+                        //msg: '今天的奖品已经发没！',
+                        Api.luckydrawstatus(function(json){
+                            self.user.remaintimes = json.msg.remaintimes;
                             if(data.status==1){
-                                if(self.user.isLuckyDraw || !data.msg.remaintimes){
+                                if(self.user.isLuckyDraw || !json.msg.remaintimes){
                                     $('.btn-start-luckydraw').addClass('disabled');
                                 };
                                 if(!self.user.remaintimes){
@@ -182,9 +182,9 @@
                                 }else{
                                     $('.lucky-info').html('很遗憾，您没有中奖！<br>再次点击“抽奖”试试看吧！');
                                 }
-                                $('.remaintimes').html(data.msg.remaintimes);
+                                $('.remaintimes').html(json.msg.remaintimes);
                             }else{
-                                Common.alertBox.add(data.msg);
+                                Common.alertBox.add(json.msg);
                             }
                         });
                         //self.lotteryPop('popup-result-no','很遗憾，您没有中奖','请持续关注KENZO官方微信，'+'<br>'+'更多福利等着你哦！');
