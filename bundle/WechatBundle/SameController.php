@@ -17,11 +17,14 @@ class SameController extends Controller
 		$request->validation($fields);
 		$openid = $request->query->get('openid');
 		$url = $request->query->get('rd');
-		var_dump($openid);
-		var_dump($url);exit;
-		$this->statusPrint('error');
-		// $this->redirect($url);
 
+		$user = $userAPI->userLogin($openid);
+		if(!$user) {
+			// $this->statusPrint('error');
+			$userAPI->userRegister($openid);
+		}
+		$this->redirect($url);
+		$this->statusPrint('error');
 	}
 
 }
