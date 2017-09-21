@@ -295,15 +295,6 @@
 
     };
 
-    /*
-    * lottery
-    * */
-    controller.prototype.getBigPrize = function(){
-
-    };
-    controller.prototype.noPrize = function(){
-
-    };
 
     /*
     * Lottery result popup
