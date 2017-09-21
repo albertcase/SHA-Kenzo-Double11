@@ -47,6 +47,14 @@
         <div class="bf bf-2"></div>
         <div class="bf bf-3"></div>
     </div>
+    <div class="foreground">
+        <div class="fb-flower fb-1">
+            <img src="../src/dist/images/flower-bottom-2.png" alt="kenzo"/>
+        </div>
+        <div class="fb-flower fb-2">
+            <img src="../src/dist/images/flower-bottom-1.png" alt="kenzo"/>
+        </div>
+    </div>
     <div class="logo">
         <img src="../src/dist/images/logo.png" alt="kenzo"/>
     </div>
@@ -107,9 +115,6 @@
                     <span class="tt">提 交</span>
                 </div>
             </form>
-            <div class="foreground">
-                <img src="../src/dist/images/foreground-1.png" alt="kenzo"/>
-            </div>
         </div>
         <!-- 抽奖结果显示 -->
         <div class="pin pin-3" id="pin-result">
