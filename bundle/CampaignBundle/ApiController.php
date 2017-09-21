@@ -318,6 +318,11 @@ class ApiController extends Controller
     public function giftinfoAction()
     {
         global $user;
+        if(!$this->findGiftByUid($user->uid)){
+            $data = array('status' => 4, 'msg'=> '您还没有领取小样礼品的资格！');
+            $this->dataPrint($data);
+        }
+
         $request = $this->request;
         $fields = array(
             'name' => array('notnull', '120'),
@@ -330,7 +335,7 @@ class ApiController extends Controller
         $request->validation($fields);
 
         if(!$this->checkMsgCode($request->request->get('mobile'), $request->request->get('msgCode'))) {
-            $data = array('status' => 2, 'msg'=> '手机验证码错误');
+            $data = array('status' => 3, 'msg'=> '手机验证码错误');
             $this->dataPrint($data);
         }
 
@@ -350,6 +355,18 @@ class ApiController extends Controller
         } else {
             $this->statusPrint('0', '信息填写失败！');
         }
+    }
+
+    private function findGiftByUid($uid)
+    {
+        $sql = "SELECT `id`, `uid` FROM `gift` WHERE `uid` = :uid";
+        $query = $this->_pdo->prepare($sql);
+        $query->execute(array(':uid' => $uid));
+        $row = $query->fetch(\PDO::FETCH_ASSOC);
+        if($row) {
+            return  (Object) $row;
+        }
+        return NULL;
     }
 
     /**
