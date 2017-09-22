@@ -19,17 +19,24 @@ class BackApiController extends Controller
     /**
      * 模版消息推送结果通知
      */
-    // public function tmpendAction()
-    // {
-    //     $postData = file_get_contents('php://input', 'r');
-    //     $postArr = json_decode($postData, 1);
+    public function tmpendAction()
+    {
+        $postData = file_get_contents('php://input', 'r');
+        $postArr = json_decode($postData, 1);
+        $log = new \stdClass();
+        $log->wechat_msgid = $postArr['msgid'];
+        $log->wechat_status = $postArr['status'];
+    }
 
-    // }
-
-    // private function updateTmpWechatStatus()
-    // {
-        
-    // }
+    private function updateTmpWechatStatus($log)
+    {
+        $helper = new Helper();
+        $condition = array(
+            array('wechat_msgid', $log->wechat_msgid, '='),
+        );
+        $log->wechat_ftime = date('Y-m-d H:i:s');
+        return $helper->updateTable('tmp_log', $log, $condition);
+    }
 
     /**
      * 签到
@@ -114,7 +121,7 @@ class BackApiController extends Controller
         if((int) $chekinSum >= 25) {
 
             if($this->checkGiftSum()) {
-                $this->setGift($user->uid); //领取小样
+                $user->num = $this->setGift($user->uid); //领取小样
             } else {
                 $status = 7;
             }
@@ -135,43 +142,42 @@ class BackApiController extends Controller
         }
 
         switch ($status) {
-            case 1:
+            case 1: //签到成功
                 $this->sendCustomMsg($accessToken, $user->openid, 'image', array('media_id' => $media_id));
-                $content = '签到成功！' . $user->nickname . '您已经签到' . $chekinSum . '天！';
+                $content = 'Hi ' . $user->nickname . '，这是你签到的第' . $chekinSum . '天。愿今天也是美丽的一天！';
                 $this->sendCustomMsg($accessToken, $user->openid, 'text', array('content' => $content));
                 break;
 
-            case 2:
-                $content = '您已经签到！' . $user->nickname . '您已经签到' . $chekinSum . '天！';
+            case 2: //重复签到
+                $content = 'Hi ' . $user->nickname . ' 小迷糊，你今天已经签到过啦，记得明天再来哦！';
                 $this->sendCustomMsg($accessToken, $user->openid, 'text', array('content' => $content));
                 break;
 
-            case 3:
-                $content = '当前签到人过多！请稍后再来！' . $user->nickname . '您已经签到' . $chekinSum . '天！';
+            case 3: //签到失败
+                $content = 'Hi ' . $user->nickname . '，刚刚网络开小差了，没能成功签到，请再试一次吧！';
                 $this->sendCustomMsg($accessToken, $user->openid, 'text', array('content' => $content));
                 break;
 
-            case 4:
+            case 4: //已经领取小样，已经填写信息。
                 $this->sendCustomMsg($accessToken, $user->openid, 'image', array('media_id' => $media_id));
-                $content = '已经领取小样，已经填写信息！' . $user->nickname . '您已经签到' . $chekinSum . '天！';
-                $this->sendCustomMsg($accessToken, $user->openid, 'text', array('content' => $content));
+                $content = 'Hi ' . $user->nickname . '，这是你签到的第' . $chekinSum . '天。愿今天也是美丽的一天！';                $this->sendCustomMsg($accessToken, $user->openid, 'text', array('content' => $content));
                 break;
 
-            case 5:
+            case 5: //已经领取小样，未填写信息。
                 $this->sendCustomMsg($accessToken, $user->openid, 'image', array('media_id' => $media_id));
-                $content = "<a href='http://kenzodouble11.samesamechina.com/freetrial'>点击</a>填写信息信息领取礼品！" . $user->nickname . '您已经签到' . $chekinSum . '天！';
+                $content = 'Hi' . $user->nickname . '，恭喜你以第' . $user->num . '名完成签到25天、获得花颜礼盒一份！' . "<a href='http://kenzodouble11.samesamechina.com/freetrial'>点击</a>" . '填写表单，抢先试用全新花颜舒柔系列产品。继续保持签到，你的签到天数对应最终睡美人面膜正装（75ML）的抽奖次数哦，11月11号开启抽奖！';
                 $this->sendCustomMsg($accessToken, $user->openid, 'text', array('content' => $content));
                 break;
 
-            case 6:
+            case 6: //未领取小样，未填写信息。（这种情况无）
                 // $this->sendCustomMsg($accessToken, $user->openid, 'image', array('media_id' => $media_id));
                 // $content = "<a href='http://kenzodouble11.samesamechina.com/freetrial'>点击</a>填写信息信息领取礼品！" . $user->nickname . '您已经签到' . $chekinSum . '天！';
                 // $this->sendCustomMsg($accessToken, $user->openid, 'text', array('content' => $content));
                 break;
 
-            case 7:
+            case 7: //小样领取库存无，
                 $this->sendCustomMsg($accessToken, $user->openid, 'image', array('media_id' => $media_id));
-                $content = '小样库存已没！您可以继续签到！签到次数越多抽奖机会越多！' . $user->nickname . '您已经签到' . $chekinSum . '天！';
+                $content = 'Hi' . $user->nickname . '，你已成功签到25天，在小伙伴中排名第' . $user->num . '，很遗憾' . GIFT_NUM . '套花颜礼盒已被全部申领完毕！别灰心，请继续坚持，你的签到天数对应最终睡美人面膜正装（75ML）的抽奖次数哦，11月11号开启抽奖！';
                 $this->sendCustomMsg($accessToken, $user->openid, 'text', array('content' => $content));
                 break;
         }
@@ -198,7 +204,7 @@ class BackApiController extends Controller
         $query = $this->_pdo->prepare($sql);
         $query->execute();
         $row = $query->fetch(\PDO::FETCH_ASSOC);
-        if((int) $row['sum'] <= GIFT_NUM) {
+        if((int) $row['sum'] < GIFT_NUM) {
             return true;
         } else {
             return false;
@@ -225,7 +231,7 @@ class BackApiController extends Controller
         $gift->created = date('Y-m-d H:i:s');
         $id = $helper->insertTable('gift', $gift);
         if($id) {
-            return true;
+            return $id;
         }
         return false;
     }
