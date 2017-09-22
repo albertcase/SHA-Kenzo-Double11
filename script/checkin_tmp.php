@@ -197,7 +197,7 @@ class PushTmp
      */
     private function getDays9Status($uid)
     {
-        $privous9day = $this->getTargetDate($this->pushDate, 9);
+        $privous9day = '2017-10-09';
         $privous9dayCount = $this->getUserStatusQuery($uid, array($privous9day, $this->pushDate));
         if($privous9dayCount >= 9){
             return '9days';
