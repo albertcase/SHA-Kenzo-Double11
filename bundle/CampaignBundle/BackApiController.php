@@ -178,19 +178,19 @@ class BackApiController extends Controller
 
             case 5: //已经领取小样，未填写信息。
                 $this->sendCustomMsg($accessToken, $user->openid, 'image', array('media_id' => $media_id));
-                $content = 'Hi' . $user->nickname . '这是你签到的第' . $chekinSum . '天！别忘了' . "<a href='http://kenzodouble11.samesamechina.com/freetrial'>点击</a>" . '填写表单，领取全新花颜舒柔系列产品哦~愿今天也是美丽的一天！';
+                $content = 'Hi ' . $user->nickname . '这是你签到的第' . $chekinSum . '天！别忘了' . "<a href='http://kenzodouble11.samesamechina.com/freetrial'>点击</a>" . '填写表单，领取全新花颜舒柔系列产品哦~愿今天也是美丽的一天！';
                 $this->sendCustomMsg($accessToken, $user->openid, 'text', array('content' => $content));
                 break;
 
             case 6: //未领取小样，未填写信息。（第一次领取）
                 $this->sendCustomMsg($accessToken, $user->openid, 'image', array('media_id' => $media_id));
-                $content = 'Hi' . $user->nickname . '，恭喜你以第' . $user->num . '名完成签到25天、获得花颜礼盒一份！' . "<a href='http://kenzodouble11.samesamechina.com/freetrial'>点击</a>" . '填写表单，抢先试用全新花颜舒柔系列产品。继续保持签到，你的签到天数对应最终睡美人面膜正装（75ML）的抽奖次数哦，11月11号开启抽奖！';
+                $content = 'Hi ' . $user->nickname . '，恭喜你以第' . $user->num . '名完成签到25天、获得花颜礼盒一份！' . "<a href='http://kenzodouble11.samesamechina.com/freetrial'>点击</a>" . '填写表单，抢先试用全新花颜舒柔系列产品。继续保持签到，你的签到天数对应最终睡美人面膜正装（75ML）的抽奖次数哦，11月11号开启抽奖！';
                 $this->sendCustomMsg($accessToken, $user->openid, 'text', array('content' => $content));
                 break;
 
             case 7: //小样领取库存无，
                 $this->sendCustomMsg($accessToken, $user->openid, 'image', array('media_id' => $media_id));
-                $content = 'Hi' . $user->nickname . '，你已成功签到25天，在小伙伴中排名第' . $user->num . '，很遗憾' . GIFT_NUM . '套花颜礼盒已被全部申领完毕！别灰心，请继续坚持，你的签到天数对应最终睡美人面膜正装（75ML）的抽奖次数哦，11月11号开启抽奖！';
+                $content = 'Hi ' . $user->nickname . '，你已成功签到25天，在小伙伴中排名第' . $user->num . '，很遗憾' . GIFT_NUM . '套花颜礼盒已被全部申领完毕！别灰心，请继续坚持，你的签到天数对应最终睡美人面膜正装（75ML）的抽奖次数哦，11月11号开启抽奖！';
                 $this->sendCustomMsg($accessToken, $user->openid, 'text', array('content' => $content));
                 break;
         }
