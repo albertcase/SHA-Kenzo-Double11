@@ -1804,7 +1804,7 @@ $(document).ready(function(){
         //remaintimes /*剩余抽奖次数*/
         this.user = userInfo;
         this.disableClick = false;
-        this.enableTotalTimes = 24; //说明如果满25次抽奖机会就有权限抽奖了因为是小于号
+        this.enableTotalTimes = 1; //说明如果满1次抽奖机会就有权限抽奖了因为是小于号
     };
     //init
     controller.prototype.init = function(){
@@ -1816,7 +1816,7 @@ $(document).ready(function(){
             isFalseNext = false;
         var loadingAni = setInterval(function(){
             if(timeStart>100){
-                isFalseNext = true; 
+                isFalseNext = true;
                 if(isTrueNext){
                     self.startUp();
                 }
