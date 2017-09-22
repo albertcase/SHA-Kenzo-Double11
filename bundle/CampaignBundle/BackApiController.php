@@ -143,6 +143,8 @@ class BackApiController extends Controller
                 } else { //2.已经领取，未填写信息
                     if((int) $chekinSum > 25) {
                         $status = 5;
+                    } else {
+                        $status = 6;
                     }
                 }
             } else {
