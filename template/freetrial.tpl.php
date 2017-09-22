@@ -123,33 +123,6 @@
         </div>
     </div>
 </div>
-
-<!-- z-index is high-->
-<div class="popup terms-pop">
-    <div class="inner">
-        <h3 class="title">活动条款</h3>
-        <div class="pcontent">
-            <h4 class="subtitle">活动时间</h4>
-            <p class="des activity-time">
-                2017年X月X日至2017年X月X日
-            </p>
-            <h4 class="subtitle">参与条件</h4>
-            <p class="des activity-requirement">
-                活动期间，首次关注KenzoParfums凯卓官方微信的<br>
-                用户即可参与申领，每个微信ID仅限申领一次，<br>
-                奖品限量5000份。每天份额限量，详情请见活动主页<br>
-                （先到先得）
-            </p>
-            <h4 class="subtitle">奖品内容</h4>
-            <p class="des activity-prize">
-                奖品为KENZO舒缓白莲清爽保湿霜体验装（2ml）<br>
-                根据用户填写的邮寄地址在中奖后的30个工作日内寄送
-            </p>
-            <p class="product-name">* KENZO花颜舒柔夜间修护面膜</p>
-        </div>
-        <div class="btn-close">X</div>
-    </div>
-</div>
 </body>
 </html>
 

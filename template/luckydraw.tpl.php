@@ -164,7 +164,7 @@
         <div class="pcontent">
             <h4 class="subtitle">活动时间</h4>
             <p class="des activity-time">
-                2017年X月X日至2017年X月X日
+                2017年11月11日至2017年11月30日
             </p>
             <h4 class="subtitle">参与条件</h4>
             <p class="des activity-requirement">
@@ -174,9 +174,10 @@
             </p>
             <h4 class="subtitle">奖品内容</h4>
             <p class="des activity-prize">
-                奖品为KENZO花颜舒柔夜间修护面膜(75ml)<br>
-                根据中奖用户填写的<br>
-                邮寄地址在中奖后的30个工作日内寄送<br>
+                奖品为KENZO花颜舒柔夜间修护面膜正装（75ml）<br>
+                根据中奖用户填写的邮寄地址<br>
+                在中奖后的30个工作日内寄送<br>
+                奖品限量60个
             </p>
             <p class="tips-2">* 每个微信ID仅限中奖1次</p>
             <!--<p class="product-name">* KENZO花颜舒柔夜间修护面膜</p>-->

@@ -747,6 +747,9 @@ body {
   font-size: 0.24rem;
   line-height: 1.8;
 }
+.terms-pop .pcontent .tips-2 {
+  font-size: 0.2rem;
+}
 .terms-pop .pcontent .product-name {
   color: #6b6b6b;
   font-size: 0.22rem;
@@ -755,6 +758,7 @@ body {
   top: auto;
   bottom: 1rem;
   left: 50%;
+  margin-left: -0.3rem;
   background: #343434;
   border-radius: 100%;
   width: 0.6rem;
@@ -913,7 +917,7 @@ body {
 .foreground .fb-1 {
   width: 4.61rem;
   height: 4.48rem;
-  left: -1.6rem;
+  left: -1.7rem;
   bottom: -1.4rem;
 }
 .foreground .fb-2 {
