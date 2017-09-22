@@ -141,7 +141,9 @@ class BackApiController extends Controller
                 if($this->findGiftInfoByUid($user->uid)){ //1.已经领取，已经填写信息
                     $status = 4;
                 } else { //2.已经领取，未填写信息
-                    $status = 5;
+                    if((int) $chekinSum > 25) {
+                        $status = 5;
+                    }
                 }
             } else {
                 // if(!$this->checkGiftSum()) { //3.有库存,未领取
