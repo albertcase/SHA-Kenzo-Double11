@@ -1816,7 +1816,7 @@ $(document).ready(function(){
             isFalseNext = false;
         var loadingAni = setInterval(function(){
             if(timeStart>100){
-                isFalseNext = true;
+                isFalseNext = true; 
                 if(isTrueNext){
                     self.startUp();
                 }

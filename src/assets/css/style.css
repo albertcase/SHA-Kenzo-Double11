@@ -940,6 +940,8 @@ body {
   color: #6b6b6b;
 }
 #pin-landing .product-show {
+  position: relative;
+  left: 0.3rem;
   width: 3.29rem;
   height: 4.19rem;
   margin: 0 auto;

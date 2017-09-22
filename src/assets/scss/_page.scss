@@ -254,6 +254,8 @@ $ani-delay-5: 5000ms;
     //width: 60vw;
   }
   .product-show{
+    position: relative;
+    left: 0.3rem;
     @include size(3.29rem,4.19rem);
     margin: 0 auto;
   }
