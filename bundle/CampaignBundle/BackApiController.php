@@ -121,8 +121,19 @@ class BackApiController extends Controller
         if((int) $chekinSum >= 25) {
 
             if($this->checkGiftSum()) {
+                if((int) $chekinSum == 25) { //有库存 第一次领取
+                    $status = 6;
+                }
                 $user->num = $this->setGift($user->uid); //领取小样
             } else {
+                // 不是第一次进来
+                $rank = $this->findCheckInRankByUid($user->uid);
+                if($rank) {
+                    $user->num = GIFT_NUM + (int)$rank->id;
+                } else {
+                    $rankId = $this->setCheckInRank($user->uid);
+                    $user->num = (int)$rankId + GIFT_NUM;
+                }
                 $status = 7;
             }
 
@@ -133,11 +144,9 @@ class BackApiController extends Controller
                     $status = 5;
                 }
             } else {
-                if($this->checkGiftSum()) { //3.有库存,未领取
-                    $status = 6;
-                } else { //4.无库存
-                    $status = 7;
-                }
+                // if(!$this->checkGiftSum()) { //3.有库存,未领取
+                //     $status = 7;
+                // }
             }
         }
 
@@ -165,14 +174,14 @@ class BackApiController extends Controller
 
             case 5: //已经领取小样，未填写信息。
                 $this->sendCustomMsg($accessToken, $user->openid, 'image', array('media_id' => $media_id));
-                $content = 'Hi' . $user->nickname . '，恭喜你以第' . $user->num . '名完成签到25天、获得花颜礼盒一份！' . "<a href='http://kenzodouble11.samesamechina.com/freetrial'>点击</a>" . '填写表单，抢先试用全新花颜舒柔系列产品。继续保持签到，你的签到天数对应最终睡美人面膜正装（75ML）的抽奖次数哦，11月11号开启抽奖！';
+                $content = 'Hi' . $user->nickname . '这是你签到的第' . $chekinSum . '天！别忘了' . "<a href='http://kenzodouble11.samesamechina.com/freetrial'>点击</a>" . '填写表单，领取全新花颜舒柔系列产品哦~愿今天也是美丽的一天！';
                 $this->sendCustomMsg($accessToken, $user->openid, 'text', array('content' => $content));
                 break;
 
-            case 6: //未领取小样，未填写信息。（这种情况无）
-                // $this->sendCustomMsg($accessToken, $user->openid, 'image', array('media_id' => $media_id));
-                // $content = "<a href='http://kenzodouble11.samesamechina.com/freetrial'>点击</a>填写信息信息领取礼品！" . $user->nickname . '您已经签到' . $chekinSum . '天！';
-                // $this->sendCustomMsg($accessToken, $user->openid, 'text', array('content' => $content));
+            case 6: //未领取小样，未填写信息。（第一次领取）
+                $this->sendCustomMsg($accessToken, $user->openid, 'image', array('media_id' => $media_id));
+                $content = 'Hi' . $user->nickname . '，恭喜你以第' . $user->num . '名完成签到25天、获得花颜礼盒一份！' . "<a href='http://kenzodouble11.samesamechina.com/freetrial'>点击</a>" . '填写表单，抢先试用全新花颜舒柔系列产品。继续保持签到，你的签到天数对应最终睡美人面膜正装（75ML）的抽奖次数哦，11月11号开启抽奖！';
+                $this->sendCustomMsg($accessToken, $user->openid, 'text', array('content' => $content));
                 break;
 
             case 7: //小样领取库存无，
@@ -209,6 +218,31 @@ class BackApiController extends Controller
         } else {
             return false;
         }
+    }
+
+    private function findCheckInRankByUid($uid)
+    {
+        $sql = "SELECT `id` FROM `checkin_rank` WHERE `uid` = :uid";
+        $query = $this->_pdo->prepare($sql);
+        $query->execute(array(':uid' => $uid));
+        $row = $query->fetch(\PDO::FETCH_ASSOC);
+        if($row) {
+            return  (Object) $row;
+        }
+        return NULL;
+    }
+
+    private function setCheckInRank($uid)
+    {
+        $helper = new Helper();
+        $rank = new \stdClass();
+        $rank->uid = $uid;
+        $rank->created = date('Y-m-d H:i:s');
+        $id = $helper->insertTable('checkin_rank', $rank);
+        if($id) {
+            return $id;
+        }
+        return false;
     }
 
     private function findGiftByUid($uid)
