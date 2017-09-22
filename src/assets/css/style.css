@@ -1492,42 +1492,42 @@ body {
   height: 4.57rem;
 }
 
-#pin-result .v-content {
+#pin-result .v-content, .pin-4 .v-content {
   top: 40%;
   width: 100%;
 }
-#pin-result .title {
+#pin-result .title, .pin-4 .title {
   margin-bottom: 0.2rem;
   text-align: center;
   color: #343434;
   font-size: 0.4rem;
   font-weight: bold;
 }
-#pin-result .des {
+#pin-result .des, .pin-4 .des {
   width: 100%;
   text-align: center;
   font-size: 0.26rem;
   color: #6b6b6b;
 }
-#pin-result .des2 {
+#pin-result .des2, .pin-4 .des2 {
   top: 40%;
 }
-#pin-result .prize-item {
+#pin-result .prize-item, .pin-4 .prize-item {
   color: #6b6b6b;
 }
-#pin-result .prize-item.show {
+#pin-result .prize-item.show, .pin-4 .prize-item.show {
   display: block;
 }
-#pin-result .prize-item .tip {
+#pin-result .prize-item .tip, .pin-4 .prize-item .tip {
   display: block;
   margin-top: 0.5rem;
   font-size: 0.22rem;
 }
-#pin-result .btn-getbigprize {
+#pin-result .btn-getbigprize, .pin-4 .btn-getbigprize {
   position: relative;
   margin-top: 1.5rem;
 }
-#pin-result .btn-getbigprize .product-name-2 {
+#pin-result .btn-getbigprize .product-name-2, .pin-4 .btn-getbigprize .product-name-2 {
   position: absolute;
   bottom: -0.22rem;
   left: 0;
@@ -1536,21 +1536,21 @@ body {
   color: #6b6b6b;
   font-size: 0.22rem;
 }
-#pin-result .btn-getbigprize .num {
+#pin-result .btn-getbigprize .num, .pin-4 .btn-getbigprize .num {
   font-size: 0.22rem;
 }
-#pin-result .b-img {
+#pin-result .b-img, .pin-4 .b-img {
   position: absolute;
   left: 0;
   bottom: 0;
   width: 100%;
 }
-#pin-result .name {
+#pin-result .name, .pin-4 .name {
   margin-top: 0.8rem;
   font-size: 0.22rem;
   color: #6b6b6b;
 }
-#pin-result .btn-getproduct {
+#pin-result .btn-getproduct, .pin-4 .btn-getproduct {
   width: 4.6rem;
   height: 1.4rem;
   box-sizing: border-box;
