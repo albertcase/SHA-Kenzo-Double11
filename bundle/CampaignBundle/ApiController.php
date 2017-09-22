@@ -360,7 +360,7 @@ class ApiController extends Controller
 
     private function findGiftByUid($uid)
     {
-        $sql = "SELECT `id`, `uid` FROM `gift` WHERE `uid` = :uid";
+        $sql = "SELECT `id`, `uid` FROM `gift` WHERE status =1 AND `uid` = :uid";
         $query = $this->_pdo->prepare($sql);
         $query->execute(array(':uid' => $uid));
         $row = $query->fetch(\PDO::FETCH_ASSOC);
