@@ -72,6 +72,16 @@ class PushTmp
      */
     public function pushTmp()
     {
+        /** TEST
+        $user = new  \stdClass();
+        $user->nickname = 'hghg';
+        $user->openid = 'oEts5uHtOI2ITSLsEg5zBLyj43ag';
+        // $content = 'Hi ' . $user->nickname . '，Miss K提醒你，你的签到天数对应最终睡美人面膜（75ML）的抽奖次数哦，赶紧点击菜单栏签到吧，11月11号开启抽奖哦~';
+        $content = 'Hi ' . $user->nickname . '，错过今天的签到，就将遗憾错过KENZO花颜礼盒哦，点击菜单栏“签到”恢复签到习惯吧~';
+        $data = $this->msgFormat($user->openid, 'WwsoVpViE-R3yL4t_1oJBP0dqJdYmvr7oFLFKUCmpeA', $content);
+        $rs = $this->sendTmpMsg($data);
+        */
+
         $sql = "SELECT `uid`, `openid`, `nickname`  FROM `user` where status = 0";
         $query = $this->_pdo->prepare($sql);
         $query->execute();
@@ -95,19 +105,23 @@ class PushTmp
         switch($status) {
 
             case '9days':
-                $data = $this->msgFormat($user->openid, 'WwsoVpViE-R3yL4t_1oJBP0dqJdYmvr7oFLFKUCmpeA', '您已经超过8天未签到了');
+                $content = 'Hi ' . $user->nickname . '，Miss K提醒你，你的签到天数对应最终睡美人面膜（75ML）的抽奖次数哦，赶紧点击菜单栏签到吧，11月11号开启抽奖哦~';
+                $data = $this->msgFormat($user->openid, 'WwsoVpViE-R3yL4t_1oJBP0dqJdYmvr7oFLFKUCmpeA', $content);
                 break;
 
             case '8days':
-                $data = $this->msgFormat($user->openid, 'WwsoVpViE-R3yL4t_1oJBP0dqJdYmvr7oFLFKUCmpeA', '您已经累计8天未签到了');
+                $content = 'Hi ' . $user->nickname . '，错过今天的签到，就将遗憾错过KENZO花颜礼盒哦，点击菜单栏“签到”恢复签到习惯吧~';
+                $data = $this->msgFormat($user->openid, 'WwsoVpViE-R3yL4t_1oJBP0dqJdYmvr7oFLFKUCmpeA', $content);
                 break;
 
             case '5days':
-                $data = $this->msgFormat($user->openid, 'WwsoVpViE-R3yL4t_1oJBP0dqJdYmvr7oFLFKUCmpeA', '您已经连续5天未签到了');
+                $content = 'Hi ' . $user->nickname . '你已经连续5天没有来签到咯，Miss K很想你呢，点击菜单栏“签到”即可快速签到！';
+                $data = $this->msgFormat($user->openid, 'WwsoVpViE-R3yL4t_1oJBP0dqJdYmvr7oFLFKUCmpeA', $content);
                 break;
 
             case '3days':
-                $data = $this->msgFormat($user->openid, 'WwsoVpViE-R3yL4t_1oJBP0dqJdYmvr7oFLFKUCmpeA', '您已经连续3天未签到了');
+                $content = 'Hi ' . $user->nickname . '，你已经连续3天没有来签到咯，今天别忘了哦，Miss K等你~点击菜单栏“签到”即可快速签到！';
+                $data = $this->msgFormat($user->openid, 'WwsoVpViE-R3yL4t_1oJBP0dqJdYmvr7oFLFKUCmpeA', $content);
                 break;
 
             default:
@@ -115,7 +129,6 @@ class PushTmp
                 break;
                 
         }
-        // var_dump($data);exit;
         if(!empty($data)) {
             $rs = $this->sendTmpMsg($data);
             $log = new \stdClass();
@@ -123,7 +136,7 @@ class PushTmp
             $log->data = json_encode($data, JSON_UNESCAPED_UNICODE);
             $log->errcode = $rs->errcode;
             $log->errmsg = $rs->errmsg;
-            // $log->wechat_msgid = $rs->msgid;
+            $log->wechat_msgid = $rs->msgid;
             $this->insertTmpLog($log);
             return true;
         }
@@ -138,14 +151,14 @@ class PushTmp
         $msgData = array(
             'touser' => $openid,
             'template_id' => $tmpid,
-            'url' => 'http://weixin.qq.com/download',
+            // 'url' => 'http://weixin.qq.com/download',
             'data' => array(
                 'first' => array(
-                    'value' => '测试模版消息',
+                    'value' => $text . "\n",
                     'color' => '#173177',
                 ),
                 'keyword1' => array(
-                    'value' => $text,
+                    'value' => 'KENZO签到提醒',
                     'color' => '#173177',
                 ),
                 'keyword2' => array(
@@ -191,13 +204,6 @@ class PushTmp
         } else {
             return '';
         }
-        // $days9 = new \stdClass();
-        // $days9->where = "d.date < '$this->pushDate' and c.uid is null";
-        // $days9->num = 9;
-        // if($this->getUserStatusQuery($uid, $days9)) {
-        //     $this->updateUserStatus($uid);
-        //     return '9days';
-        // }
     }
 
     /**
@@ -214,19 +220,6 @@ class PushTmp
         if($dayCount == 8)
             return '8days'; 
 
-        // 如果累计8天之后连续签到的话只发一次消息
-        // $days8 = new \stdClass();
-        // $days8->where = "d.date < '$this->pushDate' and c.uid is null";
-        // $days8->num = 8;
-        // $days88 = new \stdClass();
-        // $end = date("Y-m-d", strtotime("$this->pushDate + $");
-        // $days88->where = "d.date < '" . $end . "' and c.uid is null";
-        // $days88->num = 8;
-        // if($this->getUserStatusQuery ($uid, $days8) && $this->getUserStatusQuery ($uid, $days88) && $this->pushDate != '2017-10-18') {
-        //     return '8days';
-        // } else {
-        //     return '';
-        // }
     }
 
     /**
@@ -243,20 +236,6 @@ class PushTmp
         } else {
             return '';
         }
-        // $days5 = new \stdClass();
-        // $end5 = date("Y-m-d", strtotime($this->pushDate) - (6 * 24 * 3600));
-        // $days5->where = "d.date < '$this->pushDate' and d.date > '" . $end5 . "' and c.uid is null";
-        // $days5->num = 5;
-        // $days55 = new \stdClass();
-        // $end = date("Y-m-d", strtotime($this->pushDate) - (24 * 3600));
-        // $end5 = date("Y-m-d", strtotime($end) - (6 * 24 * 3600));
-        // $days55->where = "d.date < '" . $end . "' and d.date > '" . $end5 . "' and c.uid is null";
-        // $days55->num = 5;
-        // if($this->getUserStatusQuery ($uid, $days5) && $this->getUserStatusQuery ($uid, $days55)) {
-        //     return '5days';
-        // } else {
-        //     return '';
-        // }
     }
 
     /**
@@ -273,20 +252,6 @@ class PushTmp
         } else {
             return '';
         }
-        // $days3 = new \stdClass();
-        // $end3 = date("Y-m-d", strtotime($this->pushDate) - (4 * 24 * 3600));
-        // $days3->where = "d.date < '$this->pushDate' and d.date > '" . $end3 . "' and c.uid is null";
-        // $days3->num = 3;
-        // $days33 = new \stdClass();
-        // $end = date("Y-m-d", strtotime($this->pushDate) - (24 * 3600));
-        // $end3 = date("Y-m-d", strtotime($end) - (4 * 24 * 3600));
-        // $days33->where = "d.date < '" . $end . "' and d.date > '" . $end3 . "' and c.uid is null";
-        // $days33->num = 3;
-        // if($this->getUserStatusQuery ($uid, $days3) && $this->getUserStatusQuery ($uid, $days33)) {
-        //     return '3days';
-        // } else {
-        //     return '';
-        // }
     }
 
     private function getTargetDate($currentDate = null, $offset)
