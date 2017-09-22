@@ -120,37 +120,37 @@ class BackApiController extends Controller
         // 4.无库存 status=7
         if((int) $chekinSum >= 25 && $status != 2) {
 
-            if($this->checkGiftSum()) {
-                if((int) $chekinSum == 25) { //有库存 第一次领取
-                    $status = 6;
-                }
-                $user->num = $this->setGift($user->uid); //领取小样
-            } else {
-                // 不是第一次进来
-                $rank = $this->findCheckInRankByUid($user->uid);
-                if($rank) {
-                    $user->num = GIFT_NUM + (int)$rank->id;
-                } else {
-                    $rankId = $this->setCheckInRank($user->uid);
-                    $user->num = (int)$rankId + GIFT_NUM;
-                }
-                $status = 7;
-            }
+            $isGift = $this->findGiftByUid($user->uid); //是否领取小样
+            $isGiftInfo = $this->findGiftInfoByUid($user->uid); //是否填写信息
+            $isGuftNum = $this->checkGiftSum(); //是否有库存
 
-            if($this->findGiftByUid($user->uid)) {
-                if($this->findGiftInfoByUid($user->uid)){ //1.已经领取，已经填写信息
-                    $status = 4;
-                } else { //2.已经领取，未填写信息
-                    if((int) $chekinSum > 25) {
-                        $status = 5;
+            // 有库存
+            if($isGuftNum) {
+                if($isGift) {
+                    // 已经领小样，已经填写信息
+                    if($isGiftInfo) {
+                        $status = 4;
                     } else {
-                        $status = 6;
+                        if((int) $chekinSum > 25) {
+                            $user->num = (int) $isGift->id;
+                            $status = 5;
+                        }
                     }
-                }
-            } else {
-                // if(!$this->checkGiftSum()) { //3.有库存,未领取
-                //     $status = 7;
-                // }
+                } else {
+                    $status = 6;
+                    $user->num = $this->setGift($user->uid, 1);
+                }   
+            } 
+
+            // 没库存
+            if(!$isGuftNum) {
+
+                if($isGift) {
+                    $user->num = (int) $isGift->id;
+                } else {
+                    $user->num = $this->setGift($user->uid, 2);
+                } 
+                $status = 7;
             }
         }
 
@@ -213,7 +213,7 @@ class BackApiController extends Controller
 
     private function checkGiftSum()
     {
-        $sql = "select count(id) AS sum from gift";
+        $sql = "select count(id) AS sum from gift WHERE status = 1 ";
         $query = $this->_pdo->prepare($sql);
         $query->execute();
         $row = $query->fetch(\PDO::FETCH_ASSOC);
@@ -224,34 +224,9 @@ class BackApiController extends Controller
         }
     }
 
-    private function findCheckInRankByUid($uid)
-    {
-        $sql = "SELECT `id` FROM `checkin_rank` WHERE `uid` = :uid";
-        $query = $this->_pdo->prepare($sql);
-        $query->execute(array(':uid' => $uid));
-        $row = $query->fetch(\PDO::FETCH_ASSOC);
-        if($row) {
-            return  (Object) $row;
-        }
-        return NULL;
-    }
-
-    private function setCheckInRank($uid)
-    {
-        $helper = new Helper();
-        $rank = new \stdClass();
-        $rank->uid = $uid;
-        $rank->created = date('Y-m-d H:i:s');
-        $id = $helper->insertTable('checkin_rank', $rank);
-        if($id) {
-            return $id;
-        }
-        return false;
-    }
-
     private function findGiftByUid($uid)
     {
-        $sql = "SELECT `id`, `uid` FROM `gift` WHERE `uid` = :uid";
+        $sql = "SELECT `id`, `uid` FROM `gift` WHERE status =1 AND `uid` = :uid";
         $query = $this->_pdo->prepare($sql);
         $query->execute(array(':uid' => $uid));
         $row = $query->fetch(\PDO::FETCH_ASSOC);
@@ -261,11 +236,12 @@ class BackApiController extends Controller
         return NULL;
     }
 
-    private function setGift($uid)
+    private function setGift($uid, $status)
     {
         $helper = new Helper();
         $gift = new \stdClass();
         $gift->uid = $uid;
+        $gift->status = $status;
         $gift->created = date('Y-m-d H:i:s');
         $id = $helper->insertTable('gift', $gift);
         if($id) {
