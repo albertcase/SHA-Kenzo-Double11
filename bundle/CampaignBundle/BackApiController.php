@@ -119,7 +119,11 @@ class BackApiController extends Controller
         // 3.有库存,未领取 status=6
         // 4.无库存 status=7
         if((int) $chekinSum >= 25) {
-
+            
+            $checkin = new \stdClass();
+            $checkin->uid = $user->uid;
+            $date = $this->getDate();
+            $checkin->did = (int) $date->id;
             if($this->findCheckIn($checkin)) {
                 // 已经签到
                 $this->sendMsg(2, $user, '');
