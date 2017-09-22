@@ -15,8 +15,7 @@
         var userInfo = {
             isSubmit: <?php echo $conf['isSubmit']; ?>, /*是否提交了用户详细信息表单*/
             isLuckyDraw: <?php echo $conf['isLuckyDraw']; ?>, /*是否抽奖*/
-            remaintimes: <?php echo $conf['remaintimes']; ?>, /*剩余抽奖次数*/
-            isCorrespond:true
+            remaintimes: <?php echo $conf['remaintimes']; ?> /*剩余抽奖次数*/
         };
     </script>
     <script src="../src/dist/js/all_form_luckydraw.min.js"></script>
@@ -151,6 +150,17 @@
                 <div class="des">
                     Miss K将会在30个工作日内将产品寄出<br>
                     请耐心等待哦~
+                </div>
+            </div>
+        </div>
+        <div class="pin pin-4">
+            <div class="v-content">
+                <h3 class="title">「活动提示」</h3>
+                <div class="des">
+                    很遗憾，您之前未参加签到活动<br>
+                    暂无抽奖机会<br>
+                    敬请持续关注KENZO官方微信<br>
+                    更多福利活动等你哦！
                 </div>
             </div>
         </div>

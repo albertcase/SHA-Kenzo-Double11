@@ -8,6 +8,7 @@
         //remaintimes /*剩余抽奖次数*/
         this.user = userInfo;
         this.disableClick = false;
+        this.enableTotalTimes = 24; //说明如果满25次抽奖机会就有权限抽奖了因为是小于号
     };
     //init
     controller.prototype.init = function(){
@@ -81,16 +82,41 @@
         var self = this;
         $('.preload').remove();
         $('.wrapper').addClass('fade');
-        Common.gotoPin(0);
         self.bindEvent();
         self.showAllProvince();
         self.updateLuckyDrawStatus();
+    };
+
+    controller.prototype.updateLuckyDrawStatus = function(){
+        var self = this;
+        Api.luckydrawstatus(function(data){
+            self.user.remaintimes = data.msg.remaintimes;
+            if(data.status==1){
+                if(self.user.isLuckyDraw || !data.msg.remaintimes){
+                    $('.btn-start-luckydraw').addClass('disabled');
+                };
+                if(data.msg.totaltimes<self.enableTotalTimes){
+                    //不符合抽奖条件,直接显示提示信息
+                    Common.gotoPin(3);
+                }else{
+                    //显示首页的状态
+                    self.loadHomePage();
+                }
+                $('.totaldays').html(data.msg.totaldays);
+                $('.totaltimes').html(data.msg.totaltimes);
+                $('.remaintimes').html(data.msg.remaintimes);
+            }
+        });
+    };
+
+    controller.prototype.loadHomePage = function(){
+        var self = this;
         /*
-        * status1: If the user wins the lottery, but not filled the details form, we need guide them to fill form;
-        * status2: If the user wins the lottery, and filled form, show result page;
-        * status3: If the user fails the win, but still has remain times, continue;
-        * status4: If the user fails the win, and also no chance, we will show the sorry message
-        * */
+         * status1: If the user wins the lottery, but not filled the details form, we need guide them to fill form;
+         * status2: If the user wins the lottery, and filled form, show result page;
+         * status3: If the user fails the win, but still has remain times, continue;
+         * status4: If the user fails the win, and also no chance, we will show the sorry message
+         * */
         if(self.user.isLuckyDraw && !self.user.isSubmit){
             Common.gotoPin(0);
             self.lotteryPop('popup-result-yes','恭喜您','获得XXX一份！'+'<div class="btn btn-goinfo">'+'<span class="tt">填写寄送信息</span>'+'</div>');
@@ -108,12 +134,7 @@
             $('.lucky-info').html('很遗憾，您没有中奖！');
             self.lotteryPop('popup-result-no','很遗憾，您没有中奖','请持续关注KENZO官方微信，'+'<br>'+'更多福利等着你哦！');
         }
-
-
-        //test
-        Common.hashRoute();
-        //self.gotoFormPage();
-    };
+    }
 
     //bind Events
     controller.prototype.bindEvent = function(){
@@ -505,20 +526,6 @@
         self.getValidateCode();
         Common.gotoPin(1);
 
-    };
-    controller.prototype.updateLuckyDrawStatus = function(){
-        var self = this;
-        Api.luckydrawstatus(function(data){
-            self.user.remaintimes = data.msg.remaintimes;
-            if(data.status==1){
-                if(self.user.isLuckyDraw || !data.msg.remaintimes){
-                    $('.btn-start-luckydraw').addClass('disabled');
-                };
-                $('.totaldays').html(data.msg.totaldays);
-                $('.totaltimes').html(data.msg.totaltimes);
-                $('.remaintimes').html(data.msg.remaintimes);
-            }
-        });
     };
 
 
