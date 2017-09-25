@@ -155,7 +155,7 @@ class BackApiController extends Controller
                 if($isGift) {
                     $user->num = (int) $isGift->id;
                     if(!$isGiftInfo) { //没库存领过小样未填写信息
-                        $status = 6;
+                        $status = 5;
                     }
                 } else {
                     $user->num = $this->setGift($user->uid, 2);
