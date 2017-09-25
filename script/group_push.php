@@ -7,6 +7,7 @@ use Lib\Helper;
 use Lib\PDO;
 $gmsg = new GroupMsg();
 $gmsg->pushMsg();
+//$gmsg->getMediaList();
 echo 'send ok';
 
 class GroupMsg
@@ -18,20 +19,40 @@ class GroupMsg
     {
         $this->_pdo = PDO::getInstance();
         $this->aceessToken = $this->getAccessToken();
+        $this->helper = new Helper();
     }
+
+//    public function getMediaList()
+//    {
+//        $apiUrl = "https://api.weixin.qq.com/cgi-bin/material/batchget_material?access_token=%s";
+//        $url = sprintf($apiUrl, $this->aceessToken);
+//        $data = array(
+//            'type' => 'news',
+//            'offset' => 0,
+//            'count' => 2,
+//        );
+//        $rs = $this->postData($url, json_encode($data, JSON_UNESCAPED_UNICODE));
+//        var_dump($rs);exit;
+//        return $rs;
+//
+//    }
 
     public function pushMsg()
     {
-        $sql = "SELECT `uid`, `openid` FROM `user` where status = 0";
-        $query = $this->_pdo->prepare($sql);
-        $query->execute();
-        $openidList = array();
-        while($row = $query->fetch(\PDO::FETCH_ASSOC)) {
-            array_push($openidList, $row['openid']);
-        }
-        $data = $this->msgFormat($openidList, '');
+//        $sql = "SELECT `uid`, `openid` FROM `user`";
+//        $query = $this->_pdo->prepare($sql);
+//        $query->execute();
+        $openidList = array(
+            'oEts5uCiZfLl7DlKLyeicIrtneP0',
+            'oEts5uHq4oonn9HZ9TSGkGS66E9g'
+        );
+//        while($row = $query->fetch(\PDO::FETCH_ASSOC)) {
+//            array_push($openidList, $row['openid']);
+//        }
+//        var_dump($openidList);exit;
+        $data = $this->msgFormat($openidList, 'SGeNhcvpGy-dKXS_exvIuK4glpwn9tOVWJwtKP2J68A');
 
-        $rs = $this->sendTmpMsg($data);
+        $rs = $this->sendMsgByGroup($data);
 
         $log = new \stdClass();
         $log->openid = json_encode($openidList, JSON_UNESCAPED_UNICODE);
@@ -64,7 +85,7 @@ class GroupMsg
         $msgData = array(
             'touser' => $openidList,
             'mpnews' => array(
-                'mpnews' => $mediaId,
+                'media_id' => $mediaId,
             ),
             'msgtype' => 'mpnews',
             'send_ignore_reprint' => 0,
@@ -92,6 +113,19 @@ class GroupMsg
             return $id;
         }
         return false;
+    }
+
+    private function postData($url, $post_json) {
+        // post data to wechat
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-Type: application/json; charset=utf-8"));
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $post_json);
+        $data = curl_exec($ch);
+        curl_close($ch);
+        return json_decode($data);
     }
 
 }
