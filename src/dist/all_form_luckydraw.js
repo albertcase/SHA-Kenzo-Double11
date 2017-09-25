@@ -1983,7 +1983,7 @@ $(document).ready(function(){
                         break;
                     case 1:
                         //msg: '恭喜中奖'
-                        self.lotteryPop('popup-result-yes','恭喜您','获得XXX一份！'+'<div class="btn btn-goinfo">'+'<span class="tt">填写寄送信息</span>'+'</div>');
+                        self.lotteryPop('popup-result-yes','恭喜您','获得KENZO花颜舒柔夜间修护面膜（75ML）一份！'+'<div class="btn btn-goinfo">'+'<span class="tt">填写寄送信息</span>'+'</div>');
                         break;
                     case 2:
                         //msg: '今天的奖品已经发没！',
@@ -2008,7 +2008,7 @@ $(document).ready(function(){
                         break;
                     case 3:
                         //msg: '您已获奖',
-                        self.lotteryPop('popup-result-yes','恭喜您','获得XXX一份！'+'<div class="btn btn-goinfo">'+'<span class="tt">填写寄送信息</span>'+'</div>');
+                        self.lotteryPop('popup-result-yes','恭喜您','获得KENZO花颜舒柔夜间修护面膜（75ML）一份！'+'<div class="btn btn-goinfo">'+'<span class="tt">填写寄送信息</span>'+'</div>');
                         break;
                     default :
                         Common.alertBox.add(data.msg);
