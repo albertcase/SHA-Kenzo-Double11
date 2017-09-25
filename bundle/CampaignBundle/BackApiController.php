@@ -137,24 +137,30 @@ class BackApiController extends Controller
                     } else {
                         if((int) $chekinSum > 25) {
                             $user->num = (int) $isGift->id;
-                            $status = 5;
+                            if(!$isGiftInfo) { //有库存 已经领取小样 未填写信息
+                                $status = 5;
+                            }
                         }
                     }
                 } else {
-                    $status = 6;
+                    if($chekinSum == 25) { //第一次满足25天
+                        $status = 6;
+                    }
                     $user->num = $this->setGift($user->uid, 1);
                 }   
             } 
 
             // 没库存
             if(!$isGuftNum) {
-
                 if($isGift) {
                     $user->num = (int) $isGift->id;
+                    if(!$isGiftInfo) { //没库存领过小样未填写信息
+                        $status = 6;
+                    }
                 } else {
                     $user->num = $this->setGift($user->uid, 2);
                 }
-                if((int) $chekinSum == 25) {
+                if((int) $chekinSum == 25) { //在第25天没库存只提醒一次
                     $status = 7;
                 }
             }
