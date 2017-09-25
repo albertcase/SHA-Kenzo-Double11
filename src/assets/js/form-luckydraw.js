@@ -119,7 +119,7 @@
          * */
         if(self.user.isLuckyDraw && !self.user.isSubmit){
             Common.gotoPin(0);
-            self.lotteryPop('popup-result-yes','恭喜您','获得XXX一份！'+'<div class="btn btn-goinfo">'+'<span class="tt">填写寄送信息</span>'+'</div>');
+            self.lotteryPop('popup-result-yes','恭喜您','获得KENZO花颜舒柔夜间修护面膜（75ML）一份！'+'<div class="btn btn-goinfo">'+'<span class="tt">填写寄送信息</span>'+'</div>');
 
             // test
             //Common.gotoPin(1);
