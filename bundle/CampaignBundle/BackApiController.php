@@ -26,6 +26,10 @@ class BackApiController extends Controller
         $log = new \stdClass();
         $log->wechat_msgid = $postArr['msgid'];
         $log->wechat_status = $postArr['status'];
+        $log->wechat_ftime = date('Y-m-d H:i:s');
+        $this->updateTmpWechatStatus($log);
+        $data = array('status' => 1, 'msg' => 'tmp update status ok');
+        $this->dataPrint($data);
     }
 
     private function updateTmpWechatStatus($log)
@@ -137,7 +141,9 @@ class BackApiController extends Controller
                         }
                     }
                 } else {
-                    $status = 6;
+                    if((int) $chekinSum == 25) {
+                        $status = 6;
+                    }
                     $user->num = $this->setGift($user->uid, 1);
                 }   
             } 
