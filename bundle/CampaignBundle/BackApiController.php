@@ -141,9 +141,7 @@ class BackApiController extends Controller
                         }
                     }
                 } else {
-                    if((int) $chekinSum == 25) {
-                        $status = 6;
-                    }
+                    $status = 6;
                     $user->num = $this->setGift($user->uid, 1);
                 }   
             } 
@@ -155,8 +153,10 @@ class BackApiController extends Controller
                     $user->num = (int) $isGift->id;
                 } else {
                     $user->num = $this->setGift($user->uid, 2);
-                } 
-                $status = 7;
+                }
+                if((int) $chekinSum == 25) {
+                    $status = 7;
+                }
             }
         }
 
