@@ -1957,6 +1957,7 @@ $(document).ready(function(){
         * Start lottery
         * */
         $('.btn-start-luckydraw').on('touchstart', function(){
+            _hmt.push(['_trackEvent', 'button', 'click', 'StartToLuckyDraw']);
             if($('.btn-start-luckydraw').hasClass('disabled')) return;
             Api.lottery(function(data){
                 //self.updateLuckyDrawStatus();
@@ -2030,6 +2031,7 @@ $(document).ready(function(){
          * if isTransformedOld is false, submit it and then call gift api
          * */
         $('.btn-submit').on('touchstart',function(){
+            _hmt.push(['_trackEvent', 'button', 'click', 'submitLuckyDrawForm']);
             if(self.validateForm()){
                 //name mobile province city area address
                 var inputNameVal = $('#input-name').val(),

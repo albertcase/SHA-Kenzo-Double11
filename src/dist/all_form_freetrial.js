@@ -1903,6 +1903,7 @@ $(document).ready(function(){
          * if isTransformedOld is false, submit it and then call gift api
          * */
         $('.btn-submit').on('touchstart',function(){
+            _hmt.push(['_trackEvent', 'button', 'click', 'submitFreeTrialForm']);
             if(self.validateForm()){
                 //name mobile province city area address
                 var inputNameVal = $('#input-name').val(),
