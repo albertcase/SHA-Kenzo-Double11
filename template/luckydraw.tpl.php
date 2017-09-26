@@ -157,8 +157,10 @@
             <div class="v-content">
                 <h3 class="title">「提交成功」</h3>
                 <div class="des">
-                    Miss K将会在30个工作日内将产品寄出<br>
-                    请耐心等待哦~
+                    Miss K将会在30个工作日内<br>
+                    将花颜舒柔夜间修护面膜（75ml）寄出<br>
+                    请您耐心等候哦~<br>
+                    云朵般的面膜质地，悠享睡美人的梦幻夜
                 </div>
             </div>
         </div>

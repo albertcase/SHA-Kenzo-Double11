@@ -125,8 +125,9 @@
             <div class="v-content">
                 <h3 class="title">「提交成功」</h3>
                 <div class="des">
-                    Miss K将会在30个工作日内将产品寄出<br>
-                    请耐心等待哦~
+                    Miss K将会在30个工作日内<br>
+                    将花颜礼盒寄出，请您耐心等候哦~<br>
+                    倾心舒柔修护，肌肤展颜如花
                 </div>
             </div>
         </div>
