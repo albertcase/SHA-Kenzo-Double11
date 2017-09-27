@@ -166,49 +166,49 @@ class BackApiController extends Controller
                 $user->num = $this->setGift($user->uid, 1);
                 $status = 13;
             }
-        }
-
-        // 累计签到25天推送另外的信息
-        // 优先级 1>2>3>4
-        // 1.已经领取，已经填写信息 status=4
-        // 2.已经领取，未填写信息 status=5
-        // 3.有库存,未领取 status=6
-        // 4.无库存 status=7
-        if((int) $chekinSum >= 25 && $status != 2 && $now != '2017-11-10') {
-            // 有库存
-            if($isGuftNum) {
-                if($isGift) {
-                    // 已经领小样，已经填写信息
-                    if($isGiftInfo) {
-                        $status = 4;
-                    } else {
-                        if((int) $chekinSum > 25) {
-                            $user->num = (int) $isGift->id;
-                            if(!$isGiftInfo) { //有库存 已经领取小样 未填写信息
-                                $status = 5;
+        } else {
+            // 累计签到25天推送另外的信息
+            // 优先级 1>2>3>4
+            // 1.已经领取，已经填写信息 status=4
+            // 2.已经领取，未填写信息 status=5
+            // 3.有库存,未领取 status=6
+            // 4.无库存 status=7
+            if((int) $chekinSum >= 25 && $status != 2) {
+                // 有库存
+                if($isGuftNum) {
+                    if($isGift) {
+                        // 已经领小样，已经填写信息
+                        if($isGiftInfo) {
+                            $status = 4;
+                        } else {
+                            if((int) $chekinSum > 25) {
+                                $user->num = (int) $isGift->id;
+                                if(!$isGiftInfo) { //有库存 已经领取小样 未填写信息
+                                    $status = 5;
+                                }
                             }
                         }
-                    }
-                } else {
-                    if($chekinSum == 25) { //第一次满足25天
-                        $status = 6;
-                    }
-                    $user->num = $this->setGift($user->uid, 1);
-                }   
-            } 
+                    } else {
+                        if($chekinSum == 25) { //第一次满足25天
+                            $status = 6;
+                        }
+                        $user->num = $this->setGift($user->uid, 1);
+                    }   
+                } 
 
-            // 没库存
-            if(!$isGuftNum) {
-                if($isGift) {
-                    $user->num = (int) $isGift->id;
-                    if(!$isGiftInfo) { //没库存领过小样未填写信息
-                        $status = 5;
+                // 没库存
+                if(!$isGuftNum) {
+                    if($isGift) {
+                        $user->num = (int) $isGift->id;
+                        if(!$isGiftInfo) { //没库存领过小样未填写信息
+                            $status = 5;
+                        }
+                    } else {
+                        $user->num = $this->setGift($user->uid, 2);
                     }
-                } else {
-                    $user->num = $this->setGift($user->uid, 2);
-                }
-                if((int) $chekinSum == 25) { //在第25天没库存只提醒一次
-                    $status = 7;
+                    if((int) $chekinSum == 25) { //在第25天没库存只提醒一次
+                        $status = 7;
+                    }
                 }
             }
         }
