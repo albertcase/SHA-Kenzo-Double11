@@ -130,7 +130,7 @@ class BackApiController extends Controller
         if(SIGN_DATE == '2017-11-10' && $status != 2) {
 
             //签满小于25天
-            if($chekinSum < 25) {
+            if($chekinSum < 24) {
                 $user->num = (int) $isGift->id;
                 $status = 8;
             }
