@@ -103,7 +103,6 @@ class PushTmp
      */
     private function sendMsg($user)
     {
-        $status = $this->getUserStatus($user->uid);
         $content = 'Hi ' . $user->nickname . '，你已签到满24 天，掌声鼓励！今天也请继续保持签到，就有机会抢先试用全新花颜舒柔系列产品哦！';
         $data = $this->msgFormat($user->openid, 'WwsoVpViE-R3yL4t_1oJBP0dqJdYmvr7oFLFKUCmpeA', $content);
         if(!empty($data)) {
