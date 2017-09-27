@@ -127,8 +127,7 @@ class BackApiController extends Controller
         // 4.签满25天未获得小样 status=11
         // 5.签到大于25天领取过小样但是没有填写过信息 status=12
         // 6.签满25天获得小样 status=13
-        $now = date('Y-m-d');
-        if($now == '2017-11-10' && $status != 2) {
+        if(SIGN_DATE == '2017-11-10' && $status != 2) {
 
             //签满小于25天
             if($chekinSum < 25) {
