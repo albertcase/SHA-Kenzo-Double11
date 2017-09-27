@@ -153,6 +153,11 @@ class BackApiController extends Controller
                     $user->num = $this->setGift($user->uid, 2);
                 }
                 $status = 11;
+            } else {
+                if(!$isGift) {
+                    $user->num = $this->setGift($user->uid, 1);
+                }
+                $status = 13;
             }
 
             //签到大于25天，领取过小样，没有填写过信息
@@ -161,11 +166,6 @@ class BackApiController extends Controller
                 $status = 12;
             }
 
-            //刚好签满25天， 小样有库存
-            if($chekinSum == 24 && $isGuftNum && !$isGift) {
-                $user->num = $this->setGift($user->uid, 1);
-                $status = 13;
-            }
         } else {
             // 累计签到25天推送另外的信息
             // 优先级 1>2>3>4
