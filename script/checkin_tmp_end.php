@@ -75,7 +75,7 @@ class PushTmp
         $query->execute();
         
         while($row = $query->fetch(\PDO::FETCH_ASSOC)) {
-            $checkinNum = $this->getCheckinSum($row['id']);
+            $checkinNum = $this->getCheckinSum($row['uid']);
             if($checkinNum == 24) {
                 $rs = $this->sendMsg((object)$row);
                 if($rs) {
