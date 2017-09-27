@@ -148,16 +148,18 @@ class BackApiController extends Controller
             }
 
             //刚好签满25天， 无小样库存
-            if($chekinSum == 24 && !$isGuftNum) {
-                if(!$isGift) {
-                    $user->num = $this->setGift($user->uid, 2);
-                }
-                $status = 11;
-            } else {
-                if(!$isGift) {
-                    $user->num = $this->setGift($user->uid, 1);
-                }
-                $status = 13;
+            if($chekinSum == 24) {
+                if($isGuftNum) {
+                    if(!$isGift) {
+                        $user->num = $this->setGift($user->uid, 1);
+                    }
+                    $status = 13;
+                } else {
+                    if(!$isGift) {
+                        $user->num = $this->setGift($user->uid, 2);
+                    }
+                    $status = 11;
+                }   
             }
 
             //签到大于25天，领取过小样，没有填写过信息
