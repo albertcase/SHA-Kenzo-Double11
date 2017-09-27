@@ -218,7 +218,7 @@ class ApiController extends Controller
         $request->validation($fields);
         $phone = $request->request->get('phone');
         $phoneCode = $request->request->get('phonecode');
-        if($this->checkMsgCode($phone, $phonecode)) {
+        if($this->checkMsgCode($phone, $phoneCode)) {
             $data = array('status' => 1, 'msg' => 'success');
         } else {
             $data = array('status' => 0, 'msg' => 'phone code is failed');

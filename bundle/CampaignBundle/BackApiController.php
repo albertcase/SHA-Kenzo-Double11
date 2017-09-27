@@ -116,18 +116,64 @@ class BackApiController extends Controller
         $accessToken = $this->getAccessTokenByWechat();
         $chekinSum = $this->getCheckinSum($user->uid);
 
+        $isGift = $this->findGiftByUid($user->uid); //是否领取小样
+        $isGiftInfo = $this->findGiftInfoByUid($user->uid); //是否填写信息
+        $isGuftNum = $this->checkGiftSum(); //是否有库存
+
+        // 活动最后一天签到回复
+        // 1.未签满25天 status=8
+        // 2.签满25天并且领过小样并且填写过信息 status=9
+        // 3.签到大于25天并且没有没有领过小样也没有填写过信息 status=10
+        // 4.签满25天未获得小样 status=11
+        // 5.签到大于25天领取过小样但是没有填写过信息 status=12
+        // 6.签满25天获得小样 status=13
+        $now = date('Y-m-d');
+        if($now == '2017-11-10' && $status != 2) {
+
+            //签满小于25天
+            if($chekinSum < 25) {
+                $user->num = (int) $chekinSum;
+                $status = 8;
+            }
+
+            //签满大于25天 领取小样 填写信息
+            if($chekinSum > 25 && $isGiftInfo && $isGift) {
+                $user->num = (int) $chekinSum;
+                $status = 9;
+            }
+
+            //签满大于25天 未领取小样 未填写信息
+            if($chekinSum > 25 && !$isGift) {
+                $user->num = (int) $chekinSum;
+                $status = 10;
+            }
+
+            //刚好签满25天， 无小样库存
+            if($chekinSum == 25 && !$isGuftNum) {
+                $user->num = $this->setGift($user->uid, 2);
+                $status = 11;
+            }
+
+            //签到大于25天，领取过小样，没有填写过信息
+            if($chekinSum > 25 && !$isGiftInfo && $isGift) {
+                $user->num = (int) $chekinSum;
+                $status = 12;
+            }
+
+            //刚好签满25天， 小样有库存
+            if($chekinSum == 25 && $isGuftNum) {
+                $user->num = $this->setGift($user->uid, 1);
+                $status = 13;
+            }
+        }
+
         // 累计签到25天推送另外的信息
         // 优先级 1>2>3>4
         // 1.已经领取，已经填写信息 status=4
         // 2.已经领取，未填写信息 status=5
         // 3.有库存,未领取 status=6
         // 4.无库存 status=7
-        if((int) $chekinSum >= 25 && $status != 2) {
-
-            $isGift = $this->findGiftByUid($user->uid); //是否领取小样
-            $isGiftInfo = $this->findGiftInfoByUid($user->uid); //是否填写信息
-            $isGuftNum = $this->checkGiftSum(); //是否有库存
-
+        if((int) $chekinSum >= 25 && $status != 2 && $now != '2017-11-10') {
             // 有库存
             if($isGuftNum) {
                 if($isGift) {
@@ -205,6 +251,43 @@ class BackApiController extends Controller
                 $content = 'Hi ' . $user->nickname . '，你已成功签到25天，在小伙伴中排名第' . $user->num . '，很遗憾' . GIFT_NUM . '套花颜礼盒已被全部申领完毕！别灰心，请继续坚持，你的签到天数对应最终睡美人面膜正装（75ML）的抽奖次数哦，11月11号开启抽奖！';
                 $this->sendCustomMsg($accessToken, $user->openid, 'text', array('content' => $content));
                 break;
+
+            case 8: //2017-11-10 未签满25天
+                $this->sendCustomMsg($accessToken, $user->openid, 'image', array('media_id' => $media_id));
+                $content = 'Hi ' . $user->nickname . ' , 今天是你签到的第' . $chekinSum . '天。你的签到天数对应最终花颜舒柔夜间修护面膜正装（75ML）的抽奖次数哦，明天开启抽奖，不见不散~';
+                $this->sendCustomMsg($accessToken, $user->openid, 'text', array('content' => $content));
+                break;
+
+            case 9: //2017-11-10 签满大于25天 并且领取过小样，填写过信息
+                $this->sendCustomMsg($accessToken, $user->openid, 'image', array('media_id' => $media_id));
+                $content = 'Hi ' . $user->nickname . ' , 今天是你签到的第' . $chekinSum . '天。你的签到天数对应最终花颜舒柔夜间修护面膜正装（75ML）的抽奖次数哦，明天开启抽奖，不见不散~';
+                $this->sendCustomMsg($accessToken, $user->openid, 'text', array('content' => $content));
+                break;
+
+            case 10: //2017-11-10 签满大于25天 并且领取过小样，填写过信息
+                $this->sendCustomMsg($accessToken, $user->openid, 'image', array('media_id' => $media_id));
+                $content = 'Hi ' . $user->nickname . ' , 今天是你签到的第' . $chekinSum . '天。你的签到天数对应最终花颜舒柔夜间修护面膜正装（75ML）的抽奖次数哦，明天开启抽奖，不见不散~';
+                $this->sendCustomMsg($accessToken, $user->openid, 'text', array('content' => $content));
+                break;
+
+            case 11: //2017-11-10 签满刚好25天 并且无库存
+                $this->sendCustomMsg($accessToken, $user->openid, 'image', array('media_id' => $media_id));
+                $content = 'Hi ' . $user->nickname . ' ，你已成功签到25天，在小伙伴中排名第' . $user->num . '，很遗憾' . GIFT_NUM . '套花颜礼盒已被全部申领完毕！别灰心，请继续坚持，你的签到天数对应最终花颜舒柔夜间修护面膜正装（75ML）的抽奖次数哦，明天开启抽奖，不见不散~';
+                $this->sendCustomMsg($accessToken, $user->openid, 'text', array('content' => $content));
+                break;
+
+            case 12: //2017-11-10 
+                $this->sendCustomMsg($accessToken, $user->openid, 'image', array('media_id' => $media_id));
+                $content = 'Hi ' . $user->nickname . ' ，这是你签到的第' . $chekinSum . '天！别忘了' . "<a href='http://kenzodouble11.samesamechina.com/freetrial'>点击</a>" . '填写表单，领取花颜礼盒哦。你的签到天数对应最终花颜舒柔夜间修护面膜正装（75ML）的抽奖次数哦，明天开启抽奖，不见不散~';
+                $this->sendCustomMsg($accessToken, $user->openid, 'text', array('content' => $content));
+                break;
+
+            case 13: //2017-11-10 刚好签满25天，并且小样有库存，
+                $this->sendCustomMsg($accessToken, $user->openid, 'image', array('media_id' => $media_id));
+                $content = 'Hi ' . $user->nickname . ' 恭喜你以第' . $user->num . '名完成签到25天、获得花颜礼盒一份！' . "<a href='http://kenzodouble11.samesamechina.com/freetrial'>点击</a>" . '填写表单，抢先试用全新花颜舒柔系列产品。你的签到天数将对应最终花颜舒柔夜间修护面膜正装（75ML）的抽奖次数哦，明天开启抽奖，不见不散';
+                $this->sendCustomMsg($accessToken, $user->openid, 'text', array('content' => $content));
+                break;
+
         }
     }
 
