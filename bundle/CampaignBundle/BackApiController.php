@@ -131,36 +131,38 @@ class BackApiController extends Controller
 
             //签满小于25天
             if($chekinSum < 25) {
-                $user->num = (int) $chekinSum;
+                $user->num = (int) $isGift->id;
                 $status = 8;
             }
 
             //签满大于25天 领取小样 填写信息
             if($chekinSum > 25 && $isGiftInfo && $isGift) {
-                $user->num = (int) $chekinSum;
+                $user->num = (int) $isGift->id;
                 $status = 9;
             }
 
             //签满大于25天 未领取小样 未填写信息
             if($chekinSum > 25 && !$isGift) {
-                $user->num = (int) $chekinSum;
+                $user->num = (int) $isGift->id;
                 $status = 10;
             }
 
             //刚好签满25天， 无小样库存
-            if($chekinSum == 25 && !$isGuftNum) {
-                $user->num = $this->setGift($user->uid, 2);
+            if($chekinSum == 24 && !$isGuftNum) {
+                if(!$isGift) {
+                    $user->num = $this->setGift($user->uid, 2);
+                }
                 $status = 11;
             }
 
             //签到大于25天，领取过小样，没有填写过信息
             if($chekinSum > 25 && !$isGiftInfo && $isGift) {
-                $user->num = (int) $chekinSum;
+                $user->num = (int) $isGift->id;
                 $status = 12;
             }
 
             //刚好签满25天， 小样有库存
-            if($chekinSum == 25 && $isGuftNum) {
+            if($chekinSum == 24 && $isGuftNum && !$isGift) {
                 $user->num = $this->setGift($user->uid, 1);
                 $status = 13;
             }
