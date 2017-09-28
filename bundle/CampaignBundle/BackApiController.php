@@ -80,12 +80,17 @@ class BackApiController extends Controller
             $checkin->uid = $user->uid;
             $date = $this->getDate();
             $checkin->did = (int) $date->id;
+            if(SIGN_DATE == '2017-10-08') {
+                 $this->sendMsg(14, $user, '');
+            } else {
+                $isCheckin = $this->checkIn($checkin);
+            }
 
             if($this->findCheckIn($checkin)) {
                 // 已经签到
                 $this->sendMsg(2, $user, '');
             } else {
-                if($this->checkIn($checkin)) {
+                if($isCheckin) {
                     // 签到成功
                     $this->sendMsg(1, $user, $date->media_id);
                 } else {
@@ -287,6 +292,11 @@ class BackApiController extends Controller
             case 13: //2017-11-10 刚好签满25天，并且小样有库存，
                 $this->sendCustomMsg($accessToken, $user->openid, 'image', array('media_id' => $media_id));
                 $content = 'Hi ' . $user->nickname . ' 恭喜你以第' . $user->num . '名完成签到25天、获得花颜礼盒一份！' . "<a href='http://kenzodouble11.samesamechina.com/freetrial'>点击</a>" . '填写表单，抢先试用全新花颜舒柔系列产品。你的签到天数将对应最终花颜舒柔夜间修护面膜正装（75ML）的抽奖次数哦，明天开启抽奖，不见不散~';
+                $this->sendCustomMsg($accessToken, $user->openid, 'text', array('content' => $content));
+                break;
+
+            case 14:
+                $content = 'Hi ' . $user->nickname . ', 活动明天开始！';
                 $this->sendCustomMsg($accessToken, $user->openid, 'text', array('content' => $content));
                 break;
 
