@@ -21,7 +21,6 @@ class BackApiController extends Controller
      */
     public function tmpendAction()
     {
-        echo 2233;exit;
         $postData = file_get_contents('php://input', 'r');
         $postArr = json_decode($postData, 1);
         $log = new \stdClass();
