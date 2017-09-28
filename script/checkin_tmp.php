@@ -105,7 +105,8 @@ class PushTmp
         switch($status) {
 
             case '9days':
-                $content = 'Hi ' . $user->nickname . '，Miss K提醒你，你的签到天数对应最终睡美人面膜（75ML）的抽奖次数哦，赶紧点击菜单栏签到吧，11月11号开启抽奖哦~';
+//                $content = 'Hi ' . $user->nickname . '，Miss K提醒你，你的签到天数对应最终睡美人面膜（75ML）的抽奖次数哦，赶紧点击菜单栏签到吧，11月11号开启抽奖哦~';
+                $content = 'Hi ' . $user->nickname . '，Miss K提醒你，你的签到天数将对应最终花颜舒柔夜间修护面膜正装（75ML）的抽奖次数哦，赶紧点击菜单栏签到吧，11月11号开启抽奖哦~';
                 $data = $this->msgFormat($user->openid, 'WwsoVpViE-R3yL4t_1oJBP0dqJdYmvr7oFLFKUCmpeA', $content);
                 $this->updateUserStatus($user->uid);
                 break;
