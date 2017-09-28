@@ -86,6 +86,7 @@ class BackApiController extends Controller
             $checkin->did = (int) $date->id;
             if(SIGN_DATE == '2017-10-08') {
                 $user = new \stdClass();
+                $user->uid = 0;
                 $user->openid = $postArr['FromUserName'];
                 $this->sendMsg(14, $user, '');
             } else {
