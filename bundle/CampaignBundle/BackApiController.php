@@ -69,11 +69,15 @@ class BackApiController extends Controller
             $logdata->data = $postData;
             $lid = $this->insertCheckInLog($logdata);
 
-            // 用户注册登陆
-            $user = $this->initUser($openid);
-            if(!$user) {
-               throw new \Exception('init user is failed');
+            // CESHI 
+            if(SIGN_DATE != '2017-10-08') {
+                // 用户注册登陆
+                $user = $this->initUser($openid);
+                if(!$user) {
+                   throw new \Exception('init user is failed');
+                }
             }
+            
 
             // 用户签到
             $checkin = new \stdClass();
@@ -81,7 +85,9 @@ class BackApiController extends Controller
             $date = $this->getDate();
             $checkin->did = (int) $date->id;
             if(SIGN_DATE == '2017-10-08') {
-                 $this->sendMsg(14, $user, '');
+                $user = new \stdClass();
+                $user->openid = $postArr['FromUserName'];
+                $this->sendMsg(14, $user, '');
             } else {
                 $isCheckin = $this->checkIn($checkin);
             }
