@@ -21,11 +21,12 @@ class BackApiController extends Controller
      */
     public function tmpendAction()
     {
+        echo 2233;exit;
         $postData = file_get_contents('php://input', 'r');
         $postArr = json_decode($postData, 1);
         $log = new \stdClass();
-        $log->wechat_msgid = $postArr['msgid'];
-        $log->wechat_status = $postArr['status'];
+        $log->wechat_msgid = $postArr['MsgID'];
+        $log->wechat_status = $postArr['Status'];
         $log->wechat_ftime = date('Y-m-d H:i:s');
         $this->updateTmpWechatStatus($log);
         $data = array('status' => 1, 'msg' => 'tmp update status ok');
@@ -38,7 +39,6 @@ class BackApiController extends Controller
         $condition = array(
             array('wechat_msgid', $log->wechat_msgid, '='),
         );
-        $log->wechat_ftime = date('Y-m-d H:i:s');
         return $helper->updateTable('tmp_log', $log, $condition);
     }
 
