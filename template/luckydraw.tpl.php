@@ -192,7 +192,7 @@
             <p class="des activity-requirement">
                 参与此次KENZO签到活动的用户<br>
                 即可参与抽奖活动<br>
-                签到次数即为抽奖次数
+                累计签到次数即为抽奖次数
             </p>
             <h4 class="subtitle">奖品内容</h4>
             <p class="des activity-prize">
