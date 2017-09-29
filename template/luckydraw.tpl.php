@@ -199,9 +199,9 @@
                 奖品为KENZO花颜舒柔夜间修护面膜正装（75ml）<br>
                 根据中奖用户填写的邮寄地址<br>
                 在中奖后的30个工作日内寄送<br>
-                奖品限量60个
+                奖品限量66个
             </p>
-            <p class="tips-2">* 每个微信ID仅限中奖1次</p>
+            <p class="tips-2">* 每个微信ID仅限中奖1次<br>中奖名单将会在活动结束后于KENZO官方微信公布</p>
             <!--<p class="product-name">* KENZO花颜舒柔夜间修护面膜</p>-->
         </div>
         <div class="btn-close">X</div>
