@@ -274,7 +274,7 @@ class BackApiController extends Controller
 
             case 11: //2017-11-10 签满刚好25天 并且无库存
                 $this->sendCustomMsg($accessToken, $user->openid, 'image', array('media_id' => $media_id));
-                $content = 'Hi ' . $user->nickname . ' ，你已成功签到25天，在小伙伴中排名第' . $user->num . '，很遗憾' . GIFT_NUM . '套花颜礼盒已被全部申领完毕！别灰心，你获得25次抽取'. "<font style='red'>" .'花颜舒柔夜间修护面膜正装（75ML）' . "</font>" . '的机会，明天开启抽奖，不见不散~';
+                $content = 'Hi ' . $user->nickname . ' ，你已成功签到25天，在小伙伴中排名第' . $user->num . '，很遗憾' . GIFT_NUM . '套花颜礼盒已被全部申领完毕！别灰心，你获得25次抽取'. "<font color='red'>" .'花颜舒柔夜间修护面膜正装（75ML）' . "</font>" . '的机会，明天开启抽奖，不见不散~';
                 $this->sendCustomMsg($accessToken, $user->openid, 'text', array('content' => $content));
                 break;
 
