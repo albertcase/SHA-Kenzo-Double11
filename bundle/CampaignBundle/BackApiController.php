@@ -256,37 +256,37 @@ class BackApiController extends Controller
 
             case 8: //2017-11-10 未签满25天
                 $this->sendCustomMsg($accessToken, $user->openid, 'image', array('media_id' => $media_id));
-                $content = 'Hi ' . $user->nickname . ' , 今天是你签到的第' . $chekinSum . '天。你的签到天数对应最终花颜舒柔夜间修护面膜正装（75ML）的抽奖次数哦，明天开启抽奖，不见不散~';
+                $content = 'Hi ' . $user->nickname . ' , 今天是你签到的第' . $chekinSum . '天。你的签到天数对应【花颜舒柔夜间修护面膜正装（75ML）】的抽奖次数哦，明天开启抽奖，不见不散~';
                 $this->sendCustomMsg($accessToken, $user->openid, 'text', array('content' => $content));
                 break;
 
             case 9: //2017-11-10 签满大于25天 并且领取过小样，填写过信息
                 $this->sendCustomMsg($accessToken, $user->openid, 'image', array('media_id' => $media_id));
-                $content = 'Hi ' . $user->nickname . ' , 今天是你签到的第' . $chekinSum . '天。你的签到天数对应最终花颜舒柔夜间修护面膜正装（75ML）的抽奖次数哦，明天开启抽奖，不见不散~';
+                $content = 'Hi ' . $user->nickname . ' , 今天是你签到的第' . $chekinSum . '天。你的签到天数对应【花颜舒柔夜间修护面膜正装（75ML）】的抽奖次数哦，明天开启抽奖，不见不散~';
                 $this->sendCustomMsg($accessToken, $user->openid, 'text', array('content' => $content));
                 break;
 
             case 10: //2017-11-10 签满大于25天 并且领取过小样，填写过信息
                 $this->sendCustomMsg($accessToken, $user->openid, 'image', array('media_id' => $media_id));
-                $content = 'Hi ' . $user->nickname . ' , 今天是你签到的第' . $chekinSum . '天。你的签到天数对应最终花颜舒柔夜间修护面膜正装（75ML）的抽奖次数哦，明天开启抽奖，不见不散~';
+                $content = 'Hi ' . $user->nickname . ' , 今天是你签到的第' . $chekinSum . '天。你的签到天数对应【花颜舒柔夜间修护面膜正装（75ML）】的抽奖次数哦，明天开启抽奖，不见不散~';
                 $this->sendCustomMsg($accessToken, $user->openid, 'text', array('content' => $content));
                 break;
 
             case 11: //2017-11-10 签满刚好25天 并且无库存
                 $this->sendCustomMsg($accessToken, $user->openid, 'image', array('media_id' => $media_id));
-                $content = 'Hi ' . $user->nickname . ' ，你已成功签到25天，在小伙伴中排名第' . $user->num . '，很遗憾' . GIFT_NUM . '套花颜礼盒已被全部申领完毕！别灰心，你获得25次抽取'. "<font color='red'>" .'花颜舒柔夜间修护面膜正装（75ML）' . "</font>" . '的机会，明天开启抽奖，不见不散~';
+            $content = 'Hi ' . $user->nickname . ' ，你已成功签到25天，在小伙伴中排名第' . $user->num . '，很遗憾' . GIFT_NUM . '套花颜礼盒已被全部申领完毕！别灰心，你获得25次抽取【花颜舒柔夜间修护面膜正装（75ML）】的机会，明天开启抽奖，不见不散~';
                 $this->sendCustomMsg($accessToken, $user->openid, 'text', array('content' => $content));
                 break;
 
             case 12: //2017-11-10 
                 $this->sendCustomMsg($accessToken, $user->openid, 'image', array('media_id' => $media_id));
-                $content = 'Hi ' . $user->nickname . ' ，这是你签到的第' . $chekinSum . '天！别忘了' . "<a href='http://kenzodouble11.samesamechina.com/freetrial'>点击</a>" . '填写表单，领取花颜礼盒哦。你的签到天数对应最终花颜舒柔夜间修护面膜正装（75ML）的抽奖次数哦，明天开启抽奖，不见不散~';
+                $content = 'Hi ' . $user->nickname . ' ，这是你签到的第' . $chekinSum . '天！别忘了' . "<a href='http://kenzodouble11.samesamechina.com/freetrial'>点击</a>" . '填写表单，领取花颜礼盒哦。你的签到天数对应【花颜舒柔夜间修护面膜正装（75ML）】的抽奖次数哦，明天开启抽奖，不见不散~';
                 $this->sendCustomMsg($accessToken, $user->openid, 'text', array('content' => $content));
                 break;
 
             case 13: //2017-11-10 刚好签满25天，并且小样有库存，
                 $this->sendCustomMsg($accessToken, $user->openid, 'image', array('media_id' => $media_id));
-                $content = 'Hi ' . $user->nickname . ' 恭喜你以第' . $user->num . '名完成签到25天、获得花颜礼盒一份！' . "<a href='http://kenzodouble11.samesamechina.com/freetrial'>点击</a>" . '填写表单，抢先试用全新花颜舒柔系列产品。你的签到天数将对应最终花颜舒柔夜间修护面膜正装（75ML）的抽奖次数哦，明天开启抽奖，不见不散~';
+                $content = 'Hi ' . $user->nickname . ' 恭喜你以第' . $user->num . '名完成签到25天、获得花颜礼盒一份！' . "<a href='http://kenzodouble11.samesamechina.com/freetrial'>点击</a>" . '填写表单，抢先试用全新花颜舒柔系列产品。你的签到天数将对应【花颜舒柔夜间修护面膜正装（75ML）】的抽奖次数哦，明天开启抽奖，不见不散~';
                 $this->sendCustomMsg($accessToken, $user->openid, 'text', array('content' => $content));
                 break;
         }
