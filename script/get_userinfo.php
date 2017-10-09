@@ -30,16 +30,20 @@ class GetInfo
         
         while($row = $query->fetch(\PDO::FETCH_ASSOC)) {
             $info = $this->getUserInfoByWechat($row['openid']);
-            $userInfo = new \stdClass();
-            $userInfo->updated = date('Y-m-d H:i:s');
-            $userInfo->nickname = $info->nickname;
-            $userInfo->sex = $info->sex;
-            $userInfo->province = $info->province;
-            $userInfo->country = $info->country;
-            $userInfo->city = $info->city;
-            $userInfo->headimgurl = $info->headimgurl;
-            $this->updateUserInfo($row['uid'], $userInfo);
-            echo 'set ok';
+            if($info->subscribe == 1) {
+                $userInfo = new \stdClass();
+                $userInfo->updated = date('Y-m-d H:i:s');
+                $userInfo->nickname = $info->nickname;
+                $userInfo->sex = $info->sex;
+                $userInfo->province = $info->province;
+                $userInfo->country = $info->country;
+                $userInfo->city = $info->city;
+                $userInfo->headimgurl = $info->headimgurl;
+                $this->updateUserInfo($row['uid'], $userInfo);
+                echo "user " . $row['openid'] . " is subscribe and get userInfo\n";
+            } else {
+                echo "user " . $row['openid'] . " is not subscribe\n";
+            }
         }
     }
 
