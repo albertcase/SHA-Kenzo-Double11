@@ -83,17 +83,34 @@ class PushTmp
         $rs = $this->sendTmpMsg($data);
         */
 
-        $sql = "SELECT `uid`, `openid`, `nickname`  FROM `user` where status = 0";
+        $sql = "SELECT `uid`, `openid`, `nickname` FROM `user` WHERE `status` = 0";
         $query = $this->_pdo->prepare($sql);
         $query->execute();
         
         while($row = $query->fetch(\PDO::FETCH_ASSOC)) {
-            $rs = $this->sendMsg((object)$row);
-            if($rs) {
-                echo 'openid' . $row['openid'] . " push success!\n";
+            if(!$this->isSend($row['uid'])) {
+                $rs = $this->sendMsg((object)$row);
             } else {
-                echo 'openid' . $row['openid'] . " push failed!\n";
+                echo 'openid: ' . $row['openid'] . " is send!\n";
             }
+            if($rs) {
+                echo 'openid: ' . $row['openid'] . " push success!\n";
+            } else {
+                echo 'openid: ' . $row['openid'] . " push failed!\n";
+            }
+        }
+    }
+
+    private function isSend($uid)
+    {
+        $sql = "SELECT `wechat_status` FROM `tmp_log` WHERE `created` like '{$this->pushDate}%' AND uid = {$uid} ";
+        $query = $this->_pdo->prepare($sql);
+        $query->execute();
+        $row = $query->fetch(\PDO::FETCH_ASSOC);
+        if($row['wechat_status'] == 'success') {
+            return TRUE;
+        } else {
+            return FALSE;
         }
     }
 
@@ -106,7 +123,6 @@ class PushTmp
         switch($status) {
 
             case '9days':
-//                $content = 'Hi ' . $user->nickname . '，Miss K提醒你，你的签到天数对应最终睡美人面膜（75ML）的抽奖次数哦，赶紧点击菜单栏签到吧，11月11号开启抽奖哦~';
                 $content = 'Hi ' . $user->nickname . '，Miss K提醒你，你的签到天数将对应最终花颜舒柔夜间修护面膜正装（75ML）的抽奖次数哦，赶紧点击菜单栏签到吧，11月11号开启抽奖哦~';
                 $data = $this->msgFormat($user->openid, 'WwsoVpViE-R3yL4t_1oJBP0dqJdYmvr7oFLFKUCmpeA', $content);
                 $this->updateUserStatus($user->uid);
