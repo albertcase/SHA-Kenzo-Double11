@@ -37,9 +37,16 @@ class sendCustom
         }
     }
 
-    private function updateSendStatus($openid, $errcode, $errmsg);
+    private function updateSendStatus($openid, $errcode, $errmsg)
     {
-
+        $condition = array(
+            array('openid', $openid, '='),
+        );
+        $info = new \stdClass();
+        $info->errcode = $errcode;
+        $info->errmsg = $errmsg;
+        return $this->helper->updateTable('msg_log', $info, $condition);
+    }
     }
 
     /**
