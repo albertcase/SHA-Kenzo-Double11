@@ -33,7 +33,7 @@ class sendCustom
             $sendRs = $this->sendCustomMsgTowechat($row['data']);
             if($sendRs->errcode == 0) {
                 $this->updateSendStatus($row['openid'], $sendRs->errcode, $sendRs->errmsg);
-                echo "{$row['openid']} send ok!";
+                echo "{$row['openid']} send ok!\n";
             }
         }
     }
