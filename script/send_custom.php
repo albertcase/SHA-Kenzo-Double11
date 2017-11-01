@@ -47,7 +47,6 @@ class sendCustom
         $info->errmsg = $errmsg;
         return $this->helper->updateTable('msg_log', $info, $condition);
     }
-    }
 
     /**
      * 获取access_token
