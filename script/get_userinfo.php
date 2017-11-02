@@ -59,7 +59,7 @@ class GetInfo
     {
         $applink = "https://api.weixin.qq.com/cgi-bin/user/info?access_token=%s&openid=%s&lang=zh_CN";
         $url = sprintf($applink, $this->aceessToken, $openid);
-        $return = file_get_contents($url);
+        $return = $this->getdata($url);
         return json_decode($return);
     }
     /**
@@ -68,7 +68,7 @@ class GetInfo
     private function getAccessToken()
     {   
         $apiUrl = 'http://kenzowechat.samesamechina.com/Weixin/Getaccesstoken';
-        $accessToken = file_get_contents($apiUrl);
+        $accessToken = $this->getdata($apiUrl);
         if($accessToken) {
             return $accessToken;
         } else {
@@ -87,6 +87,17 @@ class GetInfo
         $data = curl_exec($ch);
         curl_close($ch);
         return json_decode($data);
+    }
+
+    private function getdata($url)
+    {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        $data = curl_exec($ch);
+        curl_close($ch);
+        return $data;
     }
 
 }
