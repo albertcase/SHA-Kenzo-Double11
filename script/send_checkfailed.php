@@ -68,30 +68,32 @@ class sendFailed
                 'text' => "Hi 【" . $row1['nickname'] ."】，今天凌晨值班的服务器打了个盹儿，现在已经缓过劲儿啦！非常抱歉给您带来不便。请再点击右下角【一键签到】重新签到一次吧！累计的签到天数将对应11月11日睡美人面膜正装抽奖次数哦~",
             );
             $rs = $this->sendCustomMsgTowechat(json_encode($data, JSON_UNESCAPED_UNICODE));
-            echo  "{$row1['openid']} send custom ok\n";
+            $text = "{$row1['openid']} send custom ok\n";
+            echo $text;
+            file_put_contents("log.txt", $text, FILE_APPEND);
             // 记录消息日志
-            $msglog = new \stdClass();
-            $msglog->openid = $openid;
-            $msglog->data = json_encode($data, JSON_UNESCAPED_UNICODE);
-            $msglog->errcode = $rs->errcode;
-            $msglog->errmsg = $rs->errmsg;
-            $this->insertMsgLog($msglog);
+            // $msglog = new \stdClass();
+            // $msglog->openid = $openid;
+            // $msglog->data = json_encode($data, JSON_UNESCAPED_UNICODE);
+            // $msglog->errcode = $rs->errcode;
+            // $msglog->errmsg = $rs->errmsg;
+            // $this->insertMsgLog($msglog);
         }
         
         exit;
     }
 
-    private function insertMsgLog($log)
-    {
-        $helper = new Helper();
-        $log->created = date('Y-m-d H:i:s');
-        $log = (array) $log;
-        $id = $helper->insertTable('msg_log', $log);
-        if($id) {
-            return $id;
-        }
-        return false;
-    }
+    // private function insertMsgLog($log)
+    // {
+    //     $helper = new Helper();
+    //     $log->created = date('Y-m-d H:i:s');
+    //     $log = (array) $log;
+    //     $id = $helper->insertTable('msg_log', $log);
+    //     if($id) {
+    //         return $id;
+    //     }
+    //     return false;
+    // }
 
     private function findLastDate($uid)
     {
