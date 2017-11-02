@@ -437,6 +437,17 @@ class BackApiController extends Controller
         return json_decode($data);
     }
 
+    private function getdata($url)
+    {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        $data = curl_exec($ch);
+        curl_close($ch);
+        return $data;
+    }
+
     /**
      * 查看是都已经签到过
      */
@@ -553,7 +564,7 @@ class BackApiController extends Controller
     private function getAccessTokenByWechat()
     {
         $apiUrl = 'http://kenzowechat.samesamechina.com/Weixin/Getaccesstoken';
-        return file_get_contents($apiUrl);
+        return $this->getData($apiUrl);
     }
 
     /**
@@ -563,7 +574,7 @@ class BackApiController extends Controller
     {
         $applink = "https://api.weixin.qq.com/cgi-bin/user/info?access_token=%s&openid=%s&lang=zh_CN";
         $url = sprintf($applink, $accessToken, $openid);
-        $return = file_get_contents($url);
+        $return = $this->getData($url);
         return json_decode($return);
     }
 
