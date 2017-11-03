@@ -151,8 +151,8 @@ class PushTmp
         if(!empty($data)) {
             $rs = $this->sendTmpMsg($data);
             $log = new \stdClass();
-            $log->openid = json_encode(array($user->openid), JSON_UNESCAPED_UNICODE);
-            $log->data = json_encode($data, JSON_UNESCAPED_UNICODE);
+            $log->openid = json_encode(array($user->openid));
+            $log->data = json_encode($data);
             $log->errcode = $rs->errcode;
             $log->errmsg = $rs->errmsg;
             $log->wechat_msgid = $rs->msgid;
