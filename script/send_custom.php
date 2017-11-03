@@ -1,10 +1,12 @@
 <?php
+
 define('SITE_URL', dirname(dirname(__FILE__)));
 require_once SITE_URL . "/vendor/autoload.php";
 require_once SITE_URL . "/config/config.php";
 
 use Lib\Helper;
 use Lib\PDO;
+
 
 $s = new sendCustom();
 $s->sendMsg();
@@ -25,12 +27,13 @@ class sendCustom
 
     public function sendMsg()
     {
-        $sql = "SELECT `openid`, `data` FROM `msg_log` WHERE `errcode` != 0 AND `created` >= '2017-11-01 00:00:00'";
+        $sql = "SELECT `openid`, `data` FROM `msg_log` WHERE `errcode` != 0 AND `created` >= '2017-11-03 12:00:00'";
         $query = $this->_pdo->prepare($sql);
         $query->execute();
         
         while($row = $query->fetch(\PDO::FETCH_ASSOC)) {
-            $sendRs = $this->sendCustomMsgTowechat($row['data']);
+            $data = json_decode($row['data']);
+            $sendRs = $this->sendCustomMsgTowechat(json_encode($data, JSON_UNESCAPED_UNICODE));
             if($sendRs->errcode == 0) {
                 $this->updateSendStatus($row['openid'], $sendRs->errcode, $sendRs->errmsg);
                 echo "{$row['openid']} send ok!\n";
