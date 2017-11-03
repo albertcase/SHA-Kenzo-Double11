@@ -563,24 +563,24 @@ class BackApiController extends Controller
     /**
      * 获取微信的TOKEN
      */
-    private function getAccessTokenByWechat()
+    public function getAccessTokenByWechat()
     {
         //普通版本
-        $apiUrl = 'http://120.132.102.63/Weixin/Getaccesstoken';
-        $accessToken = $this->getData($apiUrl);
-        return $accessToken;
+        // $apiUrl = 'http://120.132.102.63/Weixin/Getaccesstoken';
+        // $accessToken = $this->getData($apiUrl);
+        // return $accessToken;
 
         //AccessToken本地缓存
-        // $RedisAPI = new Redis();
-        // if($RedisAPI->get('AccessToken')) {
-        //     return $RedisAPI->get('AccessToken');
-        // } else {
-        //     $apiUrl = 'http://120.132.102.63/Weixin/Getaccesstoken';
-        //     $accessToken = $this->getData($apiUrl);
-        //     $RedisAPI->set('AccessToken', $accessToken);
-        //     $RedisAPI->setTimeout('AccessToken', time() + 120);
-        //     return $accessToken;
-        // }
+        $RedisAPI = new Redis();
+        if($RedisAPI->get('AccessToken')) {
+            return $RedisAPI->get('AccessToken');
+        } else {
+            $apiUrl = 'http://120.132.102.63/Weixin/Getaccesstoken';
+            $accessToken = $this->getData($apiUrl);
+            $RedisAPI->set('AccessToken', $accessToken);
+            $RedisAPI->setTimeout('AccessToken', 120);
+            return $accessToken;
+        }
     }
 
     /**
