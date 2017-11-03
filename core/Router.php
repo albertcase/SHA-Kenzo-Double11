@@ -20,16 +20,20 @@ class Router
 		$current_router = preg_replace('/\?.*/', '', $server['REQUEST_URI']);
 		
 		if(isset($routers[$current_router])) {
-			$callback = $routers[$current_router];
-			$parameter = isset($callback[2]) ? $callback[2] : array();
+			$callbackConfig = $routers[$current_router];
+			$class = $callbackConfig[0].'Controller';
+			$callback = [new $class, $callbackConfig[1].'Action'];
+			$parameter = isset($callbackConfig[2]) ? $callbackConfig[2] : array();
 			$this->callback = $callback;
 			$this->param = $parameter;
             return;
 		}
-		foreach($routers as $router => $callback) {
+		foreach($routers as $router => $callbackConfig) {
 			$pattern = '/' . preg_replace(array('/\//', '/%/'), array('\/', '(.*)'), $router) . '$/';
 			if(preg_match($pattern, $current_router, $matches)  && $router != '/') {
 				unset($matches[0]);
+				$class = $callbackConfig[0].'Controller';
+				$callback = [new $class, $callbackConfig[1].'Action'];
 				$this->callback = $callback;
 				$this->param = $matches;
 				return;
@@ -39,14 +43,12 @@ class Router
 
 	public function getCallback()
 	{
+		return $this->callback;
 		if($this->callback) {
-			$class = $this->callback[0] . 'Controller';
-			$method = $this->callback[1] . 'Action';
-			return array(new $class, $method);			
+			return $this->callback;
 		} else {
 			return NULL;
 		}
-
 	}
 
 	public function getCallbackParam()
