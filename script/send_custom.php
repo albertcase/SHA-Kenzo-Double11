@@ -27,7 +27,7 @@ class sendCustom
 
     public function sendMsg()
     {
-        $sql = "SELECT `openid`, `data` FROM `msg_log` WHERE `errcode` != 0 AND `created` >= '2017-11-03 12:00:00'";
+        $sql = "SELECT `openid`, `data` FROM `msg_log` WHERE `errcode` = 41001 AND `created` >= '2017-11-03 12:00:00'";
         $query = $this->_pdo->prepare($sql);
         $query->execute();
         
