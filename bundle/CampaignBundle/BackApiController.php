@@ -393,7 +393,7 @@ class BackApiController extends Controller
         // 记录消息日志
         $msglog = new \stdClass();
         $msglog->openid = $openid;
-        $msglog->data = json_encode($data, JSON_UNESCAPED_UNICODE);
+        $msglog->data = json_encode($data);
         $msglog->errcode = $rs->errcode;
         $msglog->errmsg = $rs->errmsg;
         $this->insertMsgLog($msglog);
@@ -565,8 +565,22 @@ class BackApiController extends Controller
      */
     private function getAccessTokenByWechat()
     {
+
         $apiUrl = 'http://120.132.102.63/Weixin/Getaccesstoken';
-        return $this->getData($apiUrl);
+        $accessToken = $this->getData($apiUrl);
+        return $accessToken;
+
+        //AccessToken本地缓存
+        // $RedisAPI = new Redis();
+        // if($RedisAPI->get('AccessToken')) {
+        //     return $RedisAPI->get('AccessToken');
+        // } else {
+            // $apiUrl = 'http://120.132.102.63/Weixin/Getaccesstoken';
+            // $accessToken = $this->getData($apiUrl);
+            // $RedisAPI->set('AccessToken', $accessToken);
+            // $RedisAPI->setTimeout('AccessToken', 120);
+            // return $accessToken;
+        // }
     }
 
     /**
