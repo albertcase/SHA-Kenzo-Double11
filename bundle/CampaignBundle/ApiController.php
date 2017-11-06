@@ -284,6 +284,7 @@ class ApiController extends Controller
             'name' => array('notnull', '120'),
             'province' => array('notnull', '121'),
             'city' => array('notnull', '121'),
+            'area' => array('notnull', '121'),
             'address' => array('notnull', '122'),
             'mobile' => array('cellphone', '121'),
             'msgCode' => array('notnull', '120'),
@@ -304,6 +305,7 @@ class ApiController extends Controller
         $data->tel = $request->request->get('mobile');
         $data->province = $request->request->get('province');
         $data->city = $request->request->get('city');
+        $data->area = $request->request->get('area');
         $data->address = $request->request->get('address');
 
         if($this->insertLotteryInfo($data)) {
