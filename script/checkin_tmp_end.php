@@ -7,7 +7,8 @@ use Lib\Helper;
 use Lib\PDO;
 
 //推送的日期
-$date = date('Y-m-d', strtotime($argv[1])) ? date('Y-m-d', strtotime($argv[1])) : false;
+// $date = date('Y-m-d', strtotime($argv[1])) ? date('Y-m-d', strtotime($argv[1])) : false;
+$date = date('Y-m-d');
 
 $helper = new Helper();
 

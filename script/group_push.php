@@ -7,7 +7,7 @@ use Lib\Helper;
 use Lib\PDO;
 $gmsg = new GroupMsg();
 $gmsg->pushMsg();
-//$gmsg->getMediaList();
+// $gmsg->getMediaList();
 echo 'send ok';
 
 class GroupMsg
@@ -22,44 +22,35 @@ class GroupMsg
         $this->helper = new Helper();
     }
 
-//    public function getMediaList()
-//    {
-//        $apiUrl = "https://api.weixin.qq.com/cgi-bin/material/batchget_material?access_token=%s";
-//        $url = sprintf($apiUrl, $this->aceessToken);
-//        $data = array(
-//            'type' => 'news',
-//            'offset' => 0,
-//            'count' => 2,
-//        );
-//        $rs = $this->postData($url, json_encode($data, JSON_UNESCAPED_UNICODE));
-//        var_dump($rs);exit;
-//        return $rs;
-//
-//    }
+   // public function getMediaList()
+   // {
+   //     $apiUrl = "https://api.weixin.qq.com/cgi-bin/material/batchget_material?access_token=%s";
+   //     $url = sprintf($apiUrl, $this->aceessToken);
+   //     $data = array(
+   //         'type' => 'news',
+   //         'offset' => 0,
+   //         'count' => 10,
+   //     );
+   //     $rs = $this->postData($url, json_encode($data, JSON_UNESCAPED_UNICODE));
+   //     var_dump($rs);exit;
+   //     return $rs;
+
+   // }
 
     public function pushMsg()
     {
-//        $sql = "SELECT `uid`, `openid` FROM `user`";
-//        $query = $this->_pdo->prepare($sql);
-//        $query->execute();
-        $openidList = array(
-            'oEts5uCiZfLl7DlKLyeicIrtneP0',
-            'oEts5uHq4oonn9HZ9TSGkGS66E9g'
-        );
-//        while($row = $query->fetch(\PDO::FETCH_ASSOC)) {
-//            array_push($openidList, $row['openid']);
-//        }
-//        var_dump($openidList);exit;
-        $data = $this->msgFormat($openidList, 'SGeNhcvpGy-dKXS_exvIuK4glpwn9tOVWJwtKP2J68A');
+        $tagID = 101;
+        $mediaId = 'SGeNhcvpGy-dKXS_exvIuKh6PWo9fX5dnoWCPSNbChQ';
+        $data = $this->msgFormat($tagID, $mediaId);
+        // var_dump($data);exit;
 
-        $rs = $this->sendMsgByGroup($data);
-
-        $log = new \stdClass();
-        $log->openid = json_encode($openidList, JSON_UNESCAPED_UNICODE);
-        $log->data = json_encode($data, JSON_UNESCAPED_UNICODE);
-        $log->errcode = $rs->errcode;
-        $log->errmsg = $rs->errmsg;
-        $this->insertTmpLog($log);
+        $rs = $this->sendMsgByTag($data);
+        // $log = new \stdClass();
+        // $log->openid = $openidList;
+        // $log->data = json_encode($data);
+        // $log->errcode = $rs->errcode;
+        // $log->errmsg = $rs->errmsg;
+        // $this->insertTmpLog($log);
         return true;
     }
 
@@ -80,10 +71,13 @@ class GroupMsg
     /**
      * 格式化消息
      */
-    private function msgFormat($openidList, $mediaId)
+    private function msgFormat($tagid, $mediaId)
     {
         $msgData = array(
-            'touser' => $openidList,
+            'filter' => array(
+                'is_to_all' => false,
+                'tag_id' => $tagid,
+            ),
             'mpnews' => array(
                 'media_id' => $mediaId,
             ),
@@ -96,9 +90,9 @@ class GroupMsg
     /**
      * 分组推送
      */
-    private function sendMsgByGroup($data)
+    private function sendMsgByTag($data)
     {
-        $applink = "https://api.weixin.qq.com/cgi-bin/message/mass/send?access_token=%s";
+        $applink = "https://api.weixin.qq.com/cgi-bin/message/mass/sendall?access_token=%s";
         $url = sprintf($applink, $this->aceessToken);
         $rs = $this->postData($url, json_encode($data, JSON_UNESCAPED_UNICODE));
         return $rs;
