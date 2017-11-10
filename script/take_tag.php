@@ -10,7 +10,7 @@ use Lib\PDO;
 $tag = new Tag();
 // $tag->getTagUsers(101); //拉取标签下的用户列表
 // $tag->createTag(); //新增标签
-// $tag->takeTag(); //为用户打标签
+$tag->takeTag(); //为用户打标签
 
 /**
  * 为参加活动的用户打上标签 

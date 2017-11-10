@@ -39,12 +39,26 @@ class GroupMsg
 
     public function pushMsg()
     {
-        $tagID = 101;
+        // $tagID = 101;
         $mediaId = 'SGeNhcvpGy-dKXS_exvIuKh6PWo9fX5dnoWCPSNbChQ';
-        $data = $this->msgFormat($tagID, $mediaId);
+        
         // var_dump($data);exit;
+        $data = array(
+            // 'touser' => array('oEts5uOSHZtkQAgXSci9DYJaLQyM', 'oEts5uH57nQrFTaEgkkZXGB2tHIM'),
+            'touser' => 'oEts5uOSHZtkQAgXSci9DYJaLQyM',
+            'mpnews' => array(
+                'media_id' => $mediaId,
+                ),
+            'msgtype' => 'mpnews',
+            );
+        // var_dump($data);exit;
+        $rs = $this->sendMsgPri($data);
+        var_dump($rs);exit;
 
-        $rs = $this->sendMsgByTag($data);
+        // $data = $this->msgFormat($tagID, $mediaId);
+        // $rs = $this->sendMsgByTag($data);
+
+
         // $log = new \stdClass();
         // $log->openid = $openidList;
         // $log->data = json_encode($data);
@@ -87,16 +101,24 @@ class GroupMsg
         return $msgData;
     }
 
-    /**
-     * 分组推送
-     */
-    private function sendMsgByTag($data)
+    private function sendMsgPri($data)
     {
-        $applink = "https://api.weixin.qq.com/cgi-bin/message/mass/sendall?access_token=%s";
+        $applink = "https://api.weixin.qq.com/cgi-bin/message/mass/preview?access_token=%s";
         $url = sprintf($applink, $this->aceessToken);
         $rs = $this->postData($url, json_encode($data, JSON_UNESCAPED_UNICODE));
         return $rs;
     }
+
+    /**
+     * 分组推送
+     */
+    // private function sendMsgByTag($data)
+    // {
+    //     $applink = "https://api.weixin.qq.com/cgi-bin/message/mass/sendall?access_token=%s";
+    //     $url = sprintf($applink, $this->aceessToken);
+    //     $rs = $this->postData($url, json_encode($data, JSON_UNESCAPED_UNICODE));
+    //     return $rs;
+    // }
 
     private function insertTmpLog($log)
     {
